@@ -110,7 +110,7 @@ namespace Flanium
         /// <param name="retries"> Represents the number of times this method will retry.</param>
         /// <param name="retryInterval">Represents the amount of time in seconds to wait before each retry.</param>
         /// <returns>True if accepted, False if dismissed.</returns>
-        public static bool WaitForAlert(ChromeDriver chromeDriver, List<string> acceptedAlertText, int retries = 15, int retryInterval = 1000)
+        public static bool WaitForAlert(ChromeDriver chromeDriver, List<string> acceptedAlertText, int retries = 15, int retryInterval = 1)
         {
             var windows = chromeDriver.WindowHandles;
 
