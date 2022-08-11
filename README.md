@@ -8,7 +8,7 @@ Flanium is made by joining two frameworks:
  
  # Version Information
  
- Version 1.0 capabilities and support:
+ **Version 1.0 capabilities and support:**
  
  * Chrome.
  * Windows.
