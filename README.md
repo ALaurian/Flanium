@@ -31,7 +31,7 @@ This section will go through the various libraries and what they do.
 
 ![image](https://user-images.githubusercontent.com/110975879/184162800-a82b9834-ffe8-4283-9740-714c06d9666d.png)
 
-![image](https://user-images.githubusercontent.com/110975879/184162841-c4090484-5969-4317-855a-1cd77a90c1c7.png)
+![image](https://user-images.githubusercontent.com/110975879/184163948-e0ece6cd-64f1-4e8c-b1e5-782ab1676b38.png)
 
 ![image](https://user-images.githubusercontent.com/110975879/184162913-d926465e-19f6-4fd7-8dc4-b26ad0bd6472.png)
 
