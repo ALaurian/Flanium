@@ -41,8 +41,6 @@ I tried to make it as easy as possible to use for beginner coders or people with
 
 # The list of toys
 
-
-
 Attempt | WinEvents | WebEvents | Initializers | Helpers |
 --- | --- | --- | --- |--- 
 1  |  GetDriverProcessId  |  FindWebElementByXPath  |  InitializeService  |  OpenSapSession
@@ -59,5 +57,7 @@ Attempt | WinEvents | WebEvents | Initializers | Helpers |
 12  |    |    |    |  HandleDownloads
 13  |    |    |    |  CloseTab
 14  |    |    |    |  SendEmail
+
+If you have any experience with FlaUI you probably already noticed that there is no XPath searching method in the WinEvents library, that's because from my experiments, searching by Linq query is.. a lot quicker (400ms up to a few seconds depending on the application).
 
 # The library in practice
