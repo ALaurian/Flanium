@@ -16,7 +16,6 @@
           "Selenium.Support": "4.4.0",
           "Selenium.WebDriver": "4.4.0",
           "Selenium.WebDriver.ChromeDriver": "104.0.5112.7900",
-          "docfx.console": "2.59.3",
           "Interop.Microsoft.Office.Interop.Excel": "1.9.0.0",
           "Interop.SAPFEWSELib": "1.0.0.0",
           "Interop.SapROTWr": "1.0.0.0"
@@ -25,7 +24,6 @@
           "Flanium.dll": {}
         }
       },
-      "docfx.console/2.59.3": {},
       "DotNetSeleniumExtras.PageObjects/3.11.0": {
         "dependencies": {
           "Selenium.WebDriver": "4.4.0"
@@ -226,13 +224,6 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
-    },
-    "docfx.console/2.59.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-bY0sOKqIU4xUkfP84hUlCEqNZUC+fIOGpexOY0OSPeXgyYXM5WLBt65IBXL0ExIA9rEY7KRNRzfIUKwMb/SrXw==",
-      "path": "docfx.console/2.59.3",
-      "hashPath": "docfx.console.2.59.3.nupkg.sha512"
     },
     "DotNetSeleniumExtras.PageObjects/3.11.0": {
       "type": "package",
