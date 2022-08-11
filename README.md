@@ -6,6 +6,8 @@ Flanium is made by joining two frameworks:
  1. **Selenium** - Selenium is a suite of tools for automating web browsers.
  2. **FlaUi** - FlaUI is a .NET library which helps with automated UI testing of Windows applications (Win32, WinForms, WPF, Store Apps, ...).
  
+ Flanium only supports Windows and Chrome browser. [12/08/2022]
+ 
 # Knowledge requirements
 
 You will need a basic knowledge of Linq to use the WinEvents library and a medium to advanced knowledge of XPath syntax to be able to use the WebEvents library.
