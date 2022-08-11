@@ -64,7 +64,7 @@ Attempt | WinEvents | WebEvents | Initializers | Helpers |
 
 If you have any experience with FlaUI you probably already noticed that there is no XPath searching method in the WinEvents library, that's because from my experiments, searching by Linq query is.. a lot quicker (400ms up to a few seconds depending on the application).
 
-# Your very first automation
+# Your very first web automation
 
 The initializers in the Initializers library are dumb-proof, but you can make your own if you want, but these are generally the ones I would start with when making my web based RPA.
 
