@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using Polly;
@@ -115,7 +113,7 @@ namespace Flanium
             var windows = chromeDriver.WindowHandles;
 
             var alert = Policy.HandleResult<IAlert>(alert => alert == null)
-                .WaitAndRetry(retries, i => TimeSpan.FromSeconds(retryInterval)).Execute(() =>
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval)).Execute(() =>
                 {
                     IAlert alert = null;
                     foreach (var w in windows)
@@ -320,7 +318,6 @@ namespace Flanium
         /// </summary>
         /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
         /// <param name="xPath"> Represents the element XPath.</param>
-        /// <param name="retries"> Represents the number of times this method will retry. </param>
         /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
         /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
         /// <returns>Returns null if element did not vanish.</returns>
@@ -344,6 +341,38 @@ namespace Flanium
             if (element != null) return element;
             
             Console.WriteLine("Element did not vanish: " + xPath + " ...how? \n");
+            return null;
+
+        }
+        /// <summary>
+        /// This method is used to wait for an element by searching for it via XPath (it waits forever).
+        /// </summary>
+        /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
+        /// <param name="xPath"> Represents the element XPath.</param>
+        /// <param name="retries"> Represents the number of times this method will retry. </param>
+        /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
+        /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
+        /// <returns>Returns null if element did not vanish.</returns>
+        public static IWebElement WaitElementVanish(ChromeDriver chromeDriver, string xPath, int retries=60,int retryInterval = 1,string frameType = "iframe")
+        {
+            
+            var element = Policy.HandleResult<IWebElement>(result => result != null)
+                .WaitAndRetry(retries,interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() =>
+                {
+                    var element =  FindWebElementByXPath(chromeDriver, xPath, frameType);
+                    if(element == null)
+                    {
+                        Console.WriteLine("Element vanished: " + xPath + "\n");
+                        return null;
+                    }
+
+                    return element;
+                });
+
+            if (element != null) return element;
+            
+            Console.WriteLine("Element did not vanish: " + xPath + "\n");
             return null;
 
         }
