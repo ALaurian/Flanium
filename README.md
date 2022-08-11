@@ -66,6 +66,8 @@ If you have any experience with FlaUI you probably already noticed that there is
 
 # Your very first web automation
 
+**First start off by opening Visual Studio (not Visual Studio Code) or maybe Jetbrains Rider, and create a Console Application in .NET 6 (Windows), then follow the instructions below.**
+
 The initializers in the Initializers library are dumb-proof, but you can make your own if you want, but these are generally the ones I would start with when making my web based RPA.
 
 ```csharp
