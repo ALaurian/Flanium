@@ -33,3 +33,5 @@ Attempt | WinEvents | WebEvents | Initializers | Helpers |
 12  |    |    |    |  HandleDownloads
 13  |    |    |    |  CloseTab
 14  |    |    |    |  SendEmail
+
+# The library in practice
