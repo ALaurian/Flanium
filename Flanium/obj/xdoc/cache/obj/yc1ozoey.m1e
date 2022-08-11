@@ -1,0 +1,10 @@
+id: Flanium
+language: CSharp
+name:
+  Default: Flanium
+qualifiedName:
+  Default: Flanium
+type: Assembly
+modifiers: {}
+items: []
+references: {}

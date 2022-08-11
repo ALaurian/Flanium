@@ -1,0 +1,16 @@
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\Flanium.csproj.AssemblyReference.cache
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\Flanium.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\Flanium.AssemblyInfoInputs.cache
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\Flanium.AssemblyInfo.cs
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\Flanium.csproj.CoreCompileInputs.cache
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows\Flanium.deps.json
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows\Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows\Flanium.pdb
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows\Interop.Microsoft.Office.Interop.Excel.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows\Interop.SAPFEWSELib.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows\Interop.SapROTWr.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\Flanium.csproj.CopyComplete
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\Flanium.pdb
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows\ref\Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows\ref\Flanium.dll
