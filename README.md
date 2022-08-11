@@ -13,28 +13,23 @@ Flanium is made by joining two frameworks:
  * Chrome.
  * Windows.
     
-# Documentation
-This section will go through the various libraries and what they do.
-
-## WinEvents Library
-
-### GetDriverProcessId(ChromeDriverService driverService) : returns int
-
-* This method is used to retrieve the current process ID of the <c>Chrome</c> browser attached to the ChromeDriverService.
-
-Parameters:
->**driverService** - Represents the ChromeDriverService instance.
-
-### GetWindow(int processId) : returns AutomationElement
-
-* This method is used to retrieve the window of the main window handle the process ID has.
-
-Parameters:
->**processId** - Represents the process ID.
+# The list of toys
 
 
-## WebEvents Library
 
-## Initializers Library
-
-## Helpers Library
+Attempt | WinEvents | WebEvents | Initializers | Helpers |
+--- | --- | --- | --- |--- 
+1  |  GetDriverProcessId  |  FindWebElementByXPath  |  InitializeService  |  OpenSapSession
+2  |  GetWindowByProcessId  |  WaitForAlert  |  InitializeChrome  |  FolderContainsFiles
+3  |  GetWindowByLinq  |  JsClick  |    |  DeleteDuplicateFiles
+4  |  GetWindowsByLinq  |  Click  |    |  CreateFolder
+5  |  FindElementByLinq  |  SetValue  |    |  DeleteFolder
+6  |  FindElementsByLinq  |  Hover  |    |  ArchiveFolder
+7  |    |  GetText  |    |  DeleteFile
+8  |    |  WaitForeverElementVanish  |    |  MoveFile
+9  |    |  WaitElementVanish  |    |  MoveFiles
+10  |    |    |    |  ExcelToDataTable
+11  |    |    |    |  Highlight
+12  |    |    |    |  HandleDownloads
+13  |    |    |    |  CloseTab
+14  |    |    |    |  SendEmail
