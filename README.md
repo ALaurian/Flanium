@@ -64,4 +64,42 @@ Attempt | WinEvents | WebEvents | Initializers | Helpers |
 
 If you have any experience with FlaUI you probably already noticed that there is no XPath searching method in the WinEvents library, that's because from my experiments, searching by Linq query is.. a lot quicker (400ms up to a few seconds depending on the application).
 
-# The library in practice
+# Examples
+
+The initializers in the Initializers library are dumb-proof, but you can make your own if you want, but these are generally the ones I would start with when making my web based RPA.
+
+```csharp
+var chromeWeb = Initializers.InitializeChrome(Initializers.InitializeService);
+```
+
+This will create your Chrome browser with a plethora of useful arguments and other superpowers, it disables all of the logging that the base chromedriver has, so it leaves the console application open for writing without interruptions.
+
+Now we have it open, then we would need to navigate to a webpage, let's choose https://www.codeproject.com/.
+
+```csharp
+chromeWeb.Navigate().GoToUrl("https://www.codeproject.com/");
+```
+
+Then we want to click an element, I want to click the "Quick Answers" button on the homepage, I would do it like this:
+
+```csharp
+WebEvents.Click(chromeWeb,"//*[@id='ctl00_TopNavBar_Answers']");
+```
+
+That's it, now you've clicked the "Quick Answers" button.
+
+Now perhaps I am curious about what text does the first answer have in the table that just appeared.
+
+```csharp
+var answerText = WebEvents.GetText(chromeWeb, "//*[@id='ctl00_ctl00_MC_AMC_Entries_ctl01_QuestionRow_H']");
+```
+
+I now have retrieved the text of the first question, for me it was "How do I pass variables from one PHP page to another".
+
+Since I have all the information I need, I will now close the chrome session like this:
+
+```csharp
+chromeWeb.Dispose();
+```
+
+And now we're done, our very first automation done easily.
