@@ -19,7 +19,7 @@ using System.Windows.Forms;
     {
         internal class Helpers
         {
-            public static Dictionary<object, object> SapSession(string userName, string sapPw, string sapConnection, string sapClientId, string sapshcutPath = @"C:\Program Files (x86)\SAP\FrontEnd\SapGui\sapshcut.exe")
+            public static Dictionary<object, object> OpenSapSession(string userName, string sapPw, string sapConnection, string sapClientId, string sapshcutPath = @"C:\Program Files (x86)\SAP\FrontEnd\SapGui\sapshcut.exe")
             {
                 Dictionary<object, object> output = new Dictionary<object, object>();
 
@@ -248,29 +248,6 @@ using System.Windows.Forms;
                 return dataTable;
 
             }
-            
-            public static DataTable ProcessDataTable(ChromeDriver chromeDriver, DataTable inputTable)
-            {
-                Console.WriteLine(" ");
-                Console.WriteLine("----------------------------");
-                Console.WriteLine("Filtering the DataTable");
-                Console.WriteLine("----------------------------");
-                Console.WriteLine(" ");
-
-                var table = inputTable.AsEnumerable()
-                    .Where(r => r["Remaining TAT"].ToString() == "0") 
-                    .OrderBy(r => r["Remaining TAT"])
-                    .CopyToDataTable();
-
-                //Sorting the Table
-                //DataView dataView = inputTable.DefaultView;
-                //dataView.Sort = "Remaining TAT ASC";
-                //inputTable = dataView.ToTable();
-
-                Console.WriteLine("Finished filtering the DataTable.");
-
-                return table;
-            }
             public static void Highlight(IWebElement context, ChromeDriver driver)
             {
                 var rc = context;
@@ -281,14 +258,15 @@ using System.Windows.Forms;
                 driver.ExecuteScript(clear, rc);
 
             }
-            public static List<string> DownloadListener(ChromeDriver chromeDriver)
+            public static List<string> HandleDownloads(ChromeDriver chromeDriver)
             {
                 List<string> downloads = new List<string>();
                 chromeDriver.SwitchTo().NewWindow(WindowType.Tab);
                 chromeDriver.Navigate().GoToUrl("chrome://downloads/");
                 chromeDriver.SwitchTo().Window(chromeDriver.WindowHandles.Last());
                 var downloadsHandle = chromeDriver.CurrentWindowHandle;
-
+                Thread.Sleep(1000);
+                
             //Check for danger button "Keep" and press it.
             DownloadChecker: 
                 Thread.Sleep(1000);
@@ -358,11 +336,6 @@ using System.Windows.Forms;
 
             public static void CloseTab(ChromeDriver chromeDriver, string url, string anchorXpath = "", int timeoutTries = 10, int msWaitTime = 1000)
             {
-                Console.WriteLine(" ");
-                Console.WriteLine("----------------------------");
-                Console.WriteLine("Closing Tab with URL: " + url);
-                Console.WriteLine("----------------------------");
-                Console.WriteLine(" ");
 
                 bool queueBreak = false;
                 Thread.Sleep(msWaitTime);

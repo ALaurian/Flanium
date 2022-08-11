@@ -33,7 +33,7 @@ namespace Flanium
         /// <example>var chromeWindow = WinEvents.GetWindow(chromePID);</example>
         /// <param name="processId"> Represents the process ID.</param>
         /// <returns></returns>
-        public static AutomationElement GetWindow(int processId)
+        public static AutomationElement GetWindowByProcessId(int processId)
         {
             var automation = new UIA3Automation();
             var allProcesses = Process.GetProcesses();
