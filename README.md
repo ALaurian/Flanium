@@ -35,6 +35,10 @@ var Window = WinEvents.GetWindowByLinq(x => x.Name == "yes" || x.AutomationId ==
 
 The first version with "&&" will search for a Window that has both the Name property equal to "yes" and the AutomationId property equal to "1001" while the other will chose one that either has the Name equal to "yes" or the AutomationId equal to "1001".
 
+### Polly
+
+While I wouldn't necessarily post this as a knowledge requirement since this is for more advanced users.. but knowing how to use Polly will make your life a lot easier when using this framework, find it here -> https://github.com/App-vNext/Polly.
+
 ### Remarks
 
 I tried to make it as easy as possible to use for beginner coders or people with little to no coding experience, you can probably make your own RPA with just barely any coding experience by following a simple tutorial or the examples I wrote below.
