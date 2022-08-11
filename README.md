@@ -103,3 +103,11 @@ chromeWeb.Dispose();
 ```
 
 And now we're done, our very first automation done easily.
+
+## Remarks
+
+All of the event libraries have built in logging for them, so you will see the results of the code in the Console Application.
+
+Example: ![image](https://user-images.githubusercontent.com/110975879/184256363-f316f713-0712-4391-8a41-70b3bb64e1a9.png)
+
+The logging no longer looks like in the example image, but the general idea is the same.
