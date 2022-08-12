@@ -47,7 +47,7 @@ I tried to make it as easy as possible to use for beginner coders or people with
 
 # The list of toys
 
-Attempt | WinEvents | WebEvents | Initializers | Helpers |
+ID | WinEvents | WebEvents | Initializers | Helpers |
 --- | --- | --- | --- |--- 
 1  |  GetDriverProcessId  |  FindWebElementByXPath  |  InitializeService  |  OpenSapSession
 2  |  GetWindowByProcessId  |  WaitForAlert  |  InitializeChrome  |  FolderContainsFiles
