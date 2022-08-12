@@ -6,7 +6,7 @@ using OpenQA.Selenium.Chrome;
 
 namespace Flanium
 {
-    internal class WinEvents
+    public class WinEvents
     {
 
         /// <summary>

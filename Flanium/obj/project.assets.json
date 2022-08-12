@@ -1003,7 +1003,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "restore": {
       "projectUniqueName": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
       "projectName": "Flanium",
@@ -1025,7 +1025,8 @@
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Users\\l.avrigeanu\\AppData\\Local\\Programs\\UiPath\\Studio\\Packages": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\bin\\Debug": {},
+        "C:\\myFuckingNuggets": {}
       },
       "frameworks": {
         "net6.0-windows7.0": {

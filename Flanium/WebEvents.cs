@@ -5,7 +5,7 @@ using Polly;
 
 namespace Flanium
 {
-    internal class WebEvents
+    public class WebEvents
     {
         
         /// <summary>

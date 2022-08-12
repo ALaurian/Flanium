@@ -3,7 +3,7 @@ using OpenQA.Selenium.Chrome;
 
 namespace Flanium
 {
-    internal class Initializers
+    public class Initializers
     {
         public static ChromeDriverService InitializeService()
         {
