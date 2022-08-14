@@ -11,3 +11,5 @@
 ```csharp
 var chromePID = WinEvents.GetPid(driverService);
 ```
+
+[Go back to main documentation.]([https://github.com/ALaurian/Flanium](https://github.com/ALaurian/Flanium#the-list-of-toys))
