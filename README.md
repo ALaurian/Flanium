@@ -49,7 +49,7 @@ I tried to make it as easy as possible to use for beginner coders or people with
 
 ID | WinEvents | WebEvents | Initializers | Helpers |
 --- | --- | --- | --- |--- 
-1  |  GetDriverProcessId  |  FindWebElementByXPath  |  InitializeService  |  OpenSapSession
+1  |  [GetDriverProcessId](https://github.com/ALaurian/Flanium/blob/main/Documentation/GetDriverProcessId.md)  |  FindWebElementByXPath  |  InitializeService  |  OpenSapSession
 2  |  GetWindowByProcessId  |  WaitForAlert  |  InitializeChrome  |  FolderContainsFiles
 3  |  GetWindowByLinq  |  JsClick  |    |  DeleteDuplicateFiles
 4  |  GetWindowsByLinq  |  Click  |    |  CreateFolder
