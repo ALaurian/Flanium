@@ -8,6 +8,8 @@ Flanium is made by joining two frameworks:
  
  Flanium only supports Windows and Chrome browser. [12/08/2022]
  
+# [Documentation can be found here.](https://github.com/ALaurian/Flanium/blob/main/Documentation/LibraryDB.md)
+ 
 # Knowledge requirements
 
 You will need a basic knowledge of Linq to use the WinEvents library and a medium to advanced knowledge of XPath syntax to be able to use the WebEvents library.
