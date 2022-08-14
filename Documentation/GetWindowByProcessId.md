@@ -6,6 +6,12 @@
 
 * **int processId** : Represents the process ID.
 
+## Returns
+
+```csharp
+Window
+```
+
 ## Examples
 
 ```csharp
