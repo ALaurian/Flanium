@@ -6,6 +6,12 @@
 
 * **ChromeDriverService driverService** : Represents the ChromeDriverService instance.
 
+## Returns
+
+```csharp
+integer
+```
+
 ## Examples
 
 ```csharp
