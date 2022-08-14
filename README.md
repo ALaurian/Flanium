@@ -89,7 +89,7 @@ chromeWeb.Dispose();
 
 And now we're done, our very first automation done easily.
 
-## Remarks
+## Automatic Procedural Logging
 
 All of the event libraries have built in logging for them, so you will see the results of the code in the Console Application.
 
