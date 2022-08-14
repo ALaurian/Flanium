@@ -45,27 +45,6 @@ While I wouldn't necessarily post this as a knowledge requirement since this is 
 
 I tried to make it as easy as possible to use for beginner coders or people with little to no coding experience, you can probably make your own RPA with just barely any coding experience by following a simple tutorial or the examples I wrote below.
 
-# The list of toys
-
-ID | WinEvents | WebEvents | Initializers | Helpers |
---- | --- | --- | --- |--- 
-1  |  [GetDriverProcessId](https://github.com/ALaurian/Flanium/blob/main/Documentation/GetDriverProcessId.md)  |  FindWebElementByXPath  |  InitializeService  |  OpenSapSession
-2  |  [GetWindowByProcessId](https://github.com/ALaurian/Flanium/blob/main/Documentation/GetWindowByProcessId.md)  |  WaitForAlert  |  InitializeChrome  |  FolderContainsFiles
-3  |  GetWindowByLinq  |  JsClick  |    |  DeleteDuplicateFiles
-4  |  GetWindowsByLinq  |  Click  |    |  CreateFolder
-5  |  FindElementByLinq  |  SetValue  |    |  DeleteFolder
-6  |  FindElementsByLinq  |  Hover  |    |  ArchiveFolder
-7  |    |  GetText  |    |  DeleteFile
-8  |    |  WaitForeverElementVanish  |    |  MoveFile
-9  |    |  WaitElementVanish  |    |  MoveFiles
-10  |    |    |    |  ExcelToDataTable
-11  |    |    |    |  Highlight
-12  |    |    |    |  HandleDownloads
-13  |    |    |    |  CloseTab
-14  |    |    |    |  SendEmail
-
-If you have any experience with FlaUI you probably already noticed that there is no XPath searching method in the WinEvents library, that's because from my experiments, searching by Linq query is.. a lot quicker (400ms up to a few seconds depending on the application).
-
 # Your very first web automation
 
 **First start off by opening Visual Studio (not Visual Studio Code) or maybe Jetbrains Rider, and create a Console Application in .NET 6 (Windows), then follow the instructions below.**
