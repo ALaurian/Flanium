@@ -4,7 +4,7 @@
 
 ## Parameters
 
-* **AutomationElement window** : Represents the Window of the application in which to search this element.
+* **Window window** : Represents the Window of the application in which to search this element.
 * **Func<AutomationElement, bool> linq** : Represents the Linq query.
 
 ## Returns
