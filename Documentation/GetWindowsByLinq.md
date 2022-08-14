@@ -6,6 +6,12 @@
 
 * **Func<AutomationElement, bool> linq** : Represents the Linq query.
 
+## Returns
+
+```csharp
+List of Window
+```
+
 ## Examples
 
 ```csharp
