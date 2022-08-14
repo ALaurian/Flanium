@@ -6,6 +6,10 @@ Flanium is made by joining two frameworks:
  1. **Selenium** - Selenium is a suite of tools for automating web browsers.
  2. **FlaUi** - FlaUI is a .NET library which helps with automated UI testing of Windows applications (Win32, WinForms, WPF, Store Apps, ...).
  
+ Flanium only supports Windows and Chrome browser. [12/08/2022]
+ 
+# [Documentation can be found here.](https://github.com/ALaurian/Flanium/blob/main/Documentation/LibraryDB.md)
+ 
 # Knowledge requirements
 
 You will need a basic knowledge of Linq to use the WinEvents library and a medium to advanced knowledge of XPath syntax to be able to use the WebEvents library.
@@ -43,28 +47,9 @@ While I wouldn't necessarily post this as a knowledge requirement since this is 
 
 I tried to make it as easy as possible to use for beginner coders or people with little to no coding experience, you can probably make your own RPA with just barely any coding experience by following a simple tutorial or the examples I wrote below.
 
-# The list of toys
-
-Attempt | WinEvents | WebEvents | Initializers | Helpers |
---- | --- | --- | --- |--- 
-1  |  GetDriverProcessId  |  FindWebElementByXPath  |  InitializeService  |  OpenSapSession
-2  |  GetWindowByProcessId  |  WaitForAlert  |  InitializeChrome  |  FolderContainsFiles
-3  |  GetWindowByLinq  |  JsClick  |    |  DeleteDuplicateFiles
-4  |  GetWindowsByLinq  |  Click  |    |  CreateFolder
-5  |  FindElementByLinq  |  SetValue  |    |  DeleteFolder
-6  |  FindElementsByLinq  |  Hover  |    |  ArchiveFolder
-7  |    |  GetText  |    |  DeleteFile
-8  |    |  WaitForeverElementVanish  |    |  MoveFile
-9  |    |  WaitElementVanish  |    |  MoveFiles
-10  |    |    |    |  ExcelToDataTable
-11  |    |    |    |  Highlight
-12  |    |    |    |  HandleDownloads
-13  |    |    |    |  CloseTab
-14  |    |    |    |  SendEmail
-
-If you have any experience with FlaUI you probably already noticed that there is no XPath searching method in the WinEvents library, that's because from my experiments, searching by Linq query is.. a lot quicker (400ms up to a few seconds depending on the application).
-
 # Your very first web automation
+
+**First start off by opening Visual Studio (not Visual Studio Code) or maybe Jetbrains Rider, and create a Console Application in .NET 6 (Windows), then follow the instructions below.**
 
 The initializers in the Initializers library are dumb-proof, but you can make your own if you want, but these are generally the ones I would start with when making my web based RPA.
 
