@@ -6,7 +6,7 @@ Flanium is made by joining two frameworks:
  1. **Selenium** - Selenium is a suite of tools for automating web browsers.
  2. **FlaUi** - FlaUI is a .NET library which helps with automated UI testing of Windows applications (Win32, WinForms, WPF, Store Apps, ...).
  
- Flanium only supports Windows and Chrome browser. [12/08/2022]
+ Flanium only supports Windows and Chrome browser **for now**. [12/08/2022]
  
 # [Documentation can be found here.](https://github.com/ALaurian/Flanium/blob/main/Documentation/LibraryDB.md)
  
