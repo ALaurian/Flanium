@@ -33,7 +33,7 @@ namespace Flanium
         /// <example>var chromeWindow = WinEvents.GetWindow(chromePID);</example>
         /// <param name="processId"> Represents the process ID.</param>
         /// <returns></returns>
-        public static AutomationElement GetWindowByProcessId(int processId)
+        public static Window GetWindowByProcessId(int processId)
         {
             var automation = new UIA3Automation();
             var allProcesses = Process.GetProcesses();
@@ -42,7 +42,7 @@ namespace Flanium
             {
                 if (item.Id == processId)
                 {
-                    return automation.FromHandle(item.MainWindowHandle);
+                    return automation.FromHandle(item.MainWindowHandle).AsWindow();
                 }
 
             }
@@ -56,11 +56,11 @@ namespace Flanium
         /// </summary>
         /// <param name="linq"> Represents the Linq query.</param>
         /// <example> var LinqWindow = WinEvents.GetWindowByLinq(x => x.Name.StartsWith("Explorer")); </example>
-        public static AutomationElement GetWindowByLinq(Func<AutomationElement, bool> linq)
+        public static Window GetWindowByLinq(Func<AutomationElement, bool> linq)
         {
             var automation = new UIA3Automation();
             var desktop = automation.GetDesktop();
-            var window = desktop.FindAllChildren().Single(linq);
+            var window = desktop.FindAllChildren().Single(linq).AsWindow();
             return window;
         }
         
@@ -70,11 +70,11 @@ namespace Flanium
         /// <param name="linq"> Represents the Linq query.</param>
         /// <example> var LinqWindow = WinEvents.GetWindowsByLinq(x => x.Name.StartsWith("Explorer")); </example>
         /// <returns>A List of AutomationElement.</returns>
-        public static List<AutomationElement> GetWindowsByLinq(Func<AutomationElement, bool> linq)
+        public static List<Window> GetWindowsByLinq(Func<AutomationElement, bool> linq)
         {
             var automation = new UIA3Automation();
             var desktop = automation.GetDesktop();
-            var windows = desktop.FindAllChildren().Where(linq).ToList();
+            var windows = desktop.FindAllChildren().Where(linq).Cast<Window>().ToList();
             return windows;
         }
         
@@ -84,7 +84,7 @@ namespace Flanium
         /// <param name="window"> Represents the Window of the application in which to search this element.</param>
         /// <param name="linq"> Represents the Linq query.</param>
         /// <example> var LinqElement = WinEvents.FindElementByLinq(AppWindow, x => x.Name == "Address bar"); </example>
-        public static AutomationElement FindElementByLinq(AutomationElement window, Func<AutomationElement, bool> linq)
+        public static AutomationElement FindElementByLinq(Window window, Func<AutomationElement, bool> linq)
         {
             var element = window.FindAllDescendants().Single(linq);
 
@@ -97,7 +97,7 @@ namespace Flanium
         /// <param name="linq"> Represents the Linq query.</param>
         /// <returns>A List of AutomationElement.</returns>
         /// <example> var LinqElements = WinEvents.FindElementsByLinq(AppWindow, x => x.Name == "Address bar"); </example>
-        public static List<AutomationElement> FindElementsByLinq(AutomationElement window, Func<AutomationElement, bool> linq)
+        public static List<AutomationElement> FindElementsByLinq(Window window, Func<AutomationElement, bool> linq)
         {
             var elements = window.FindAllDescendants().Where(linq).ToList();
 
