@@ -8,11 +8,17 @@ ID | WinEvents | WebEvents | Initializers | Helpers |
 4  |  [GetWindowsByLinq](https://github.com/ALaurian/Flanium/blob/main/Documentation/GetWindowsByLinq.md)  |  Click  |    |  CreateFolder
 5  |  [FindElementByLinq](https://github.com/ALaurian/Flanium/blob/main/Documentation/FindElementByLinq.md)  |  SetValue  |    |  DeleteFolder
 6  |  [FindElementsByLinq](https://github.com/ALaurian/Flanium/blob/main/Documentation/FindElementsByLinq.md)  |  Hover  |    |  ArchiveFolder
-7  |    |  GetText  |    |  DeleteFile
-8  |    |  WaitForeverElementVanish  |    |  MoveFile
-9  |    |  WaitElementVanish  |    |  MoveFiles
-10  |    |    |    |  ExcelToDataTable
-11  |    |    |    |  Highlight
-12  |    |    |    |  HandleDownloads
-13  |    |    |    |  CloseTab
-14  |    |    |    |  SendEmail
+7  |  FindElementInElementByLinq  |  GetText  |    |  DeleteFile
+8  |  FindElementsInElementByLinq  |  WaitForeverElementVanish  |    |  MoveFile
+9  |  GetWindowByXPath  |  WaitElementVanish  |    |  MoveFiles
+10  |  GetWindowsByXPath  |  FindAllChildren  |    |  ExcelToDataTable
+11  |  FindElementByXPath  |  FindAllDescendants  |    |  Highlight
+12  |  FindElementsByXPath  |  WaitElementAppear  |    |  HandleDownloads
+13  |  FindElementInElementByXPath  |    |    |  CloseTab
+14  |  FindElementsInElementByXPath  |    |    |  SendEmail
+15  |  SendText  |    |    |  
+16  |  Click   |    |    |  
+17  |  DoubleClick   |    |    |  
+18  |  RightClick   |    |    |  
+19  |  SendKeys   |    |    |  
+20  |  GetText   |    |    |  

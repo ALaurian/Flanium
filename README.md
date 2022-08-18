@@ -6,7 +6,7 @@ Flanium is made by joining two frameworks:
  1. **Selenium** - Selenium is a suite of tools for automating web browsers.
  2. **FlaUi** - FlaUI is a .NET library which helps with automated UI testing of Windows applications (Win32, WinForms, WPF, Store Apps, ...).
  
- Flanium only supports Windows and Chrome browser. [12/08/2022]
+ Flanium only supports Windows and Chrome browser **for now**. [12/08/2022]
  
 # [Documentation can be found here.](https://github.com/ALaurian/Flanium/blob/main/Documentation/LibraryDB.md)
  
@@ -38,10 +38,6 @@ var Window = WinEvents.GetWindowByLinq(x => x.Name == "yes" || x.AutomationId ==
 ```
 
 The first version with "&&" will search for a Window that has both the Name property equal to "yes" and the AutomationId property equal to "1001" while the other will chose one that either has the Name equal to "yes" or the AutomationId equal to "1001".
-
-### Polly
-
-While I wouldn't necessarily post this as a knowledge requirement since this is for more advanced users.. but knowing how to use Polly will make your life a lot easier when using this framework, find it here -> https://github.com/App-vNext/Polly.
 
 ### Remarks
 
@@ -89,7 +85,7 @@ chromeWeb.Dispose();
 
 And now we're done, our very first automation done easily.
 
-## Remarks
+## Automatic Logging
 
 All of the event libraries have built in logging for them, so you will see the results of the code in the Console Application.
 

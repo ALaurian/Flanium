@@ -6,6 +6,8 @@
 
 * **Window window** : Represents the Window of the application in which to search this element.
 * **Func<AutomationElement, bool> linq** : Represents the Linq query.
+* **int retries** : Represents the amount of time that the method will retry.
+* **double retryInterval** : Represents the interval at which the retry will occur.
 
 ## Returns
 
