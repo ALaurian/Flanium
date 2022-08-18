@@ -11,9 +11,9 @@ ID | WinEvents | WebEvents | Initializers | Helpers |
 7  |  FindElementInElementByLinq  |  GetText  |    |  DeleteFile
 8  |  FindElementsInElementByLinq  |  WaitForeverElementVanish  |    |  MoveFile
 9  |  GetWindowByXPath  |  WaitElementVanish  |    |  MoveFiles
-10  |  GetWindowsByXPath  |    |    |  ExcelToDataTable
-11  |  FindElementByXPath  |    |    |  Highlight
-12  |  FindElementsByXPath  |    |    |  HandleDownloads
+10  |  GetWindowsByXPath  |  FindAllChildren  |    |  ExcelToDataTable
+11  |  FindElementByXPath  |  FindAllDescendants  |    |  Highlight
+12  |  FindElementsByXPath  |  WaitElementAppear  |    |  HandleDownloads
 13  |  FindElementInElementByXPath  |    |    |  CloseTab
 14  |  FindElementsInElementByXPath  |    |    |  SendEmail
 15  |  SendText  |    |    |  
