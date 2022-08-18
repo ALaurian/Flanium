@@ -12,8 +12,8 @@ Flanium is made by joining two frameworks:
  
 # Knowledge requirements
 
-You will need a basic knowledge of Linq to use the WinEvents library and a medium to advanced knowledge of XPath syntax to be able to use the WebEvents library.
-It goes without saying that you should also know a bit of C# to be able to use it properly.
+You will need medium to advanced knowledge of XPath syntax to be able to use the WebEvents library.
+It goes without saying that you should also know a bit of C# to be able to use it properly. You may find below the link to a tutorial regarding XPaths.
 
 ### XPath
 The w3cschools XPath tutorial is pretty good for XPaths and covers pretty much everything, you can find it here: https://www.w3schools.com/xml/xpath_intro.asp.
