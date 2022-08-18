@@ -21,3 +21,4 @@ ID | WinEvents | WebEvents | Initializers | Helpers |
 17  |  DoubleClick   |    |    |  
 18  |  RightClick   |    |    |  
 19  |  SendKeys   |    |    |  
+20  |  GetText   |    |    |  
