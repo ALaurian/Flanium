@@ -65,7 +65,7 @@ chromeWeb.Navigate().GoToUrl("https://www.codeproject.com/");
 Then we want to click an element, I want to click the "Quick Answers" button on the homepage, I would do it like this:
 
 ```csharp
-WebEvents.Click(chromeWeb,"//*[@id='ctl00_TopNavBar_Answers']");
+WebEvents.Action.Click(chromeWeb,"//*[@id='ctl00_TopNavBar_Answers']");
 ```
 
 That's it, now you've clicked the "Quick Answers" button.
@@ -73,7 +73,7 @@ That's it, now you've clicked the "Quick Answers" button.
 Now perhaps I am curious about what text does the first answer have in the table that just appeared.
 
 ```csharp
-var answerText = WebEvents.GetText(chromeWeb, "//*[@id='ctl00_ctl00_MC_AMC_Entries_ctl01_QuestionRow_H']");
+var answerText = WebEvents.Action.GetText(chromeWeb, "//*[@id='ctl00_ctl00_MC_AMC_Entries_ctl01_QuestionRow_H']");
 ```
 
 I now have retrieved the text of the first question, for me it was "How do I pass variables from one PHP page to another".
