@@ -197,7 +197,7 @@ public class WinEvents
         }
     }
 
-    public class Actions
+    public class Action
     {
         
         public static string GetText(AutomationElement element, int retries = 15, double retryInterval = 1)

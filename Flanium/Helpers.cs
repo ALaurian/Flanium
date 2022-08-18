@@ -289,7 +289,7 @@ public class Helpers
                         x.Name.Contains("Downloads - Google Chrome") || x.Name.Contains("Confirm download"))
                     .FindFirstByXPath("//Button[@Name='Keep anyway']");
 
-                WinEvents.Actions.Click(keepAnywayButton, true);
+                WinEvents.Action.Click(keepAnywayButton, true);
                 //keepAnywayButton.AsButton().Invoke();
                 // Thread.Sleep(500);
                     
