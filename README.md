@@ -23,19 +23,19 @@ The w3cschools XPath tutorial is pretty good for XPaths and covers pretty much e
 Linq is also easy to understand, at least up to the level that you will need to be able to use it, for example, a Linq query would look like this:
 
 ```csharp
-var Window = WinEvents.GetWindowByLinq(x => x.Name == "Google");
+var Window = WinEvents.Linq.GetWindowByLinq(x => x.Name == "Google");
 ```
 
 What is between the parantheses is the Linq query, x represents the AutomationElement you will be searching for, and x.Name represents the Name property of the x object which is a string, then you compare the x.Name with "Google" by using "==", if it returns true, then voila, you have your window, you can add multiple conditions by linking them with "&&" (and) and "||" (or), see example below:
 
 ```csharp
-var Window = WinEvents.GetWindowByLinq(x => x.Name == "yes" && x.AutomationId == "1001");
+var Window = WinEvents.Linq.GetWindowByLinq(x => x.Name == "yes" && x.AutomationId == "1001");
 ```
 
 **or**
 
 ```csharp
-var Window = WinEvents.GetWindowByLinq(x => x.Name == "yes" || x.AutomationId == "1001");
+var Window = WinEvents.Linq.GetWindowByLinq(x => x.Name == "yes" || x.AutomationId == "1001");
 ```
 
 The first version with "&&" will search for a Window that has both the Name property equal to "yes" and the AutomationId property equal to "1001" while the other will chose one that either has the Name equal to "yes" or the AutomationId equal to "1001".
