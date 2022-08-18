@@ -18,23 +18,24 @@ It goes without saying that you should also know a bit of C# to be able to use i
 ### XPath
 The w3cschools XPath tutorial is pretty good for XPaths and covers pretty much everything, you can find it here: https://www.w3schools.com/xml/xpath_intro.asp.
 
-### Linq
+### Linq 
+#### [Optional, there are methods implemented that can be used with XPath, Linq methods are 2 times quicker than XPath methods but may be unstable.]
 Linq is also easy to understand, at least up to the level that you will need to be able to use it, for example, a Linq query would look like this:
 
 ```csharp
-var Window = WinEvents.GetWindowByLinq(x => x.Name == "Google");
+var Window = WinEvents.Linq.GetWindowByLinq(x => x.Name == "Google");
 ```
 
 What is between the parantheses is the Linq query, x represents the AutomationElement you will be searching for, and x.Name represents the Name property of the x object which is a string, then you compare the x.Name with "Google" by using "==", if it returns true, then voila, you have your window, you can add multiple conditions by linking them with "&&" (and) and "||" (or), see example below:
 
 ```csharp
-var Window = WinEvents.GetWindowByLinq(x => x.Name == "yes" && x.AutomationId == "1001");
+var Window = WinEvents.Linq.GetWindowByLinq(x => x.Name == "yes" && x.AutomationId == "1001");
 ```
 
 **or**
 
 ```csharp
-var Window = WinEvents.GetWindowByLinq(x => x.Name == "yes" || x.AutomationId == "1001");
+var Window = WinEvents.Linq.GetWindowByLinq(x => x.Name == "yes" || x.AutomationId == "1001");
 ```
 
 The first version with "&&" will search for a Window that has both the Name property equal to "yes" and the AutomationId property equal to "1001" while the other will chose one that either has the Name equal to "yes" or the AutomationId equal to "1001".
@@ -64,7 +65,7 @@ chromeWeb.Navigate().GoToUrl("https://www.codeproject.com/");
 Then we want to click an element, I want to click the "Quick Answers" button on the homepage, I would do it like this:
 
 ```csharp
-WebEvents.Click(chromeWeb,"//*[@id='ctl00_TopNavBar_Answers']");
+WebEvents.Action.Click(chromeWeb,"//*[@id='ctl00_TopNavBar_Answers']");
 ```
 
 That's it, now you've clicked the "Quick Answers" button.
@@ -72,7 +73,7 @@ That's it, now you've clicked the "Quick Answers" button.
 Now perhaps I am curious about what text does the first answer have in the table that just appeared.
 
 ```csharp
-var answerText = WebEvents.GetText(chromeWeb, "//*[@id='ctl00_ctl00_MC_AMC_Entries_ctl01_QuestionRow_H']");
+var answerText = WebEvents.Action.GetText(chromeWeb, "//*[@id='ctl00_ctl00_MC_AMC_Entries_ctl01_QuestionRow_H']");
 ```
 
 I now have retrieved the text of the first question, for me it was "How do I pass variables from one PHP page to another".
