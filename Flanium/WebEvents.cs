@@ -2,20 +2,26 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using Polly;
+using static Flanium.WebEvents.Search;
 
-namespace Flanium
+namespace Flanium;
+
+public class WebEvents
 {
-    public class WebEvents
+    public class Search
     {
+        public static List<IWebElement> FindAllChildren(WebElement element)
+        {
+            return element.FindElements(By.XPath("/*")).ToList();
+        }
+
+        public static List<IWebElement> FindAllDescendants(WebElement element)
+        {
+            return element.FindElements(By.CssSelector("*")).ToList();
+        }
         
-        /// <summary>
-        /// Helper method for searching for an element in every window and iframe of that window.
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance. </param>
-        /// <param name="xPath"> Represents the XPath of the element. </param>
-        /// <param name="frameType"> Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
-        /// <returns>Returns the element that was searched.</returns>
-        public static IWebElement FindWebElementByXPath(ChromeDriver chromeDriver, string xPath, string frameType = "iframe")
+        public static IWebElement FindWebElementByXPath(ChromeDriver chromeDriver, string xPath,
+            string frameType = "iframe")
         {
             Console.WriteLine("         Searching for Element: " + xPath + "\n");
             Console.WriteLine();
@@ -31,7 +37,6 @@ namespace Flanium
                     Console.WriteLine();
                     return element;
                 }
-
             }
             catch (Exception)
             {
@@ -42,7 +47,6 @@ namespace Flanium
 
             foreach (var window in windowHandles)
             {
-
                 chromeDriver.SwitchTo().Window(window);
 
                 var frames = chromeDriver.FindElements(By.TagName(frameType));
@@ -65,15 +69,15 @@ namespace Flanium
                     {
                         // ignored
                     }
-                    
-                    
+
+
                     var frameChildren = chromeDriver.FindElements(By.TagName(frameType));
                     foreach (var child in frameChildren)
                     {
                         chromeDriver.SwitchTo().DefaultContent();
                         chromeDriver.SwitchTo().Frame(frame);
                         chromeDriver.SwitchTo().Frame(child);
-                    
+
                         try
                         {
                             element = chromeDriver.FindElement(By.XPath(xPath));
@@ -89,10 +93,7 @@ namespace Flanium
                             // ignored
                         }
                     }
-
-
                 }
-
             }
 
             Console.WriteLine("Failed to find Element: " + xPath + "\n");
@@ -100,15 +101,145 @@ namespace Flanium
             return null;
         }
 
-        /// <summary>
-        /// This method is used to search for an alert, and accept it given a list of strings that would contain the alert text.
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance. </param>
-        /// <param name="acceptedAlertText"> Represents the list of strings that would match to the alert text. </param>
-        /// <param name="retries"> Represents the number of times this method will retry.</param>
-        /// <param name="retryInterval">Represents the amount of time in seconds to wait before each retry.</param>
-        /// <returns>True if accepted, False if dismissed.</returns>
-        public static bool WaitForAlert(ChromeDriver chromeDriver, List<string> acceptedAlertText, int retries = 15, int retryInterval = 1)
+        public static IWebElement WaitElementAppear(ChromeDriver chromeDriver, string xPath, int retries = 15,
+            int retryInterval = 1, string frameType = "iframe")
+        {
+            var element = Policy.HandleResult<IWebElement>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() =>
+                {
+                    IWebElement element = FindWebElementByXPath(chromeDriver, xPath, frameType);
+                    if (element != null)
+                    {
+                        Console.WriteLine("Element appeared: " + xPath + "\n");
+                        return element;
+                    }
+
+                    return null;
+                });
+
+            if (element != null) return element;
+
+            Console.WriteLine("Element did not appear: " + xPath + "\n");
+            return null;
+        }
+    }
+
+    public class Action
+    {
+        public static IWebElement WaitElementVanish(ChromeDriver chromeDriver, string xPath, int retries = 60,
+            int retryInterval = 1, string frameType = "iframe")
+        {
+            var element = Policy.HandleResult<IWebElement>(result => result != null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() =>
+                {
+                    var element = FindWebElementByXPath(chromeDriver, xPath, frameType);
+                    if (element == null)
+                    {
+                        Console.WriteLine("Element vanished: " + xPath + "\n");
+                        return null;
+                    }
+
+                    return element;
+                });
+
+            if (element != null) return element;
+
+            Console.WriteLine("Element did not vanish: " + xPath + "\n");
+            return null;
+        }
+
+        public static IWebElement WaitForeverElementVanish(ChromeDriver chromeDriver, string xPath,
+            string frameType = "iframe", int retryInterval = 1)
+        {
+            var element = Policy.HandleResult<IWebElement>(result => result != null)
+                .WaitAndRetryForever(interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() =>
+                {
+                    var element = FindWebElementByXPath(chromeDriver, xPath, frameType);
+                    if (element == null)
+                    {
+                        Console.WriteLine("Element vanished: " + xPath + "\n");
+                        return null;
+                    }
+
+                    return element;
+                });
+
+            if (element != null) return element;
+
+            Console.WriteLine("Element did not vanish: " + xPath + " ...how? \n");
+            return null;
+        }
+
+        public static string GetText(ChromeDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1,
+            string frameType = "iframe")
+        {
+            var element = Policy.HandleResult<IWebElement>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() =>
+                {
+                    var element = FindWebElementByXPath(chromeDriver, xPath, frameType);
+                    if (element != null)
+                    {
+                        if (element.Text == "")
+                            return null;
+                        if (element.GetAttribute("value") == "")
+                            return null;
+
+                        return element;
+                    }
+
+                    return null;
+                });
+
+            if (element != null)
+            {
+                if (element.Text != "")
+                {
+                    Console.WriteLine("Got Text of Element: " + xPath + " (" + element.Text + ")\n");
+                    return element.Text;
+                }
+
+                if (element.GetAttribute("value") != "")
+                {
+                    Console.WriteLine("Got Value of Element: " + xPath + " (" + element.GetAttribute("value") + ")\n");
+                    return element.GetAttribute("value");
+                }
+            }
+
+            Console.WriteLine("No text or value was found for Element: " + xPath + "\n");
+            return "";
+        }
+
+        public static IWebElement Hover(ChromeDriver chromeDriver, string xPath, int retries = 15,
+            int retryInterval = 1, string frameType = "iframe")
+        {
+            var element = Policy.HandleResult<IWebElement>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() =>
+                {
+                    var element = FindWebElementByXPath(chromeDriver, xPath, frameType);
+                    if (element != null)
+                    {
+                        Console.WriteLine("Hovered over Element: " + xPath + " (" + element.Text + ")\n");
+                        var hover = new Actions(chromeDriver);
+                        hover.MoveToElement(element).Perform();
+                        chromeDriver.SwitchTo().DefaultContent();
+                        return element;
+                    }
+
+                    return null;
+                });
+
+            if (element != null) return element;
+            Console.WriteLine("Failed to hover over Element: " + xPath + "\n");
+            throw new Exception("\n Failed to hover over element with XPath: " + xPath + "\n");
+        }
+
+        public static bool WaitForAlert(ChromeDriver chromeDriver, List<string> acceptedAlertText, int retries = 15,
+            int retryInterval = 1)
         {
             var windows = chromeDriver.WindowHandles;
 
@@ -121,7 +252,7 @@ namespace Flanium
                         chromeDriver.SwitchTo().Window(w);
                         alert = chromeDriver.SwitchTo().Alert();
                     }
-                    
+
                     return alert;
                 });
 
@@ -136,29 +267,18 @@ namespace Flanium
                 alert.Dismiss();
                 return false;
             }
-            
+
             return false;
         }
-        
-        /// <summary>
-        /// This method is used to click an element using Javascript by searching for it via XPath.
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
-        /// <param name="xPath"> Represents the element XPath.</param>
-        /// <param name="retries"> Represents the number of times this method will retry. </param>
-        /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
-        /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
-        /// <returns>Returns the element that was clicked.</returns>
-        /// <exception cref="Exception"> Throws a custom Exception. </exception>
-        public static IWebElement JsClick(ChromeDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1, string frameType = "iframe")
+        public static IWebElement JsClick(ChromeDriver chromeDriver, string xPath, int retries = 15,
+            int retryInterval = 1, string frameType = "iframe")
         {
-
             var element = Policy.HandleResult<IWebElement>(result => result == null)
                 .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                 .Execute(() =>
                 {
                     var element = FindWebElementByXPath(chromeDriver, xPath, frameType);
-                    if(element != null)
+                    if (element != null)
                     {
                         Console.WriteLine("Used Javascript to click Element: " + xPath + " (" + element.Text + ")\n");
                         chromeDriver.ExecuteScript("arguments[0].click();", element);
@@ -167,64 +287,41 @@ namespace Flanium
 
                     return null;
                 });
-            
-            
+
+
             if (element != null) return element;
-                
+
             Console.WriteLine("Failed to use Javascript to click element with XPath: " + xPath + "\n");
             throw new Exception("\n Failed to use Javascript to click element with XPath: " + xPath + "\n");
-            
-
         }
-
-        /// <summary>
-        /// This method is used to click an element by searching for it via XPath.
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
-        /// <param name="xPath"> Represents the element XPath.</param>
-        /// <param name="retries"> Represents the number of times this method will retry. </param>
-        /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
-        /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
-        /// <returns>Returns the element that was clicked.</returns>
-        /// <exception cref="Exception"> Throws a custom Exception. </exception>
-        public static IWebElement Click(ChromeDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1, string frameType = "iframe")
+        public static IWebElement Click(ChromeDriver chromeDriver, string xPath, int retries = 15,
+            int retryInterval = 1, string frameType = "iframe")
         {
-            
-                var element = Policy.HandleResult<IWebElement>(result => result == null)
-                    .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
-                    .Execute(() =>
+            var element = Policy.HandleResult<IWebElement>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() =>
+                {
+                    var element = FindWebElementByXPath(chromeDriver, xPath, frameType);
+                    if (element != null)
                     {
-                        var element = FindWebElementByXPath(chromeDriver, xPath, frameType);
-                        if (element != null)
-                        {
-                            Console.WriteLine("Clicked Element: " + xPath + " (" + element.Text + ")\n");
-                            element.Click();
-                            return element;
-                        }
-                        return null;
-                    });
+                        Console.WriteLine("Clicked Element: " + xPath + " (" + element.Text + ")\n");
+                        element.Click();
+                        return element;
+                    }
 
-                if (element != null) return element;
-                
-                Console.WriteLine("Failed to click Element: " + xPath + "\n");
-                throw new Exception("\n Failed to click element with XPath: " + xPath + "\n");
-                
-                // Helpers.CreateMessageWithAttachment("Failed to click element with XPath: " + xPath + "\n");
-            
+                    return null;
+                });
+
+            if (element != null) return element;
+
+            Console.WriteLine("Failed to click Element: " + xPath + "\n");
+            throw new Exception("\n Failed to click element with XPath: " + xPath + "\n");
+
+            // Helpers.CreateMessageWithAttachment("Failed to click element with XPath: " + xPath + "\n");
         }
 
-        /// <summary>
-        /// This method is used to set the value of an element by searching for it via XPath.
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
-        /// <param name="xPath"> Represents the element XPath.</param>
-        /// <param name="text"> Represents the text value to set the element value to.</param>
-        /// <param name="retries"> Represents the number of times this method will retry. </param>
-        /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
-        /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
-        /// <returns>Returns the element that whose value or text was changed.</returns>
-        /// <exception cref="Exception"> Throws a custom Exception. </exception>
-        public static IWebElement SetValue(ChromeDriver chromeDriver, string xPath, string text, int retries = 15, int retryInterval = 1, string frameType = "iframe")
+        public static IWebElement SetValue(ChromeDriver chromeDriver, string xPath, string text, int retries = 15,
+            int retryInterval = 1, string frameType = "iframe")
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
                 .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
@@ -236,146 +333,19 @@ namespace Flanium
                         Console.WriteLine("Set Value of Element: " + xPath + " (" + element.Text + ")\n");
                         element.Clear();
                         element.SendKeys(text);
-                        
+
                         return element;
                     }
+
                     return null;
                 });
-            
+
             if (element != null) return element;
             Console.WriteLine("Failed to set value of Element: " + xPath + "\n");
             throw new Exception("\n Failed to set value of element with XPath: " + xPath + "\n");
         }
-        
-        /// <summary>
-        /// This method is used to hover over an element by searching for it via XPath.
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
-        /// <param name="xPath"> Represents the element XPath.</param>
-        /// <param name="retries"> Represents the number of times this method will retry. </param>
-        /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
-        /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
-        /// <returns>Returns the element that was hovered. </returns>
-        /// <exception cref="Exception"> Throws a custom Exception. </exception>
-        public static IWebElement Hover(ChromeDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1, string frameType = "iframe")
-        {
-            var element = Policy.HandleResult<IWebElement>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
-                .Execute(() =>
-                {
-                    var element = FindWebElementByXPath(chromeDriver, xPath, frameType);
-                    if (element != null)
-                    {
-                        Console.WriteLine("Hovered over Element: " + xPath + " (" + element.Text + ")\n");
-                        Actions hover = new Actions(chromeDriver);
-                        hover.MoveToElement(element).Perform();
-                        chromeDriver.SwitchTo().DefaultContent();
-                        return element;
-                    }
-                    return null;
-                });
-            
-            if (element != null) return element;
-            Console.WriteLine("Failed to hover over Element: " + xPath + "\n");
-            throw new Exception("\n Failed to hover over element with XPath: " + xPath + "\n");
-
-        }
-
-        /// <summary>
-        /// This method is used to get the text of an element by searching for it via XPath.
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
-        /// <param name="xPath"> Represents the element XPath.</param>
-        /// <param name="retries"> Represents the number of times this method will retry. </param>
-        /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
-        /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
-        /// <returns>Returns null if no text or value is found.</returns>
-        public static string GetText(ChromeDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1, string frameType = "iframe")
-        {
-            
-            var element = Policy.HandleResult<IWebElement>(result => result.Text == "" && result.GetAttribute("value") == "")
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
-                .Execute(() => FindWebElementByXPath(chromeDriver, xPath, frameType));
-
-            if (element.Text != "")
-            {
-                Console.WriteLine("Got Text of Element: " + xPath + " (" + element.Text + ")\n");
-                return element.Text;
-            }
-
-            if (element.GetAttribute("value") != "")
-            {
-                Console.WriteLine("Got Value of Element: " + xPath + " (" + element.GetAttribute("value") + ")\n");
-                return element.GetAttribute("value");
-            }
-
-            Console.WriteLine("No text or value was found for Element: " + xPath + "\n");
-            return "";
-        }
-        
-        /// <summary>
-        /// This method is used to wait for an element by searching for it via XPath (it waits forever).
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
-        /// <param name="xPath"> Represents the element XPath.</param>
-        /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
-        /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
-        /// <returns>Returns null if element did not vanish.</returns>
-        public static IWebElement WaitForeverElementVanish(ChromeDriver chromeDriver, string xPath, string frameType = "iframe", int retryInterval = 1)
-        {
-            
-            var element = Policy.HandleResult<IWebElement>(result => result != null)
-                                       .WaitAndRetryForever(interval => TimeSpan.FromSeconds(retryInterval))
-                                       .Execute(() =>
-                                       {
-                                           var element =  FindWebElementByXPath(chromeDriver, xPath, frameType);
-                                           if(element == null)
-                                           {
-                                               Console.WriteLine("Element vanished: " + xPath + "\n");
-                                               return null;
-                                           }
-
-                                           return element;
-                                       });
-
-            if (element != null) return element;
-            
-            Console.WriteLine("Element did not vanish: " + xPath + " ...how? \n");
-            return null;
-
-        }
-        /// <summary>
-        /// This method is used to wait for an element by searching for it via XPath (it waits forever).
-        /// </summary>
-        /// <param name="chromeDriver"> Represents the chromeDriver instance.</param>
-        /// <param name="xPath"> Represents the element XPath.</param>
-        /// <param name="retries"> Represents the number of times this method will retry. </param>
-        /// <param name="retryInterval"> Represents the amount of time in seconds to wait before each retry.</param>
-        /// <param name="frameType">Represents the frame type, it can be 'iframe', 'frame', 'object' etc.</param>
-        /// <returns>Returns null if element did not vanish.</returns>
-        public static IWebElement WaitElementVanish(ChromeDriver chromeDriver, string xPath, int retries=60,int retryInterval = 1,string frameType = "iframe")
-        {
-            
-            var element = Policy.HandleResult<IWebElement>(result => result != null)
-                .WaitAndRetry(retries,interval => TimeSpan.FromSeconds(retryInterval))
-                .Execute(() =>
-                {
-                    var element =  FindWebElementByXPath(chromeDriver, xPath, frameType);
-                    if(element == null)
-                    {
-                        Console.WriteLine("Element vanished: " + xPath + "\n");
-                        return null;
-                    }
-
-                    return element;
-                });
-
-            if (element != null) return element;
-            
-            Console.WriteLine("Element did not vanish: " + xPath + "\n");
-            return null;
-
-        }
-
     }
+
+
+
 }

@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj": {
-      "version": "1.0.1",
+      "version": "1.1.0.1",
       "restore": {
         "projectUniqueName": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
         "projectName": "Flanium",
@@ -28,7 +28,8 @@
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Users\\l.avrigeanu\\AppData\\Local\\Programs\\UiPath\\Studio\\Packages": {},
           "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\bin\\Debug": {},
-          "C:\\myFuckingNuggets": {}
+          "C:\\myFuckingNuggets": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0-windows7.0": {
@@ -53,6 +54,14 @@
             "DotNetSeleniumExtras.WaitHelpers": {
               "target": "Package",
               "version": "[3.11.0, )"
+            },
+            "ExcelDataReader": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
+            "ExcelDataReader.DataSet": {
+              "target": "Package",
+              "version": "[3.6.0, )"
             },
             "FlaUI.Core": {
               "target": "Package",

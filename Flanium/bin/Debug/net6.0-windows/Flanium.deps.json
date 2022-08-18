@@ -10,13 +10,14 @@
         "dependencies": {
           "DotNetSeleniumExtras.PageObjects": "3.11.0",
           "DotNetSeleniumExtras.WaitHelpers": "3.11.0",
+          "ExcelDataReader": "3.6.0",
+          "ExcelDataReader.DataSet": "3.6.0",
           "FlaUI.Core": "3.2.0",
           "FlaUI.UIA3": "3.2.0",
           "Polly": "7.2.3",
           "Selenium.Support": "4.4.0",
           "Selenium.WebDriver": "4.4.0",
           "Selenium.WebDriver.ChromeDriver": "104.0.5112.7900",
-          "Interop.Microsoft.Office.Interop.Excel": "1.9.0.0",
           "Interop.SAPFEWSELib": "1.0.0.0",
           "Interop.SapROTWr": "1.0.0.0"
         },
@@ -43,6 +44,25 @@
           "lib/netstandard2.0/SeleniumExtras.WaitHelpers.dll": {
             "assemblyVersion": "3.11.0.0",
             "fileVersion": "3.11.0.0"
+          }
+        }
+      },
+      "ExcelDataReader/3.6.0": {
+        "runtime": {
+          "lib/netstandard2.0/ExcelDataReader.dll": {
+            "assemblyVersion": "3.6.0.0",
+            "fileVersion": "3.6.0.0"
+          }
+        }
+      },
+      "ExcelDataReader.DataSet/3.6.0": {
+        "dependencies": {
+          "ExcelDataReader": "3.6.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/ExcelDataReader.DataSet.dll": {
+            "assemblyVersion": "3.6.0.0",
+            "fileVersion": "3.6.0.0"
           }
         }
       },
@@ -193,14 +213,6 @@
           "System.Drawing.Common": "4.7.0"
         }
       },
-      "Interop.Microsoft.Office.Interop.Excel/1.9.0.0": {
-        "runtime": {
-          "Interop.Microsoft.Office.Interop.Excel.dll": {
-            "assemblyVersion": "1.9.0.0",
-            "fileVersion": "1.9.0.0"
-          }
-        }
-      },
       "Interop.SAPFEWSELib/1.0.0.0": {
         "runtime": {
           "Interop.SAPFEWSELib.dll": {
@@ -238,6 +250,20 @@
       "sha512": "sha512-xc6jVVl5ymgk3ZNWnC/KHxkEup1QpnwYbrwF+NQoCOGERsD8YMlLwmsX4lGhLXCLo/YQTRTIwlKCN9E/doGUNg==",
       "path": "dotnetseleniumextras.waithelpers/3.11.0",
       "hashPath": "dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512"
+    },
+    "ExcelDataReader/3.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eXyxTwG7EEWpgQX3juZ2KcndqTqm/ydx9GXS2lUiMJU54U4h5eXdygRtVgINv0t60ezPWEb+lL7uM7Q+wm5BBA==",
+      "path": "exceldatareader/3.6.0",
+      "hashPath": "exceldatareader.3.6.0.nupkg.sha512"
+    },
+    "ExcelDataReader.DataSet/3.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-miW3sWmPXnLM38YadRIfnhL4W4QZajpS6Q/OqsOpFJU5ct8h+M/fMpbGMm5INtsMP0Y1k0WK0stIfSW3RP31Xg==",
+      "path": "exceldatareader.dataset/3.6.0",
+      "hashPath": "exceldatareader.dataset.3.6.0.nupkg.sha512"
     },
     "FlaUI.Core/3.2.0": {
       "type": "package",
@@ -385,11 +411,6 @@
       "sha512": "sha512-CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "path": "system.windows.extensions/4.7.0",
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
-    },
-    "Interop.Microsoft.Office.Interop.Excel/1.9.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
     },
     "Interop.SAPFEWSELib/1.0.0.0": {
       "type": "reference",

@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "yckWIdRQBYA0CjW47RDfadlAmu4nWponyJJG0LbbxrRM6c6MIeBhzacrQKMUBJ6rv8e89V55nRGgh7Oy4777XA==",
+  "dgSpecHash": "RZtfNcovAcOga9lO7iMqTtxcit4Vi6y8pQ+kHrL/pQ8uY7mJjo8x7tBNdnPlMi6WtCKxxnwfhLqOX/Y7yDwEyQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\dotnetseleniumextras.pageobjects\\3.11.0\\dotnetseleniumextras.pageobjects.3.11.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\dotnetseleniumextras.waithelpers\\3.11.0\\dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512",
+    "C:\\Users\\l.avrigeanu\\.nuget\\packages\\exceldatareader\\3.6.0\\exceldatareader.3.6.0.nupkg.sha512",
+    "C:\\Users\\l.avrigeanu\\.nuget\\packages\\exceldatareader.dataset\\3.6.0\\exceldatareader.dataset.3.6.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\flaui.core\\3.2.0\\flaui.core.3.2.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\flaui.uia3\\3.2.0\\flaui.uia3.3.2.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\interop.uiautomationclient\\10.18362.0\\interop.uiautomationclient.10.18362.0.nupkg.sha512",

@@ -1,0 +1,5 @@
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net5.0-windows\Flanium.csproj.AssemblyReference.cache
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net5.0-windows\Flanium.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net5.0-windows\Flanium.AssemblyInfoInputs.cache
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net5.0-windows\Flanium.AssemblyInfo.cs
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net5.0-windows\Flanium.csproj.CoreCompileInputs.cache
