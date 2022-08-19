@@ -26,7 +26,7 @@ public class WinEvents
             return 0;
         }
 
-        public static Window GetWindowByProcessId(int processId)
+        public static Window GetWindow(int processId)
         {
             var automation = new UIA3Automation();
             var allProcesses = Process.GetProcesses();
@@ -39,122 +39,9 @@ public class WinEvents
         }
 
     }
-    public class Linq
-    {
-        public static Window GetWindowByLinq(Func<AutomationElement, bool> linq)
-        {
-            var automation = new UIA3Automation();
-            var desktop = automation.GetDesktop();
-            var window = desktop.FindAllChildren().Single(linq).AsWindow();
-            return window;
-        }
-        public static List<Window> GetWindowsByLinq(Func<AutomationElement, bool> linq)
-        {
-            var automation = new UIA3Automation();
-            var desktop = automation.GetDesktop();
-            var windows = desktop.FindAllChildren().Where(linq).ToList();
-
-            return windows.Select(window => window.AsWindow()).ToList();
-        }
-
-        public static AutomationElement FindElementByLinq(Window window, Func<AutomationElement, bool> linq,
-            int retries = 15, double retryInterval = 1)
-        {
-            var retryFind = Policy.HandleResult<AutomationElement>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
-            var retryFindResult = retryFind.Execute(() =>
-            {
-                try
-                {
-                    var allChildrenList = window.FindAllChildren().ToList();
-
-                    foreach (var child in allChildrenList)
-                        try
-                        {
-                            return child.FindAllDescendants().Single(linq);
-                        }
-                        catch (Exception e)
-                        {
-                            return null;
-                        }
-                }
-                catch (Exception e)
-                {
-                    return null;
-                }
-
-                return null;
-            });
-
-
-            return retryFindResult;
-        }
-
-        public static List<AutomationElement> FindElementsByLinq(Window window, Func<AutomationElement, bool> linq,
-            int retries = 15, double retryInterval = 1)
-        {
-            var retryFind = Policy.HandleResult<List<AutomationElement>>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
-            var retryFindResult = retryFind.Execute(() =>
-            {
-                try
-                {
-                    return window.FindAllDescendants().Where(linq).ToList();
-                }
-                catch (Exception e)
-                {
-                    return null;
-                }
-            });
-
-            return retryFindResult;
-        }
-
-        public static AutomationElement FindElementInElementByLinq(AutomationElement element,
-            Func<AutomationElement, bool> linq, int retries = 15, double retryInterval = 1)
-        {
-            var retryFind = Policy.HandleResult<AutomationElement>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
-            var retryFindResult = retryFind.Execute(() =>
-            {
-                try
-                {
-                    return element.FindAllDescendants().Single(linq);
-                }
-                catch (Exception e)
-                {
-                    return null;
-                }
-            });
-
-            return retryFindResult;
-        }
-
-        public static List<AutomationElement> FindElementsInElementByLinq(AutomationElement element,
-            Func<AutomationElement, bool> linq, int retries = 15, double retryInterval = 1)
-        {
-            var retryFind = Policy.HandleResult<List<AutomationElement>>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
-            var retryFindResult = retryFind.Execute(() =>
-            {
-                try
-                {
-                    return element.FindAllDescendants().Where(linq).ToList();
-                }
-                catch (Exception e)
-                {
-                    return null;
-                }
-            });
-
-            return retryFindResult;
-        }
-    }
-
-
     public class XPath
     {
-        public static Window GetWindowByXPath(string xPath)
+        public static Window GetWindow(string xPath)
         {
             var automation = new UIA3Automation();
             var desktop = automation.GetDesktop();
@@ -162,7 +49,7 @@ public class WinEvents
             return window;
         }
 
-        public static List<Window> GetWindowsByXPath(string xPath)
+        public static List<Window> GetWindows(string xPath)
         {
             var automation = new UIA3Automation();
             var desktop = automation.GetDesktop();
@@ -170,30 +57,42 @@ public class WinEvents
             return window.Select(w => w.AsWindow()).ToList();
         }
 
-        public static AutomationElement FindElementByXPath(Window window, string xPath)
+        public static AutomationElement FindElement(Window window, string xPath, int retries = 15, double retryInterval = 1)
         {
-            return window.FindFirstByXPath(xPath);
+            var retryGetText = Policy.HandleResult<AutomationElement>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
+            var retryGetTextResult = retryGetText.Execute(() => window.FindFirstByXPath(xPath));
+
+            return retryGetTextResult;
         }
 
-        public static List<AutomationElement> FindElementsByXPath(Window window, string xPath)
+        public static List<AutomationElement> FindElements(Window window, string xPath, int retries = 15, double retryInterval = 1)
         {
 
-                var allChildrenList = window.FindAllByXPath(xPath).ToList();
-                
-            return allChildrenList;
+            var retryGetText = Policy.HandleResult<List<AutomationElement>>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
+            var retryGetTextResult = retryGetText.Execute(() => window.FindAllByXPath(xPath).ToList());
+
+            return retryGetTextResult;
         }
 
-        public static AutomationElement FindElementInElementByXPath(AutomationElement element, string xPath)
+        public static AutomationElement FindElementInElement(AutomationElement element, string xPath, int retries = 15, double retryInterval = 1)
         {
-            return element.FindFirstByXPath(xPath);
+            var retryGetText = Policy.HandleResult<AutomationElement>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
+            var retryGetTextResult = retryGetText.Execute(() => element.FindFirstByXPath(xPath));
+
+            return retryGetTextResult;
         }
 
-        public static List<AutomationElement> FindElementsInElementByXPath(AutomationElement element, string xPath)
+        public static List<AutomationElement> FindElementsInElement(AutomationElement element, string xPath, int retries = 15, double retryInterval = 1)
         {
-
-                var allChildrenList = element.FindAllByXPath(xPath).ToList();
-
-            return allChildrenList;
+            
+            var retryGetText = Policy.HandleResult<List<AutomationElement>>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
+            var retryGetTextResult = retryGetText.Execute(() => element.FindAllByXPath(xPath).ToList());
+            
+            return retryGetTextResult;
         }
     }
 
@@ -217,12 +116,12 @@ public class WinEvents
             });
             return retryGetTextResult;
         }
-        public static bool SendText(AutomationElement element, string text, bool events = false, int retries = 15,
+        public static bool SendText(AutomationElement element, string text, bool eventTrigger = false, int retries = 15,
             double retryInterval = 1)
         {
             if (element != null)
             {
-                if (events == false)
+                if (eventTrigger == false)
                 {
                     var retryClick = Policy.HandleResult<bool>(result => result == true)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));

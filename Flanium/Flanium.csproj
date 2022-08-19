@@ -7,23 +7,22 @@
         <Authors>Laurian-Filip Avrigeanu</Authors>
         <Description>RPA Library for Windows.</Description>
         <OutputType>Library</OutputType>
-        <PackageVersion>1.1.0.1</PackageVersion>
+        <PackageVersion>1.1.1.1</PackageVersion>
         <Title>Flanium</Title>
         <PackageProjectUrl>https://github.com/ALaurian/Flanium</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/ALaurian/Flanium/blob/main/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/ALaurian/Flanium</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>
         <PackageTags>Selenium; FlaUI</PackageTags>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
     </PropertyGroup>
-
+    
     <ItemGroup>
       <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.0" />
       <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
-      <PackageReference Include="ExcelDataReader" Version="3.6.0" />
-      <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
       <PackageReference Include="FlaUI.Core" Version="3.2.0" />
       <PackageReference Include="FlaUI.UIA3" Version="3.2.0" />
+      <PackageReference Include="OpenPop.NET" Version="2.0.6.1120" />
       <PackageReference Include="Polly" Version="7.2.3" />
       <PackageReference Include="Selenium.Support" Version="4.4.0" />
       <PackageReference Include="Selenium.WebDriver" Version="4.4.0" />
@@ -31,11 +30,20 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Reference Include="Interop.Microsoft.Office.Interop.Excel, Version=1.9.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>bin\Debug\Interop.Microsoft.Office.Interop.Excel.dll</HintPath>
+        <Private>True</Private>
+        <EmbedInteropTypes>True</EmbedInteropTypes>
+      </Reference>
       <Reference Include="Interop.SAPFEWSELib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\..\Desktop\Samsung RPA Repository\AP Evidences Download\AP Evidences Download .NET6\obj\Debug\net6.0-windows\Interop.SAPFEWSELib.dll</HintPath>
+        <EmbedInteropTypes>True</EmbedInteropTypes>
+        <Private>True</Private>
       </Reference>
       <Reference Include="Interop.SapROTWr, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\..\Desktop\Samsung RPA Repository\AP Evidences Download\AP Evidences Download .NET6\obj\Debug\net6.0-windows\Interop.SapROTWr.dll</HintPath>
+        <EmbedInteropTypes>True</EmbedInteropTypes>
+        <Private>True</Private>
       </Reference>
     </ItemGroup>
     

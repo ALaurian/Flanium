@@ -1,0 +1,16 @@
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.deps.json
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Release\net6.0-windows10.0.17763.0\win-x86\ref\Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.pdb
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Release\net6.0-windows10.0.17763.0\win-x86\Interop.Microsoft.Office.Interop.Excel.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Release\net6.0-windows10.0.17763.0\win-x86\Interop.SAPFEWSELib.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Release\net6.0-windows10.0.17763.0\win-x86\Interop.SapROTWr.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.csproj.AssemblyReference.cache
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.AssemblyInfoInputs.cache
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.AssemblyInfo.cs
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.csproj.CoreCompileInputs.cache
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.csproj.CopyComplete
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\ref\Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Release\net6.0-windows10.0.17763.0\win-x86\Flanium.pdb

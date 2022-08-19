@@ -331,8 +331,19 @@ public class WebEvents
                     if (element != null)
                     {
                         Console.WriteLine("Set Value of Element: " + xPath + " (" + element.Text + ")\n");
-                        element.Clear();
-                        element.SendKeys(text);
+                        try
+                        {
+                            element.Clear();
+                            element.SendKeys(text);
+                        }
+                        catch (ElementNotInteractableException e)
+                        {
+                            element.Click();
+                            Thread.Sleep(100);
+                            element.Clear();
+                            element.SendKeys(text);
+                        }
+                        
 
                         return element;
                     }
@@ -343,6 +354,15 @@ public class WebEvents
             if (element != null) return element;
             Console.WriteLine("Failed to set value of Element: " + xPath + "\n");
             throw new Exception("\n Failed to set value of element with XPath: " + xPath + "\n");
+        }
+        
+        public static void Highlight(ChromeDriver driver, IWebElement element, int duration = 3000)
+        {
+            var origStyle = driver.ExecuteScript("arguments[0].style;", element);
+            var script = @"arguments[0].style.cssText = ""border-width: 2px; border-style: solid; border-color: red"";";
+            driver.ExecuteScript(script, element);
+            Thread.Sleep(duration);
+            driver.ExecuteScript("arguments[0].style=arguments[1]", new[]{element,origStyle});
         }
     }
 

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {
+    "net6.0-windows10.0.17763": {
       "DotNetSeleniumExtras.PageObjects/3.11.0": {
         "type": "package",
         "dependencies": {
@@ -24,27 +24,6 @@
         },
         "runtime": {
           "lib/netstandard2.0/SeleniumExtras.WaitHelpers.dll": {}
-        }
-      },
-      "ExcelDataReader/3.6.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/ExcelDataReader.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/ExcelDataReader.dll": {}
-        }
-      },
-      "ExcelDataReader.DataSet/3.6.0": {
-        "type": "package",
-        "dependencies": {
-          "ExcelDataReader": "3.6.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/ExcelDataReader.DataSet.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/ExcelDataReader.DataSet.dll": {}
         }
       },
       "FlaUI.Core/3.2.0": {
@@ -148,6 +127,15 @@
         },
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "OpenPop.NET/2.0.6.1120": {
+        "type": "package",
+        "compile": {
+          "lib/net40/OpenPop.dll": {}
+        },
+        "runtime": {
+          "lib/net40/OpenPop.dll": {}
         }
       },
       "Polly/7.2.3": {
@@ -392,49 +380,6 @@
         "lib/netstandard2.0/SeleniumExtras.WaitHelpers.dll"
       ]
     },
-    "ExcelDataReader/3.6.0": {
-      "sha512": "eXyxTwG7EEWpgQX3juZ2KcndqTqm/ydx9GXS2lUiMJU54U4h5eXdygRtVgINv0t60ezPWEb+lL7uM7Q+wm5BBA==",
-      "type": "package",
-      "path": "exceldatareader/3.6.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "exceldatareader.3.6.0.nupkg.sha512",
-        "exceldatareader.nuspec",
-        "lib/net20/ExcelDataReader.dll",
-        "lib/net20/ExcelDataReader.pdb",
-        "lib/net20/ExcelDataReader.xml",
-        "lib/net45/ExcelDataReader.dll",
-        "lib/net45/ExcelDataReader.pdb",
-        "lib/net45/ExcelDataReader.xml",
-        "lib/netstandard1.3/ExcelDataReader.dll",
-        "lib/netstandard1.3/ExcelDataReader.pdb",
-        "lib/netstandard1.3/ExcelDataReader.xml",
-        "lib/netstandard2.0/ExcelDataReader.dll",
-        "lib/netstandard2.0/ExcelDataReader.pdb",
-        "lib/netstandard2.0/ExcelDataReader.xml"
-      ]
-    },
-    "ExcelDataReader.DataSet/3.6.0": {
-      "sha512": "miW3sWmPXnLM38YadRIfnhL4W4QZajpS6Q/OqsOpFJU5ct8h+M/fMpbGMm5INtsMP0Y1k0WK0stIfSW3RP31Xg==",
-      "type": "package",
-      "path": "exceldatareader.dataset/3.6.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "exceldatareader.dataset.3.6.0.nupkg.sha512",
-        "exceldatareader.dataset.nuspec",
-        "lib/net20/ExcelDataReader.DataSet.dll",
-        "lib/net20/ExcelDataReader.DataSet.pdb",
-        "lib/net20/ExcelDataReader.DataSet.xml",
-        "lib/net35/ExcelDataReader.DataSet.dll",
-        "lib/net35/ExcelDataReader.DataSet.pdb",
-        "lib/net35/ExcelDataReader.DataSet.xml",
-        "lib/netstandard2.0/ExcelDataReader.DataSet.dll",
-        "lib/netstandard2.0/ExcelDataReader.DataSet.pdb",
-        "lib/netstandard2.0/ExcelDataReader.DataSet.xml"
-      ]
-    },
     "FlaUI.Core/3.2.0": {
       "sha512": "vXS5Hsr4qWz0GcfJga/FCHwLpks9jEvTDmu7G7bA10ErybH/Bus98RT0dYdUVfTtqFKZ33IzwBQ+4M24eGjPHQ==",
       "type": "package",
@@ -625,6 +570,19 @@
         "newtonsoft.json.13.0.1.nupkg.sha512",
         "newtonsoft.json.nuspec",
         "packageIcon.png"
+      ]
+    },
+    "OpenPop.NET/2.0.6.1120": {
+      "sha512": "NKgNRQAMJOTSnefCt3yfoQ8fPYml46Mwzq6m9OPwzmtKbXLXptUKaMnUjOoISpSowv8EclRVuv6DJXtZPJfcKQ==",
+      "type": "package",
+      "path": "openpop.net/2.0.6.1120",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/OpenPop.dll",
+        "lib/net40/OpenPop.dll",
+        "openpop.net.2.0.6.1120.nupkg.sha512",
+        "openpop.net.nuspec"
       ]
     },
     "Polly/7.2.3": {
@@ -1051,13 +1009,12 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": [
+    "net6.0-windows10.0.17763": [
       "DotNetSeleniumExtras.PageObjects >= 3.11.0",
       "DotNetSeleniumExtras.WaitHelpers >= 3.11.0",
-      "ExcelDataReader >= 3.6.0",
-      "ExcelDataReader.DataSet >= 3.6.0",
       "FlaUI.Core >= 3.2.0",
       "FlaUI.UIA3 >= 3.2.0",
+      "OpenPop.NET >= 2.0.6.1120",
       "Polly >= 7.2.3",
       "Selenium.Support >= 4.4.0",
       "Selenium.WebDriver >= 4.4.0",
@@ -1069,7 +1026,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.1.0.1",
+    "version": "1.1.0.9",
     "restore": {
       "projectUniqueName": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
       "projectName": "Flanium",
@@ -1086,18 +1043,18 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net6.0-windows"
+        "net6.0-windows10.0.17763.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Users\\l.avrigeanu\\AppData\\Local\\Programs\\UiPath\\Studio\\Packages": {},
         "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\bin\\Debug": {},
-        "C:\\myFuckingNuggets": {},
+        "\\\\106.113.59.20\\Captive\\IT\\IT Dev\\Flanium": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net6.0-windows7.0": {
-          "targetAlias": "net6.0-windows",
+        "net6.0-windows10.0.17763": {
+          "targetAlias": "net6.0-windows10.0.17763.0",
           "projectReferences": {}
         }
       },
@@ -1108,8 +1065,8 @@
       }
     },
     "frameworks": {
-      "net6.0-windows7.0": {
-        "targetAlias": "net6.0-windows",
+      "net6.0-windows10.0.17763": {
+        "targetAlias": "net6.0-windows10.0.17763.0",
         "dependencies": {
           "DotNetSeleniumExtras.PageObjects": {
             "target": "Package",
@@ -1119,14 +1076,6 @@
             "target": "Package",
             "version": "[3.11.0, )"
           },
-          "ExcelDataReader": {
-            "target": "Package",
-            "version": "[3.6.0, )"
-          },
-          "ExcelDataReader.DataSet": {
-            "target": "Package",
-            "version": "[3.6.0, )"
-          },
           "FlaUI.Core": {
             "target": "Package",
             "version": "[3.2.0, )"
@@ -1134,6 +1083,10 @@
           "FlaUI.UIA3": {
             "target": "Package",
             "version": "[3.2.0, )"
+          },
+          "OpenPop.NET": {
+            "target": "Package",
+            "version": "[2.0.6.1120, )"
           },
           "Polly": {
             "target": "Package",
@@ -1162,8 +1115,17 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.Windows.SDK.NET.Ref",
+            "version": "[10.0.17763.21, 10.0.17763.21]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.Windows.SDK.NET.Ref": {
             "privateAssets": "all"
           },
           "Microsoft.WindowsDesktop.App.WindowsForms": {
@@ -1173,5 +1135,17 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'OpenPop.NET 2.0.6.1120' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows10.0.17763'. This package may not be fully compatible with your project.",
+      "libraryId": "OpenPop.NET",
+      "targetGraphs": [
+        "net6.0-windows10.0.17763"
+      ]
+    }
+  ]
 }

@@ -1,249 +1,221 @@
-﻿using System.IO.Compression;
+﻿using System.Data;
+using System.Diagnostics;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Mail;
 using System.Reflection;
-using ExcelDataReader;
+using System.Windows.Forms;
 using FlaUI.Core.AutomationElements;
 using FlaUI.UIA3;
+using Microsoft.Office.Interop.Excel;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SAPFEWSELib;
 using SapROTWr;
 using Application = FlaUI.Core.Application;
 using static Flanium.WebEvents.Search;
+using DataTable = System.Data.DataTable;
+using Range = Microsoft.Office.Interop.Excel.Range;
+
 
 namespace Flanium;
 
 public class Helpers
 {
-    public static Dictionary<object, object> OpenSapSession(string userName, string sapPw, string sapConnection,
-        string sapClientId, string sapshcutPath = @"C:\Program Files (x86)\SAP\FrontEnd\SapGui\sapshcut.exe")
+
+    public class SystemOperations
     {
-        var output = new Dictionary<object, object>();
-
-        var app = Application.Launch(sapshcutPath,
-            "-user=" + userName + " -pw=" + sapPw + " -system=SID -sysname=" + '"' + sapConnection + '"' +
-            " -language=EN -client=" + sapClientId);
-
-        RetrySAPConnection:
-        GuiApplication sapp = null;
-        GuiConnection conn = null;
-        GuiSession session = null;
-        try
+        public class Files
         {
-            var sapRotWrapper = new CSapROTWrapper();
-            var sapGuilRot = sapRotWrapper.GetROTEntry("SAPGUI");
-            var engine = sapGuilRot.GetType().InvokeMember("GetScriptingEngine", BindingFlags.InvokeMethod, null,
-                sapGuilRot, null);
-            sapp = (GuiApplication)engine;
-            conn = (GuiConnection)sapp.Connections.ElementAt(0);
-            session = (GuiSession)conn.Children.ElementAt(0);
-        }
-        catch
-        {
-            // ignored
-        }
-
-        if (session == null)
-            goto RetrySAPConnection;
-
-        session.ActiveWindow.SendVKey(0);
-        session.ActiveWindow.SendVKey(0);
-        AutomationElement window = WinEvents.Linq.GetWindowByLinq(x => x.Name.Contains("SAP Easy Access"));
-
-        output.Add("WINDOW", window);
-        output.Add("SAPGUI", sapp);
-        output.Add("SAPCONNECTION", conn);
-        output.Add("SAPSESSION", session);
-        return output;
-    }
-
-    //Check if folder contains files
-    public static bool FolderContainsFiles(string folderPath)
-    {
-        try
-        {
-            if (Directory.GetFiles(folderPath).Length > 0) return true;
-
-            return false;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    //Delete duplicate files from folder
-    public static void DeleteDuplicateFiles(string folderPath, string duplicateIdentifier = "(")
-    {
-        var files = Directory.GetFiles(folderPath);
-
-        foreach (var file in files)
-            if (file.Contains(duplicateIdentifier)) File.Delete(file);
-    }
-
-    //Create Folder
-    public static void CreateFolder(string path)
-    {
-        if (!Directory.Exists(path))
-            if (path != null) Directory.CreateDirectory(path);
-    }
-
-    //Delete folder
-    public static void DeleteFolder(string folderPath)
-    {
-        if (Directory.Exists(folderPath)) Directory.Delete(folderPath, true);
-    }
-
-    //Archive folder
-
-    public static void ArchiveFolder(string folderPath, string otherPath)
-    {
-        try
-        {
-            if (Directory.Exists(folderPath)) ZipFile.CreateFromDirectory(folderPath, otherPath + ".zip");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }
-
-
-    //Delete file
-    public static void DeleteFile(string filePath)
-    {
-        if (File.Exists(filePath)) File.Delete(filePath);
-    }
-
-    //Move file 
-    public static void MoveFile(string filePath, string directoryPath)
-    {
-        if (Directory.Exists(directoryPath))
-        {
-            if (File.Exists(directoryPath + "\\" + Path.GetFileName(filePath))) File.Delete(directoryPath + "\\" + Path.GetFileName(filePath));
-
-            File.Move(filePath, directoryPath + "\\" + Path.GetFileName(filePath));
-        }
-        else
-        {
-            if (directoryPath == null) return;
-            Directory.CreateDirectory(directoryPath);
-            File.Move(filePath, directoryPath + "\\" + Path.GetFileName(filePath));
-        }
-    }
-
-    //Move Files
-    public static void MoveFiles(List<string> files, string folderPath, string directoryPath)
-    {
-        if (Directory.Exists(folderPath))
-        {
-            foreach (var file in files)
+            public static void DeleteDuplicateFiles(string folderPath, string duplicateIdentifier = "(")
             {
-                if (File.Exists(directoryPath + "\\" + Path.GetFileName(file))) File.Delete(directoryPath + "\\" + Path.GetFileName(file));
+                var files = Directory.GetFiles(folderPath);
 
-                MoveFile(folderPath + "\\" + file, directoryPath);
-                Console.WriteLine("\nMoved file: " + file + " to: " + directoryPath);
+                foreach (var file in files)
+                    if (file.Contains(duplicateIdentifier)) File.Delete(file);
             }
-        }
-        else
-        {
-            Directory.CreateDirectory(directoryPath);
-            foreach (var file in files)
+            public static void DeleteFile(string filePath)
             {
-                MoveFile(folderPath + "\\" + file, directoryPath);
-                Console.WriteLine("\nMoved file: " + file + " to: " + directoryPath);
+                if (File.Exists(filePath)) File.Delete(filePath);
             }
-        }
-    }
+            public static void MoveFile(string filePath, string directoryPath)
+            {
+                if (Directory.Exists(directoryPath))
+                {
+                    if (File.Exists(directoryPath + "\\" + Path.GetFileName(filePath))) File.Delete(directoryPath + "\\" + Path.GetFileName(filePath));
+
+                    File.Move(filePath, directoryPath + "\\" + Path.GetFileName(filePath));
+                }
+                else
+                {
+                    if (directoryPath == null) return;
+                    Directory.CreateDirectory(directoryPath);
+                    File.Move(filePath, directoryPath + "\\" + Path.GetFileName(filePath));
+                }
+            }
         
-    public static object ExcelToData(string path, bool allSheets = false, int sheet = 1, bool deleteFile = true)
-    {
-        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            public static void MoveFiles(List<string> files, string folderPath, string directoryPath)
+            {
+                if (Directory.Exists(folderPath))
+                {
+                    foreach (var file in files)
+                    {
+                        if (File.Exists(directoryPath + "\\" + Path.GetFileName(file))) File.Delete(directoryPath + "\\" + Path.GetFileName(file));
 
-        using var stream = File.Open(path, FileMode.Open, FileAccess.Read);
-        switch (allSheets)
-        {
-            case true:
-                try
-                {
-                    using var reader = ExcelReaderFactory.CreateBinaryReader(stream);
-                    return reader.AsDataSet().Tables;
+                        MoveFile(folderPath + "\\" + file, directoryPath);
+                        Console.WriteLine("\nMoved file: " + file + " to: " + directoryPath);
+                    }
                 }
-                catch
+                else
                 {
-                    // ignored
+                    Directory.CreateDirectory(directoryPath);
+                    foreach (var file in files)
+                    {
+                        MoveFile(folderPath + "\\" + file, directoryPath);
+                        Console.WriteLine("\nMoved file: " + file + " to: " + directoryPath);
+                    }
                 }
+            }
 
-                try
-                {
-                    using var reader = ExcelReaderFactory.CreateCsvReader(stream);
-                    return reader.AsDataSet().Tables;
-                }
-                catch
-                {
-                    // ignored
-                }
-
-                try
-                {
-                    using var reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-                    return reader.AsDataSet().Tables;
-                }
-                catch
-                {
-                    // ignored
-                }
-
-                break;
-                
-            case false:
-                try
-                {
-                    using var reader = ExcelReaderFactory.CreateBinaryReader(stream);
-                    return reader.AsDataSet().Tables[sheet];
-                }
-                catch
-                {
-                    // ignored
-                }
-
-                try
-                {
-                    using var reader = ExcelReaderFactory.CreateCsvReader(stream);
-                    return reader.AsDataSet().Tables[sheet];
-                }
-                catch
-                {
-                    // ignored
-                }
-
-                try
-                {
-                    using var reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-                    return reader.AsDataSet().Tables[sheet];
-                }
-                catch
-                {
-                    // ignored
-                }
-
-                break;
         }
 
-        return null;
+        public class Folders
+        {
+            public static bool FolderContainsFiles(string folderPath)
+            {
+                try
+                {
+                    if (Directory.GetFiles(folderPath).Length > 0) return true;
+
+                    return false;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            public static void CreateFolder(string path)
+            {
+                if (!Directory.Exists(path))
+                    if (path != null) Directory.CreateDirectory(path);
+            }
+        
+            public static void DeleteFolder(string folderPath)
+            {
+                if (Directory.Exists(folderPath)) Directory.Delete(folderPath, true);
+            }
+        
+            public static void ArchiveFolder(string folderPath, string otherPath)
+            {
+                try
+                {
+                    if (Directory.Exists(folderPath)) ZipFile.CreateFromDirectory(folderPath, otherPath + ".zip");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            } 
+        }
+
+        
     }
 
-    public static void Highlight(IWebElement context, ChromeDriver driver)
+    public class SAP
     {
-        var rc = context;
-        var script =
-            @"arguments[0].style.cssText = ""border-width: 2px; border-style: solid; border-color: red""; ";
-        driver.ExecuteScript(script, rc);
-        Thread.Sleep(3000);
-        var clear = @"arguments[0].style.cssText = ""border-width: 0px; border-style: solid; border-color: red""; ";
-        driver.ExecuteScript(clear, rc);
+        public static Dictionary<object, object> OpenSession(string userName, string sapPw, string sapConnection,
+            string sapClientId, string sapshcutPath = @"C:\Program Files (x86)\SAP\FrontEnd\SapGui\sapshcut.exe")
+        {
+            var output = new Dictionary<object, object>();
+
+            var app = Application.Launch(sapshcutPath,
+                "-user=" + userName + " -pw=" + sapPw + " -system=SID -sysname=" + '"' + sapConnection + '"' +
+                " -language=EN -client=" + sapClientId);
+
+            RetrySAPConnection:
+            GuiApplication sapp = null;
+            GuiConnection conn = null;
+            GuiSession session = null;
+            try
+            {
+                var sapRotWrapper = new CSapROTWrapper();
+                var sapGuilRot = sapRotWrapper.GetROTEntry("SAPGUI");
+                var engine = sapGuilRot.GetType().InvokeMember("GetScriptingEngine", BindingFlags.InvokeMethod, null,
+                    sapGuilRot, null);
+                sapp = (GuiApplication)engine;
+                conn = (GuiConnection)sapp.Connections.ElementAt(0);
+                session = (GuiSession)conn.Children.ElementAt(0);
+            }
+            catch
+            {
+                // ignored
+            }
+
+            if (session == null)
+                goto RetrySAPConnection;
+
+            session.ActiveWindow.SendVKey(0);
+            session.ActiveWindow.SendVKey(0);
+            AutomationElement window = WinEvents.XPath.GetWindow("*[contains(@Name,'" + "SAP Easy Access" + "']");
+        
+            output.Add("WINDOW", window);
+            output.Add("SAPGUI", sapp);
+            output.Add("SAPCONNECTION", conn);
+            output.Add("SAPSESSION", session);
+            return output;
+        }
+   
     }
+
+    public class Excel
+    {
+        public static DataTable WorkbookToDataTable22(string filePath, int sheet = 1, int headerAt = 2)
+        {
+            var app = new Microsoft.Office.Interop.Excel.Application();
+            app.Visible = true;
+            var workbook = app.Workbooks.Open(filePath);
+            var worksheet = workbook.Worksheets[sheet] as Worksheet;
+            Range range = worksheet?.UsedRange;
+        
+            DataTable dt = new DataTable();
+            var headerRow = range.Rows[headerAt].Value2;
+        
+            foreach (var item in headerRow)
+            {
+                dt.Columns.Add(item);
+            }
+        
+            var rowsCount = range.Rows.Count;
+            for (int i = headerAt + 1; i < rowsCount; i++)
+            {
+                var rowValues = range.Rows[i].Value2;
+                List<string> row = new List<string>();
+        
+                foreach (string v in rowValues)
+                {
+                    row.Add(v);
+                }
+        
+                dt.Rows.Add(row.ToArray());
+            }
+        
+            workbook.Close();
+            app.Quit();
+            //get excel process
+            var process = Process.GetProcessesByName("EXCEL");
+            foreach (var p in process)
+            {
+                p.Kill();
+            }
+        
+            return dt;
+        
+        }
+    }
+    
+    
+
 
     public static List<string> HandleDownloads(ChromeDriver chromeDriver)
     {
