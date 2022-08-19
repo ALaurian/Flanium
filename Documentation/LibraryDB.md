@@ -1,24 +1,33 @@
-# List of methods
-
-ID | WinEvents | WebEvents | Initializers | Helpers |
---- | --- | --- | --- |--- 
-1  |  [GetDriverProcessId](https://github.com/ALaurian/Flanium/blob/main/Documentation/GetDriverProcessId.md)  |  FindWebElementByXPath  |  InitializeService  |  OpenSapSession
-2  |  [GetWindowByProcessId](https://github.com/ALaurian/Flanium/blob/main/Documentation/GetWindowByProcessId.md)  |  WaitForAlert  |  InitializeChrome  |  FolderContainsFiles
-3  |  [GetWindowByLinq](https://github.com/ALaurian/Flanium/blob/main/Documentation/GetWindowByLinq.md)  |  JsClick  |    |  DeleteDuplicateFiles
-4  |  [GetWindowsByLinq](https://github.com/ALaurian/Flanium/blob/main/Documentation/GetWindowsByLinq.md)  |  Click  |    |  CreateFolder
-5  |  [FindElementByLinq](https://github.com/ALaurian/Flanium/blob/main/Documentation/FindElementByLinq.md)  |  SetValue  |    |  DeleteFolder
-6  |  [FindElementsByLinq](https://github.com/ALaurian/Flanium/blob/main/Documentation/FindElementsByLinq.md)  |  Hover  |    |  ArchiveFolder
-7  |  FindElementInElementByLinq  |  GetText  |    |  DeleteFile
-8  |  FindElementsInElementByLinq  |  WaitForeverElementVanish  |    |  MoveFile
-9  |  GetWindowByXPath  |  WaitElementVanish  |    |  MoveFiles
-10  |  GetWindowsByXPath  |  FindAllChildren  |    |  ExcelToDataTable
-11  |  FindElementByXPath  |  FindAllDescendants  |    |  Highlight
-12  |  FindElementsByXPath  |  WaitElementAppear  |    |  HandleDownloads
-13  |  FindElementInElementByXPath  |    |    |  CloseTab
-14  |  FindElementsInElementByXPath  |    |    |  SendEmail
-15  |  SendText  |    |    |  
-16  |  Click   |    |    |  
-17  |  DoubleClick   |    |    |  
-18  |  RightClick   |    |    |  
-19  |  SendKeys   |    |    |  
-20  |  GetText   |    |    |  
+# WinEvents Library										
+										
+ID 	|	WinEvents.Id	|	WinEvents.XPath	|	WinEvents.Action				
+--- 	|	 --- 	|	 --- 	|	 --- 				
+1	|	GetDriverProcessId	|	GetWindow	|	GetText				
+2	|	GetWindow	|	GetWindows	|	SendText				
+3	|		|	FindElement	|	Click				
+4	|		|	FindElements	|	DoubleClick				
+5	|		|	FindElementInElement	|	Rightclick				
+6	|		|	FindElementsInElement	|	SendKeys				
+										
+# WebEvents Library										
+ID	|	WebEvents.Search	|	WebEvents.Action						
+--- 	|	--- 	|	--- 						
+1	|	FindAllChildren	|	CloseTab						
+2	|	FindAllDescendants	|	CloseTabConditional						
+3	|	FindWebElementByXPath	|	WaitElementVanish						
+4	|	WaitElementAppear	|	WaitForeverElementVanish						
+5	|		|	GetText						
+6	|		|	Hover						
+7	|		|	WaitForAlert						
+8	|		|	JsClick						
+9	|		|	Click						
+10	|		|	SetValue						
+11	|		|	Highlight						
+										
+# Helpers Library										
+ID	|	Helpers	|	Helpers.SystemOperations.Files	|	Helpers.SystemOperations.Folders	|	Helpers.SAP	|	Helpers.Excel
+--- 	|	--- 	|	--- 	|	--- 	|	--- 	|	--- 
+1	|	HandleDownloads	|	DeleteDuplicateFiles	|	FolderContainsFiles	|	OpenSession	|	WorksheetToDataTable
+2	|	SendEmail	|	DeleteFile	|	CreateFolder	|		|	
+3	|		|	MoveFile	|	DeleteFolder	|		|	
+4	|		|	MoveFiles	|	ArchiveFolder	|		|	
