@@ -18,6 +18,11 @@ It goes without saying that you should also know a bit of C# to be able to use i
 ### XPath
 The w3cschools XPath tutorial is pretty good for XPaths and covers pretty much everything, you can find it here: https://www.w3schools.com/xml/xpath_intro.asp.
 
+### Recommended tools
+For Web based automations I recommend the SelectorsHub Chrome extension, this tool can generate very solid XPaths, but you cannot fully rely on it to create them for you.
+
+For Windows based automations I recommend the FlaUI Inspector, this tool does not generate XPaths but will help you build your own by reading the element properties.
+
 # Your very first web automation
 
 **First start off by opening Visual Studio (not Visual Studio Code) or maybe Jetbrains Rider, and create a Console Application in .NET 6 (Windows), then follow the instructions below.**
