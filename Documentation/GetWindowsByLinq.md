@@ -15,7 +15,7 @@ List of Window
 ## Examples
 
 ```csharp
-var LinqWindow = WinEvents.GetWindowByLinq(x => x.Name.StartsWith("Explorer"));
+var LinqWindow = WinEvents.Linq.GetWindowByLinq(x => x.Name.StartsWith("Explorer"));
 ```
 
 # [Back to main documentation.](https://github.com/ALaurian/Flanium/blob/main/Documentation/LibraryDB.md)

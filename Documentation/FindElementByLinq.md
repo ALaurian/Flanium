@@ -18,7 +18,7 @@ AutomationElement
 ## Examples
 
 ```csharp
-var LinqElement = WinEvents.FindElementByLinq(AppWindow, x => x.Name == "Address bar");
+var LinqElement = WinEvents.Linq.FindElementByLinq(AppWindow, x => x.Name == "Address bar");
 ```
 
 # [Back to main documentation.](https://github.com/ALaurian/Flanium/blob/main/Documentation/LibraryDB.md)
