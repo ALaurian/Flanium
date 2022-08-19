@@ -19,9 +19,13 @@ It goes without saying that you should also know a bit of C# to be able to use i
 The w3cschools XPath tutorial is pretty good for XPaths and covers pretty much everything, you can find it here: https://www.w3schools.com/xml/xpath_intro.asp.
 
 ### Recommended tools
-For Web based automations I recommend the SelectorsHub Chrome extension, this tool can generate very solid XPaths, but you cannot fully rely on it to create them for you.
+For Web based automations I recommend the SelectorsHub Chrome extension, this tool can generate very solid XPaths, but you cannot fully rely on it to create very intricate or solid XPaths, it's just a starting point.
 
-For Windows based automations I recommend the FlaUI Inspector, this tool does not generate XPaths but will help you build your own by reading the element properties.
+For Windows based automations I recommend the FlaUI Inspector, this tool does not generate relative XPaths (only absolute XPaths) but will help you build your own by reading the element properties.
+
+### XPath types
+
+There are two types of XPaths I recommend you to use, Relative XPaths (for dynamic applications/elements) or Absolute XPaths (for static applications/elements).
 
 # Your very first web automation
 
