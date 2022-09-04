@@ -7,7 +7,7 @@
         <Authors>Laurian-Filip Avrigeanu</Authors>
         <Description>RPA Library for Windows.</Description>
         <OutputType>Library</OutputType>
-        <PackageVersion>1.1.1.1</PackageVersion>
+        <PackageVersion>2.0.2.3</PackageVersion>
         <Title>Flanium</Title>
         <PackageProjectUrl>https://github.com/ALaurian/Flanium</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/ALaurian/Flanium/blob/main/LICENSE</PackageLicenseUrl>
@@ -31,19 +31,19 @@
 
     <ItemGroup>
       <Reference Include="Interop.Microsoft.Office.Interop.Excel, Version=1.9.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>bin\Debug\Interop.Microsoft.Office.Interop.Excel.dll</HintPath>
-        <Private>True</Private>
+        <HintPath>C:\Users\l.avrigeanu\Desktop\DLL Files\Interop.Microsoft.Office.Interop.Excel.dll</HintPath>
+        <Private>False</Private>
         <EmbedInteropTypes>True</EmbedInteropTypes>
       </Reference>
       <Reference Include="Interop.SAPFEWSELib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\..\Desktop\Samsung RPA Repository\AP Evidences Download\AP Evidences Download .NET6\obj\Debug\net6.0-windows\Interop.SAPFEWSELib.dll</HintPath>
+        <HintPath>C:\Users\l.avrigeanu\Desktop\DLL Files\Interop.SAPFEWSELib.dll</HintPath>
         <EmbedInteropTypes>True</EmbedInteropTypes>
-        <Private>True</Private>
+          <Private>False</Private>
       </Reference>
       <Reference Include="Interop.SapROTWr, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\..\Desktop\Samsung RPA Repository\AP Evidences Download\AP Evidences Download .NET6\obj\Debug\net6.0-windows\Interop.SapROTWr.dll</HintPath>
+        <HintPath>C:\Users\l.avrigeanu\Desktop\DLL Files\Interop.SapROTWr.dll</HintPath>
         <EmbedInteropTypes>True</EmbedInteropTypes>
-        <Private>True</Private>
+        <Private>False</Private>
       </Reference>
     </ItemGroup>
     

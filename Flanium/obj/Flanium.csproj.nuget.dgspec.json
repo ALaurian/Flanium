@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj": {
-      "version": "1.1.0.9",
+      "version": "2.0.0.4",
       "restore": {
         "projectUniqueName": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
         "projectName": "Flanium",
@@ -106,9 +106,6 @@
             },
             "Microsoft.Windows.SDK.NET.Ref": {
               "privateAssets": "all"
-            },
-            "Microsoft.WindowsDesktop.App.WindowsForms": {
-              "privateAssets": "none"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"

@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Management;
+using Windows.System;
 using FlaUI.Core.AutomationElements;
+using FlaUI.Core.Capturing;
 using FlaUI.Core.WindowsAPI;
 using FlaUI.UIA3;
 using OpenQA.Selenium.Chrome;
@@ -41,64 +43,84 @@ public class WinEvents
     }
     public class XPath
     {
-        public static Window GetWindow(string xPath)
+        public static Window GetWindow(string xPath, int retries = 15, double retryInterval = 1)
         {
             var automation = new UIA3Automation();
             var desktop = automation.GetDesktop();
-            var window = desktop.FindFirstByXPath(xPath).AsWindow();
+            var window = Polly.Policy.HandleResult<Window>(result => result == null)
+                .WaitAndRetry(retries, retryAttempt => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() => desktop.FindFirstByXPath(xPath).AsWindow());
+            
             return window;
         }
 
-        public static List<Window> GetWindows(string xPath)
+        public static List<Window> GetWindows(string xPath, int retries = 15, double retryInterval = 1)
         {
             var automation = new UIA3Automation();
             var desktop = automation.GetDesktop();
-            var window = desktop.FindAllByXPath(xPath);
-            return window.Select(w => w.AsWindow()).ToList();
+            var window = Polly.Policy.HandleResult<List<Window>>(result => result.Count == 0)
+                .WaitAndRetry(retries, retryAttempt => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() => desktop.FindAllByXPath(xPath).Cast<Window>().ToList());
+            
+            return window;
         }
 
         public static AutomationElement FindElement(Window window, string xPath, int retries = 15, double retryInterval = 1)
         {
-            var retryGetText = Policy.HandleResult<AutomationElement>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
-            var retryGetTextResult = retryGetText.Execute(() => window.FindFirstByXPath(xPath));
+            var element = Policy.HandleResult<AutomationElement>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() => window.FindFirstByXPath(xPath));
 
-            return retryGetTextResult;
+            return element;
         }
 
         public static List<AutomationElement> FindElements(Window window, string xPath, int retries = 15, double retryInterval = 1)
         {
 
-            var retryGetText = Policy.HandleResult<List<AutomationElement>>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
-            var retryGetTextResult = retryGetText.Execute(() => window.FindAllByXPath(xPath).ToList());
+            var elements = Policy.HandleResult<List<AutomationElement>>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() => window.FindAllByXPath(xPath).ToList());
 
-            return retryGetTextResult;
+            return elements;
         }
 
         public static AutomationElement FindElementInElement(AutomationElement element, string xPath, int retries = 15, double retryInterval = 1)
         {
-            var retryGetText = Policy.HandleResult<AutomationElement>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
-            var retryGetTextResult = retryGetText.Execute(() => element.FindFirstByXPath(xPath));
+            var welement = Policy.HandleResult<AutomationElement>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() => element.FindFirstByXPath(xPath));
 
-            return retryGetTextResult;
+            return welement;
         }
 
         public static List<AutomationElement> FindElementsInElement(AutomationElement element, string xPath, int retries = 15, double retryInterval = 1)
         {
             
-            var retryGetText = Policy.HandleResult<List<AutomationElement>>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval));
-            var retryGetTextResult = retryGetText.Execute(() => element.FindAllByXPath(xPath).ToList());
+            var welements = Policy.HandleResult<List<AutomationElement>>(result => result == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
+                .Execute(() => element.FindAllByXPath(xPath).ToList());
             
-            return retryGetTextResult;
+            return welements;
         }
     }
 
     public class Action
     {
-        
+
+        public static string DesktopScreenshot(string saveToPath)
+        {
+            var automation = new UIA3Automation();
+            var desktop = automation.GetDesktop();
+            desktop.CaptureToFile(saveToPath);
+            return saveToPath;
+
+        }
+
+        public static string ElementScreenshot(AutomationElement element,string saveToPath)
+        {
+            element.CaptureToFile(saveToPath);
+            return saveToPath;
+        }
         public static string GetText(AutomationElement element, int retries = 15, double retryInterval = 1)
         {
             var retryGetText = Policy.HandleResult<string>(result => result == null)
@@ -257,6 +279,7 @@ public class WinEvents
                         try
                         {
                             element.AsButton().Invoke();
+                            element.AsButton().Invoke();
                             Thread.Sleep(100);
                         }
                         catch (Exception e)
@@ -308,6 +331,13 @@ public class WinEvents
         public static void SendKeys(VirtualKeyShort keyShort)
         {
             FlaUI.Core.Input.Keyboard.Press(keyShort);
+            FlaUI.Core.Input.Keyboard.Release(keyShort);
+        }
+
+        public static void SendKeyCombination(VirtualKeyShort[] keyShorts)
+        {
+            var keyCombination = FlaUI.Core.Input.Keyboard.Pressing(keyShorts);
+            keyCombination.Dispose();
         }
     }
 }

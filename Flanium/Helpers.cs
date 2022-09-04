@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Net.Mail;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 using FlaUI.Core.AutomationElements;
 using FlaUI.UIA3;
@@ -16,13 +17,13 @@ using Application = FlaUI.Core.Application;
 using static Flanium.WebEvents.Search;
 using DataTable = System.Data.DataTable;
 using Range = Microsoft.Office.Interop.Excel.Range;
+using TimeSpan = ABI.System.TimeSpan;
 
 
 namespace Flanium;
 
 public class Helpers
 {
-
     public class SystemOperations
     {
         public class Files
@@ -38,20 +39,34 @@ public class Helpers
             {
                 if (File.Exists(filePath)) File.Delete(filePath);
             }
+
+            public static string CreateFolder(string folderPath)
+            {
+                try
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+                catch
+                {
+                    
+                }
+                return folderPath;
+            }
             public static void MoveFile(string filePath, string directoryPath)
             {
-                if (Directory.Exists(directoryPath))
-                {
-                    if (File.Exists(directoryPath + "\\" + Path.GetFileName(filePath))) File.Delete(directoryPath + "\\" + Path.GetFileName(filePath));
+                    File.Move(filePath, directoryPath,true); 
+            }
 
-                    File.Move(filePath, directoryPath + "\\" + Path.GetFileName(filePath));
-                }
-                else
+            public static string RenameFile(string filePath, string newName)
+            {
+                if (File.Exists(filePath))
                 {
-                    if (directoryPath == null) return;
-                    Directory.CreateDirectory(directoryPath);
-                    File.Move(filePath, directoryPath + "\\" + Path.GetFileName(filePath));
+                    File.Move(filePath, filePath.Replace(Path.GetFileName(filePath), "") + newName);
+                    File.Delete(filePath);
+                    return filePath.Replace(Path.GetFileName(filePath), "") + newName;
                 }
+
+                return null;
             }
         
             public static void MoveFiles(List<string> files, string folderPath, string directoryPath)
@@ -167,68 +182,20 @@ public class Helpers
         }
    
     }
-
-    public class Excel
-    {
-        public static DataTable WorkbookToDataTable22(string filePath, int sheet = 1, int headerAt = 2)
-        {
-            var app = new Microsoft.Office.Interop.Excel.Application();
-            app.Visible = true;
-            var workbook = app.Workbooks.Open(filePath);
-            var worksheet = workbook.Worksheets[sheet] as Worksheet;
-            Range range = worksheet?.UsedRange;
-        
-            DataTable dt = new DataTable();
-            var headerRow = range.Rows[headerAt].Value2;
-        
-            foreach (var item in headerRow)
-            {
-                dt.Columns.Add(item);
-            }
-        
-            var rowsCount = range.Rows.Count;
-            for (int i = headerAt + 1; i < rowsCount; i++)
-            {
-                var rowValues = range.Rows[i].Value2;
-                List<string> row = new List<string>();
-        
-                foreach (string v in rowValues)
-                {
-                    row.Add(v);
-                }
-        
-                dt.Rows.Add(row.ToArray());
-            }
-        
-            workbook.Close();
-            app.Quit();
-            //get excel process
-            var process = Process.GetProcessesByName("EXCEL");
-            foreach (var p in process)
-            {
-                p.Kill();
-            }
-        
-            return dt;
-        
-        }
-    }
     
-    
-
-
-    public static List<string> HandleDownloads(ChromeDriver chromeDriver)
+    public static List<string> HandleDownloads(ChromeDriver chromeDriver, double refreshRateInSeconds = 0.250)
     {
         var downloads = new List<string>();
+        chromeDriver.SwitchTo().Window(chromeDriver.WindowHandles.First());
         chromeDriver.SwitchTo().NewWindow(WindowType.Tab);
         chromeDriver.Navigate().GoToUrl("chrome://downloads/");
         chromeDriver.SwitchTo().Window(chromeDriver.WindowHandles.Last());
         var downloadsHandle = chromeDriver.CurrentWindowHandle;
         Thread.Sleep(1000);
-
+        
         //Check for danger button "Keep" and press it.
         DownloadChecker:
-        Thread.Sleep(250);
+        Thread.Sleep(System.TimeSpan.FromSeconds(refreshRateInSeconds));
         chromeDriver.Navigate().Refresh();
         var downloadsManager = chromeDriver.FindElement(By.TagName("downloads-manager"));
         var downloadsManagerShadowRoot = downloadsManager.GetShadowRoot();
@@ -306,43 +273,6 @@ public class Helpers
         return downloads;
     }
 
-    public static void CloseTab(ChromeDriver chromeDriver, string url, string anchorXpath = "",
-        int timeoutTries = 10, int msWaitTime = 1000)
-    {
-        var queueBreak = false;
-        Thread.Sleep(msWaitTime);
-        while (timeoutTries != 0)
-        {
-            foreach (var windows in chromeDriver.WindowHandles)
-            {
-                var windowUrl = chromeDriver.SwitchTo().Window(windows).Url;
-
-                if (windowUrl.Contains(url))
-                {
-                    if (anchorXpath != "")
-                        if (FindWebElementByXPath(chromeDriver, anchorXpath) != null)
-                        {
-                            chromeDriver.SwitchTo().Window(windows).Close();
-                            queueBreak = true;
-                            break;
-                        }
-
-                    if (anchorXpath == "")
-                    {
-                        chromeDriver.SwitchTo().Window(windows).Close();
-                        queueBreak = true;
-                        break;
-                    }
-                }
-            }
-
-            if (queueBreak) break;
-
-            Thread.Sleep(msWaitTime);
-            timeoutTries--;
-        }
-    }
-
     public static void SendEmail(string from, string[] recipients, string subject, string body, string server,
         string userName, string password, int port)
     {
@@ -355,8 +285,9 @@ public class Helpers
 
         message.Subject = subject;
         message.Body = body;
+        message.IsBodyHtml = true;
 
-
+        
         //Send the message.
         var client = new SmtpClient(server);
         client.Credentials = new NetworkCredential { UserName = userName, Password = password };
@@ -368,8 +299,7 @@ public class Helpers
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Exception caught in CreateMessageWithAttachment(): {0}",
-                ex);
+            Console.WriteLine("Could not send the message to {0} due to the following error: {1}", string.Join(";",recipients), ex.Message);
         }
     }
 }
