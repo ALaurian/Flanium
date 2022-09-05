@@ -7,7 +7,7 @@
         <Authors>Laurian-Filip Avrigeanu</Authors>
         <Description>RPA Library for Windows.</Description>
         <OutputType>Library</OutputType>
-        <PackageVersion>2.0.2.3</PackageVersion>
+        <PackageVersion>2.0.2.5</PackageVersion>
         <Title>Flanium</Title>
         <PackageProjectUrl>https://github.com/ALaurian/Flanium</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/ALaurian/Flanium/blob/main/LICENSE</PackageLicenseUrl>

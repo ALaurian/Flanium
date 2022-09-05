@@ -41,7 +41,7 @@ public class WinEvents
         }
 
     }
-    public class XPath
+    public class Search
     {
         public static Window GetWindow(string xPath, int retries = 15, double retryInterval = 1)
         {
@@ -113,7 +113,6 @@ public class WinEvents
             var desktop = automation.GetDesktop();
             desktop.CaptureToFile(saveToPath);
             return saveToPath;
-
         }
 
         public static string ElementScreenshot(AutomationElement element,string saveToPath)
@@ -313,6 +312,7 @@ public class WinEvents
                             element.RightClick();
                             Thread.Sleep(100);
                         }
+
                         catch (Exception e)
                         {
                             // ignored
@@ -332,12 +332,15 @@ public class WinEvents
         {
             FlaUI.Core.Input.Keyboard.Press(keyShort);
             FlaUI.Core.Input.Keyboard.Release(keyShort);
+            
         }
 
         public static void SendKeyCombination(VirtualKeyShort[] keyShorts)
         {
             var keyCombination = FlaUI.Core.Input.Keyboard.Pressing(keyShorts);
             keyCombination.Dispose();
+
+            SendKeyCombination(new VirtualKeyShort[] {VirtualKeyShort.CONTROL, VirtualKeyShort.KEY_C});
         }
     }
 }

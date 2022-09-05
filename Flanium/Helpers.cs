@@ -172,7 +172,7 @@ public class Helpers
 
             session.ActiveWindow.SendVKey(0);
             session.ActiveWindow.SendVKey(0);
-            AutomationElement window = WinEvents.XPath.GetWindow("*[contains(@Name,'" + "SAP Easy Access" + "']");
+            AutomationElement window = WinEvents.Search.GetWindow("*[contains(@Name,'" + "SAP Easy Access" + "']");
         
             output.Add("WINDOW", window);
             output.Add("SAPGUI", sapp);

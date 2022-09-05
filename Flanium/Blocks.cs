@@ -33,6 +33,13 @@ public class Blocks
             actions = _actions;
             TransitionConditions = _TransitionConditions;
             ContinueOnError = _ContinueOnError;
+
+            var machine = new Engine(new Func<object, object>[]
+            {
+                (myAction) => WebEvents.Action.Click(new ChromeDriver(), "")
+            });
+            
+            machine.AddCondition("myAction", () => "myAction");
         }
 
         public Dictionary<object, object> GetDictionary()
@@ -188,9 +195,24 @@ public class Blocks
             {
                 throw new Exception("Cannot remove continue on error while state machine is running.");
             }
-
+            
+            var engine = new Engine(new Func<object, object>[]
+                {
+                    (myAction) => WebEvents.Action.Click(new ChromeDriver(), "")
+                }, new Dictionary<string, Func<string>[]>()
+                {
+                    ["myAction"] = new Func<string>[] {() => "myAction"}
+                },
+                new Dictionary<string, bool>()
+                {
+                    {"myAction", true}
+                });
+            
             ContinueOnError.Remove(actionName);
             return this;
+
+
+
         }
 
         public Engine RemoveContinueOnErrors(string[] actionNames)
@@ -300,9 +322,6 @@ public class Blocks
     {
         private Application excelApp { get; set; }
         private Workbook workbook { get; set; }
-        
-
-
 
         public ExcelEngine(string filePath)
         {
@@ -508,266 +527,6 @@ public class Blocks
         public DataTableEngine(DataTable _dataTable)
         {
             dataTable = _dataTable;
-        }
-        
-        public Dictionary<object, object> GetDictionary()
-        {
-            return Output;
-        }
-
-        public object GetOutput(string actionName)
-        {
-            return Output[actionName];
-        }
-
-        public DataTableEngine AddAction(Func<object, object> action)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot add action while state machine is running.");
-            }
-
-            var actionsList = actions.ToList();
-            actionsList.Add(action);
-            actions = actionsList.ToArray();
-
-            return this;
-        }
-
-        public DataTableEngine AddActions(Func<object, object>[] _actions)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot add actions while state machine is running.");
-            }
-
-            var actionsList = actions.ToList();
-            actionsList.AddRange(_actions);
-            actions = actionsList.ToArray();
-
-            return this;
-        }
-
-        public DataTableEngine RemoveAction(string actionName)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot remove action while state machine is running.");
-            }
-
-            var actionsList = actions.ToList();
-            actionsList.RemoveAll(x => x.Method.GetParameters()[0].Name == actionName);
-            actions = actionsList.ToArray();
-
-            return this;
-        }
-
-        public DataTableEngine RemoveActions(string[] actionNames)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot remove actions while state machine is running.");
-            }
-
-            var actionsList = actions.ToList();
-            actionsList.RemoveAll(x => actionNames.Contains(x.Method.GetParameters()[0].Name));
-            actions = actionsList.ToArray();
-
-            return this;
-        }
-
-        public DataTableEngine AddCondition(string actionName, Func<string> condition)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot add condition while state machine is running.");
-            }
-
-            TransitionConditions.Add(actionName, new[] {condition});
-
-            return this;
-        }
-
-        public DataTableEngine AddConditions(string[] actionNames, Func<string>[] conditions)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot add conditions while state machine is running.");
-            }
-
-            for (var i = 0; i < actionNames.Length; i++)
-            {
-                TransitionConditions.Add(actionNames[i], new[] {conditions[i]});
-            }
-
-            return this;
-        }
-
-        public DataTableEngine RemoveCondition(string actionName)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot remove condition while state machine is running.");
-            }
-
-            TransitionConditions.Remove(actionName);
-
-            return this;
-        }
-
-        public DataTableEngine RemoveConditions(string[] actionNames)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot remove conditions while state machine is running.");
-            }
-
-            foreach (var actionName in actionNames)
-            {
-                TransitionConditions.Remove(actionName);
-            }
-
-            return this;
-        }
-
-        public DataTableEngine AddContinueOnError(string actionName, bool continueOnError)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot add continue on error while state machine is running.");
-            }
-
-            ContinueOnError.Add(actionName, continueOnError);
-
-            return this;
-        }
-
-        public DataTableEngine AddContinueOnErrors(string[] actionNames, bool[] continueOnErrors)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot add continue on errors while state machine is running.");
-            }
-
-            for (var i = 0; i < actionNames.Length; i++)
-            {
-                ContinueOnError.Add(actionNames[i], continueOnErrors[i]);
-            }
-
-            return this;
-        }
-
-        public DataTableEngine RemoveContinueOnError(string actionName)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot remove continue on error while state machine is running.");
-            }
-
-            ContinueOnError.Remove(actionName);
-            return this;
-        }
-
-        public DataTableEngine RemoveContinueOnErrors(string[] actionNames)
-        {
-            if (isRunning)
-            {
-                throw new Exception("Cannot remove continue on errors while state machine is running.");
-            }
-
-            foreach (var actionName in actionNames)
-            {
-                ContinueOnError.Remove(actionName);
-            }
-
-            return this;
-        }
-
-        public bool Stop()
-        {
-            oldIndex = index;
-            index = actions.Length + 1;
-            return true;
-        }
-
-        public bool Resume()
-        {
-            index = oldIndex;
-            Execute();
-            return true;
-        }
-
-        public string JumpTo(string actionName)
-        {
-            index = Array.FindIndex(actions, x => x.Method.GetParameters()[0].Name == actionName);
-
-            return "Jumped to " + actionName;
-        }
-
-        public DataTableEngine Execute()
-        {
-            if (actions.Length == 0)
-                throw new Exception("No actions to execute");
-            if (isRunning)
-                throw new Exception("State machine is already running");
-
-            isRunning = true;
-            Output = new Dictionary<object, object>();
-            foreach (var action in actions)
-            {
-                Output.Add(action.Method.GetParameters()[0].Name, null);
-            }
-
-            for (var executeIndex = index; executeIndex < actions.Length; executeIndex++)
-            {
-                stateGoto:
-                var a = actions[executeIndex];
-
-                try
-                {
-                    var funcOutput = a.Invoke(a);
-                    Output[a.Method.GetParameters()[0].Name] = funcOutput;
-                    try
-                    {
-                        if (TransitionConditions[a.Method.GetParameters()[0].Name] != null)
-                        {
-                            foreach (var condition in TransitionConditions[a.Method.GetParameters()[0].Name])
-                            {
-                                var c = condition.Invoke();
-                                if (c != null)
-                                {
-                                    executeIndex = Output.Keys.ToList().IndexOf(c);
-                                    goto stateGoto;
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                    }
-                }
-                catch (Exception e)
-                {
-                    Output[a.Method.GetParameters()[0].Name] = e;
-                    if (ContinueOnError != null)
-                    {
-                        try
-                        {
-                            if (ContinueOnError[a.Method.GetParameters()[0].Name] == false)
-                            {
-                                throw;
-                            }
-                        }
-                        catch
-                        {
-                            // ignored
-                        }
-                    }
-                }
-            }
-
-            isRunning = false;
-            return this;
         }
     }
 }

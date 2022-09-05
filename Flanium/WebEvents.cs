@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using FlaUI.Core;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools.V102.Page;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.Extensions;
 using Polly;
@@ -187,14 +188,14 @@ public class WebEvents
 
     public class SearchJs
     {
-        public static List<IWebElement> FindAllChildren(ChromeDriver chromeDriver, WebElement element)
+        public static List<IWebElement> FindAllChildren(ChromeDriver chromeDriver, IWebElement element)
         {
             var children = chromeDriver.ExecuteJavaScript<List<IWebElement>>(
                 "return arguments[0].childNodes", element).ToList();
             return children;
         }
 
-        public static List<IWebElement> FindAllDescendants(ChromeDriver chromeDriver, WebElement element)
+        public static List<IWebElement> FindAllDescendants(ChromeDriver chromeDriver, IWebElement element)
         {
             var descendants = chromeDriver.ExecuteJavaScript<List<IWebElement>>(
                 "return arguments[0].querySelectorAll('*')", element).ToList();
@@ -368,13 +369,13 @@ public class WebEvents
         }
 
         public static IWebElement WaitElementAppear(ChromeDriver chromeDriver, string xPath, int retries = 15,
-            int retryInterval = 1)
+            int retryInterval = 1, string FrameType = "iframe")
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
                 .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                 .Execute(() =>
                 {
-                    IWebElement element = SearchJs.FindWebElementByXPath(chromeDriver, xPath);
+                    IWebElement element = SearchJs.FindWebElementByXPath(chromeDriver, xPath, FrameType);
                     if (element != null)
                     {
                         Console.WriteLine("Element appeared: " + xPath + "\n");
@@ -393,12 +394,12 @@ public class WebEvents
 
     public class Search
     {
-        public static List<IWebElement> FindAllChildren(WebElement element)
+        public static List<IWebElement> FindAllChildren(IWebElement element)
         {
             return element.FindElements(By.XPath(".//*")).ToList();
         }
 
-        public static List<IWebElement> FindAllDescendants(WebElement element)
+        public static List<IWebElement> FindAllDescendants(IWebElement element)
         {
             return element.FindElements(By.CssSelector("*")).ToList();
         }
@@ -665,12 +666,12 @@ public class WebEvents
             chromeDriver.SwitchTo().Window(window).Close();
         }
 
-        public static void CloseTabConditional(ChromeDriver chromeDriver, string url, string elementXPath,
-            int retries = 10, int retryInterval = 1000)
+        public static void CloseTabAnchorable(ChromeDriver chromeDriver, string url, string elementXPath,
+            int retries = 15, int retryInterval = 1)
         {
             chromeDriver.SwitchTo().Window(chromeDriver.WindowHandles.First());
             var window = Policy.HandleResult<string>(result => result == null)
-                .WaitAndRetry(retries, interval => TimeSpan.FromMilliseconds(retryInterval))
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                 .Execute(() =>
                 {
                     var windows = chromeDriver.WindowHandles;
