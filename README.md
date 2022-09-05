@@ -8,7 +8,7 @@ Flanium is made by joining two frameworks:
  
  Flanium only supports Windows and Chrome browser **for now**. [12/08/2022]
  
-# [Documentation can be found here.](https://github.com/ALaurian/Flanium/blob/main/Documentation/LibraryDB.md)
+# [Documentation can be found here.](https://github.com/ALaurian/Flanium/wiki)
  
 # Knowledge requirements
 
