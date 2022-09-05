@@ -195,24 +195,10 @@ public class Blocks
             {
                 throw new Exception("Cannot remove continue on error while state machine is running.");
             }
-            
-            var engine = new Engine(new Func<object, object>[]
-                {
-                    (myAction) => WebEvents.Action.Click(new ChromeDriver(), "")
-                }, new Dictionary<string, Func<string>[]>()
-                {
-                    ["myAction"] = new Func<string>[] {() => "myAction"}
-                },
-                new Dictionary<string, bool>()
-                {
-                    {"myAction", true}
-                });
-            
+
             ContinueOnError.Remove(actionName);
             return this;
-
-
-
+            
         }
 
         public Engine RemoveContinueOnErrors(string[] actionNames)
