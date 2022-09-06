@@ -309,6 +309,10 @@ public class Blocks
         private Application excelApp { get; set; }
         private Workbook workbook { get; set; }
 
+        public Workbook GetWorkbook()
+        {
+            return workbook;
+        }
         public ExcelEngine(string filePath)
         {
             try
@@ -407,6 +411,39 @@ public class Blocks
             return "Inserted new column at" + index + ".";
         }
 
+        public void InsertDataTable(object sheet, int row, DataTable dataTable, bool deleteEntireSheet = true, bool dataTableHeader = true)
+        {
+            //Delete all cells
+            if (deleteEntireSheet)
+            {
+                workbook.Worksheets[sheet].Cells.Clear();
+            }
+            
+            //Insert data table header
+            if (dataTableHeader)
+            {
+                for (var i = 0; i < dataTable.Columns.Count; i++)
+                {
+                    workbook.Worksheets[sheet].Cells[row, i + 1].Value2 = dataTable.Columns[i].ColumnName;
+                }
+                row++;
+            }
+            
+            var rows = dataTable.Rows;
+            foreach (var r in rows.Cast<DataRow>())
+            {
+                var itemArray = r.ItemArray;
+                workbook.Worksheets[sheet].Rows[row].Value2 = itemArray;
+                // for (var c = 1; c <= itemArray.Length; c++)
+                // {
+                //     
+                // }
+                row++;
+            }
+            
+        }
+
+        
         public DataTable ToDataTable(object sheet, int headerAt = 1)
         {
             var range = workbook.Worksheets[sheet].UsedRange;
@@ -461,6 +498,13 @@ public class Blocks
         {
             workbook.SaveAs(filePath, format);
             return "Saved Excel as " + filePath + " with format" + format + ".";
+        }
+
+        public string Save()
+        {
+            workbook.Save();
+            return "Saved Excel file.";
+            
         }
     }
 
