@@ -1,45 +1,52 @@
 ﻿using System.Data;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
-using Windows.UI.Composition;
+using System.Text.RegularExpressions;
+using FlaUI.Core.AutomationElements;
+using FlaUI.UIA3;
+using Interop.UIAutomationClient;
 using Microsoft.Office.Interop.Excel;
+using Microsoft.VisualBasic;
 using OpenQA.Selenium.Chrome;
+using Application = Microsoft.Office.Interop.Excel.Application;
+using Clipboard = System.Windows.Forms.Clipboard;
+using DataColumn = System.Data.DataColumn;
 using DataTable = System.Data.DataTable;
-using Range = System.Range;
+using Range = Microsoft.Office.Interop.Excel.Range;
+using Window = FlaUI.Core.AutomationElements.Window;
+
+#pragma warning disable CS0168
 
 namespace Flanium;
 
+[SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
 public class Blocks
 {
     public class Engine
     {
         private Dictionary<object, object> Output { get; set; }
-        private Func<object, object>[] actions = Array.Empty<Func<object, object>>();
-        private Dictionary<string, Func<string>[]> TransitionConditions = new();
-        private Dictionary<string, bool> ContinueOnError = new();
-        private int index { get; set; }
-        private int oldIndex { get; set; }
-        private bool isRunning { get; set; }
+        private Func<object, object>[] _actions = Array.Empty<Func<object, object>>();
+        private Dictionary<string, Func<string>[]> _transitionConditions = new();
+        private Dictionary<string, bool> _continueOnError = new();
+        private Dictionary<string, object> _parameters = new();
+        private int Index { get; set; }
+        private int OldIndex { get; set; }
+        private bool IsRunning { get; set; }
 
 
         public Engine()
         {
         }
 
-        public Engine(Func<object, object>[] _actions,
-            Dictionary<string, Func<string>[]> _TransitionConditions = null,
-            Dictionary<string, bool> _ContinueOnError = null)
+        [Obsolete("Engine constructor is obsolete due to the fact that you would not have access to GetOutput during runtime.",true)]
+        public Engine(Func<object, object>[] actions,
+            Dictionary<string, Func<string>[]> transitionConditions = null,
+            Dictionary<string, bool> continueOnError = null)
         {
-            actions = _actions;
-            TransitionConditions = _TransitionConditions;
-            ContinueOnError = _ContinueOnError;
+            _actions = actions;
+            _transitionConditions = transitionConditions;
+            _continueOnError = continueOnError;
 
-            var machine = new Engine(new Func<object, object>[]
-            {
-                (myAction) => WebEvents.Action.Click(new ChromeDriver(), "")
-            });
-            
-            machine.AddCondition("myAction", () => "myAction");
         }
 
         public Dictionary<object, object> GetDictionary()
@@ -47,6 +54,11 @@ public class Blocks
             return Output;
         }
 
+        public bool SetOutput(string actionName, object value)
+        {
+            Output[actionName] = value;
+            return true;
+        }
         public object GetOutput(string actionName)
         {
             return Output[actionName];
@@ -54,82 +66,84 @@ public class Blocks
 
         public Engine AddAction(Func<object, object> action)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot add action while state machine is running.");
             }
 
-            var actionsList = actions.ToList();
+            var actionsList = _actions.ToList();
             actionsList.Add(action);
-            actions = actionsList.ToArray();
+            _actions = actionsList.ToArray();
 
             return this;
         }
 
         public Engine AddActions(Func<object, object>[] _actions)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot add actions while state machine is running.");
             }
 
-            var actionsList = actions.ToList();
+            var actionsList = this._actions.ToList();
             actionsList.AddRange(_actions);
-            actions = actionsList.ToArray();
+            this._actions = actionsList.ToArray();
 
             return this;
         }
 
         public Engine RemoveAction(string actionName)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot remove action while state machine is running.");
             }
 
-            var actionsList = actions.ToList();
+            var actionsList = _actions.ToList();
             actionsList.RemoveAll(x => x.Method.GetParameters()[0].Name == actionName);
-            actions = actionsList.ToArray();
+            _actions = actionsList.ToArray();
 
             return this;
         }
 
         public Engine RemoveActions(string[] actionNames)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot remove actions while state machine is running.");
             }
 
-            var actionsList = actions.ToList();
+            var actionsList = _actions.ToList();
             actionsList.RemoveAll(x => actionNames.Contains(x.Method.GetParameters()[0].Name));
-            actions = actionsList.ToArray();
+            _actions = actionsList.ToArray();
 
             return this;
         }
-
+        
+        [Obsolete("AddCondition is obsolete due to the fact that you would not have access to GetOutput during runtime.",true)]
         public Engine AddCondition(string actionName, Func<string> condition)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot add condition while state machine is running.");
             }
 
-            TransitionConditions.Add(actionName, new[] {condition});
+            _transitionConditions.Add(actionName, new[] {condition});
 
             return this;
         }
-
+        
+        [Obsolete("AddConditions is obsolete due to the fact that you would not have access to GetOutput during runtime.",true)]
         public Engine AddConditions(string[] actionNames, Func<string>[] conditions)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot add conditions while state machine is running.");
             }
 
             for (var i = 0; i < actionNames.Length; i++)
             {
-                TransitionConditions.Add(actionNames[i], new[] {conditions[i]});
+                _transitionConditions.Add(actionNames[i], new[] {conditions[i]});
             }
 
             return this;
@@ -137,26 +151,26 @@ public class Blocks
 
         public Engine RemoveCondition(string actionName)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot remove condition while state machine is running.");
             }
 
-            TransitionConditions.Remove(actionName);
+            _transitionConditions.Remove(actionName);
 
             return this;
         }
 
         public Engine RemoveConditions(string[] actionNames)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot remove conditions while state machine is running.");
             }
 
             foreach (var actionName in actionNames)
             {
-                TransitionConditions.Remove(actionName);
+                _transitionConditions.Remove(actionName);
             }
 
             return this;
@@ -164,26 +178,26 @@ public class Blocks
 
         public Engine AddContinueOnError(string actionName, bool continueOnError)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot add continue on error while state machine is running.");
             }
 
-            ContinueOnError.Add(actionName, continueOnError);
+            _continueOnError.Add(actionName, continueOnError);
 
             return this;
         }
 
         public Engine AddContinueOnErrors(string[] actionNames, bool[] continueOnErrors)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot add continue on errors while state machine is running.");
             }
 
             for (var i = 0; i < actionNames.Length; i++)
             {
-                ContinueOnError.Add(actionNames[i], continueOnErrors[i]);
+                _continueOnError.Add(actionNames[i], continueOnErrors[i]);
             }
 
             return this;
@@ -191,70 +205,95 @@ public class Blocks
 
         public Engine RemoveContinueOnError(string actionName)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot remove continue on error while state machine is running.");
             }
 
-            ContinueOnError.Remove(actionName);
+            _continueOnError.Remove(actionName);
             return this;
             
         }
 
         public Engine RemoveContinueOnErrors(string[] actionNames)
         {
-            if (isRunning)
+            if (IsRunning)
             {
                 throw new Exception("Cannot remove continue on errors while state machine is running.");
             }
 
             foreach (var actionName in actionNames)
             {
-                ContinueOnError.Remove(actionName);
+                _continueOnError.Remove(actionName);
             }
 
             return this;
         }
 
-        public bool Stop()
+        public object GetArgument(string keyName)
         {
-            oldIndex = index;
-            index = actions.Length + 1;
-            return true;
+            return _parameters[keyName];
+        }
+        
+        public Engine SetArguments(Dictionary<string,object> arguments)
+        {
+            _parameters = arguments;
+            return this;
         }
 
-        public bool Resume()
+        public Engine ResetArguments()
         {
-            index = oldIndex;
+            _parameters = new Dictionary<string, object>();
+            return this;
+        }
+
+        public Engine Stop()
+        {
+            IsRunning = false;
+            OldIndex = Index;
+            Index = _actions.Length + 1;
+            return this;
+        }
+
+        public Engine Resume()
+        {
+            Index = OldIndex;
+            Execute();
+            return this;
+        }
+
+        public bool JumpTo(string actionName)
+        {
+            Stop();
+            Index = Array.FindIndex(_actions, x => x.Method.GetParameters()[0].Name == actionName);
             Execute();
             return true;
         }
 
-        public string JumpTo(string actionName)
+        public Engine Reset()
         {
-            index = Array.FindIndex(actions, x => x.Method.GetParameters()[0].Name == actionName);
-
-            return "Jumped to " + actionName;
+            Index = 0;
+            return this;
         }
 
         public Engine Execute()
         {
-            if (actions.Length == 0)
+            if (_actions.Length == 0)
                 throw new Exception("No actions to execute");
-            if (isRunning)
+            if (IsRunning)
                 throw new Exception("State machine is already running");
 
-            isRunning = true;
+            IsRunning = true;
             Output = new Dictionary<object, object>();
-            foreach (var action in actions)
+            foreach (var action in _actions)
             {
                 Output.Add(action.Method.GetParameters()[0].Name, null);
             }
 
-            for (var executeIndex = index; executeIndex < actions.Length; executeIndex++)
+            for (var executeIndex = Index; executeIndex < _actions.Length; executeIndex++)
             {
                 stateGoto:
-                var a = actions[executeIndex];
+                var a = _actions[executeIndex];
 
                 try
                 {
@@ -262,9 +301,9 @@ public class Blocks
                     Output[a.Method.GetParameters()[0].Name] = funcOutput;
                     try
                     {
-                        if (TransitionConditions[a.Method.GetParameters()[0].Name] != null)
+                        if (_transitionConditions[a.Method.GetParameters()[0].Name] != null)
                         {
-                            foreach (var condition in TransitionConditions[a.Method.GetParameters()[0].Name])
+                            foreach (var condition in _transitionConditions[a.Method.GetParameters()[0].Name])
                             {
                                 var c = condition.Invoke();
                                 if (c != null)
@@ -282,11 +321,11 @@ public class Blocks
                 catch (Exception e)
                 {
                     Output[a.Method.GetParameters()[0].Name] = e;
-                    if (ContinueOnError != null)
+                    if (_continueOnError != null)
                     {
                         try
                         {
-                            if (ContinueOnError[a.Method.GetParameters()[0].Name] == false)
+                            if (_continueOnError[a.Method.GetParameters()[0].Name] == false)
                             {
                                 throw;
                             }
@@ -299,7 +338,7 @@ public class Blocks
                 }
             }
 
-            isRunning = false;
+            IsRunning = false;
             return this;
         }
     }
@@ -319,7 +358,8 @@ public class Blocks
             {
                 excelApp = new()
                 {
-                    Visible = true
+                    Visible = true,
+                    DisplayAlerts = false
                 };
                 try
                 {
@@ -345,10 +385,7 @@ public class Blocks
 
         public object GetRangeValue(object sheet, string range)
         {
-            if(range.Contains(":"))
-                return (workbook.Worksheets[sheet].Range[range].Value2 as object[,]).Cast<object>().ToList();
-            
-            return (workbook.Worksheets[sheet].Range[range].Value2 as object[,]).Cast<object>().First();
+            return workbook.Worksheets[sheet].Range[range].Value2;
         }
 
         public object GetRowValue(object sheet, int index)
@@ -413,150 +450,281 @@ public class Blocks
 
         public void InsertDataTable(object sheet, int row, DataTable dataTable, bool deleteEntireSheet = true, bool dataTableHeader = true)
         {
+            workbook.Worksheets[sheet].Activate();
             //Delete all cells
             if (deleteEntireSheet)
             {
                 workbook.Worksheets[sheet].Cells.Clear();
             }
             
-            //Insert data table header
+            var columns = dataTable.Columns.Cast<DataColumn>();
+            //	
             if (dataTableHeader)
             {
-                for (var i = 0; i < dataTable.Columns.Count; i++)
-                {
-                    workbook.Worksheets[sheet].Cells[row, i + 1].Value2 = dataTable.Columns[i].ColumnName;
-                }
+                var columnNames = columns.Select(column => column.ColumnName).ToArray();
+                var joinedColumnNames = Strings.Join(columnNames,"	");
+
+                Clipboard.SetText(joinedColumnNames);
+                workbook.Worksheets[sheet].Cells[row, 1].Select();
+                workbook.Worksheets[sheet].Paste();
                 row++;
             }
             
-            var rows = dataTable.Rows;
-            foreach (var r in rows.Cast<DataRow>())
-            {
-                var itemArray = r.ItemArray;
-                workbook.Worksheets[sheet].Rows[row].Value2 = itemArray;
-                // for (var c = 1; c <= itemArray.Length; c++)
-                // {
-                //     
-                // }
-                row++;
-            }
-            
+            var rows = dataTable.Rows.Cast<DataRow>();
+            var itemArrayJoiner = rows.Select(r => r.ItemArray).Aggregate("",
+                (current, itemArray_original) => current +
+                                                 (Strings.Join(
+                                                     itemArray_original.Cast<string>()
+                                                         .Select(item =>
+                                                             item.ReplaceLineEndings("")
+                                                                 .Replace("\t", ""))
+                                                     .ToArray(), "	") + "\n"));
+            Clipboard.SetText(itemArrayJoiner);
+            workbook.Worksheets[sheet].Cells[row,1].Select();
+            workbook.Worksheets[sheet].Paste();
         }
 
+        public int GetLastRow(object sheet, int row, int column)
+        {
+            workbook.Worksheets[sheet].Cells[row, column].Select();
+            excelApp.Selection.End(XlDirection.xlDown).Select();
+            return excelApp.Selection.Row;
+        }
+
+        public bool CopyPaste(object sheet, string range, string destinationRange, XlPasteType pasteType)
+        {
+            workbook.Worksheets[sheet].Range(range).Copy();
+            workbook.Worksheets[sheet].Range(destinationRange).PasteSpecial(pasteType);
+
+            return true;
+        }
+        public bool AutoFill(object sheet, string range, int lastRow)
+        {
+
+            //split range by ":"
+            var rangeArray = range.Split(':')[1];
+            //replace all numbers in range
+            var rangeArrayWithoutNumbers = Regex.Replace(rangeArray, @"\d", "");
+
+
+            workbook.Worksheets[sheet].Range(range).AutoFill(workbook.Worksheets[sheet].Range(range.Split(':')[0] + ":" + rangeArrayWithoutNumbers + lastRow), XlAutoFillType.xlFillCopy);
+            return true;
+        }
         
         public DataTable ToDataTable(object sheet, int headerAt = 1)
-        {
-            var range = workbook.Worksheets[sheet].UsedRange;
+        {            
+            workbook.Worksheets[sheet].Activate();
+            workbook.Worksheets[sheet].Cells[headerAt, 1].Select();
+            while (excelApp.Selection.Value2 != null)
+            {
+                excelApp.Selection.End(XlDirection.xlToRight).Select();
+            }
 
-            System.Data.DataTable dt = new System.Data.DataTable();
-            var headerRow = range?.Rows[headerAt].Value2;
+            excelApp.Selection.End(XlDirection.xlToLeft).Select();
+            var lastColumnWithValue = excelApp.Selection.Column;
 
+            var newDataTable = new DataTable();
+            var headerRange = workbook.Worksheets[sheet].Range[workbook.Worksheets[sheet].Cells[headerAt, 1],
+                workbook.Worksheets[sheet].Cells[headerAt, lastColumnWithValue]].Value2;
             var placeholderIndex = 0;
-            foreach (object item in headerRow)
+            
+            foreach (string item in headerRange)
             {
-                if (item != null)
+                try
                 {
-                    dt.Columns.Add(item.ToString());
+                    var newColumn = new DataColumn(item,typeof(string));
+                    newDataTable.Columns.Add(newColumn);
                 }
-                else
+                catch (Exception e)
                 {
-                    dt.Columns.Add($"Placeholder_{placeholderIndex}");
-                    placeholderIndex++;
+                    var newColumn = new DataColumn("Blank" + placeholderIndex,typeof(string));
+                    newDataTable.Columns.Add(newColumn);
                 }
             }
 
-            var rowsCount = range.Rows.Count;
-            for (int i = headerAt + 1; i <= rowsCount; i++)
+            workbook.Worksheets[sheet].Range[workbook.Worksheets[sheet].Cells[headerAt, 1],
+                workbook.Worksheets[sheet].Cells[headerAt, lastColumnWithValue]].Select();
+            workbook.Worksheets[sheet].Range[excelApp.Selection,excelApp.Selection.End(XlDirection.xlDown)].Select();
+            excelApp.Selection.Offset(1, 0).Select();
+            excelApp.Selection.Resize[excelApp.Selection.Rows.Count-1, excelApp.Selection.Columns.Count].Select();
+            var selectionValue = ((object[,]) excelApp.Selection.Value2).GetEnumerator();
+
+            selectionValue.MoveNext();
+            try
             {
-                var rowValues = range.Rows[i].Value2;
-                List<string> row = new List<string>();
-
-                foreach (object v in rowValues)
+                while (selectionValue.Current != null)
                 {
-                    row.Add(v != null ? v.ToString() : "");
+                    var newRow = newDataTable.NewRow();
+                    for (var i = 0; i < lastColumnWithValue; i++)
+                    {
+                        
+                        if(selectionValue.Current!= null)
+                            newRow[i] = selectionValue.Current.ToString();
+
+                        selectionValue.MoveNext();
+                    }
+
+                    newRow.ItemArray = newRow.ItemArray.Select(x =>
+                    {
+                        if (x == DBNull.Value)
+                        {
+                            x = "";
+                        }
+
+                        return x;
+                    }).ToArray();
+                    
+                    newDataTable.Rows.Add(newRow);
                 }
-
-                dt.Rows.Add(row.ToArray());
             }
+            catch
+            {
 
-            return dt;
+            }
+            
+            return newDataTable;
         }
 
 
         public string Close()
         {
-            workbook.Close();
-            excelApp.Quit();
-            
-            Marshal.ReleaseComObject(workbook);
-            Marshal.ReleaseComObject(excelApp);
-            
+            Retry:
+            try
+            {
+                if (excelApp == null && workbook == null)
+                {
+                    goto FinishLine;
+                }
+                
+                workbook.Close(true);
+                excelApp.Quit();
+                
+                Marshal.ReleaseComObject(workbook);
+                Marshal.ReleaseComObject(excelApp);
+                
+
+            }
+            catch
+            {
+                goto Retry;
+            }
+
+            FinishLine:
             return "Closed Excel.";
         }
-
+        
         public string SaveAs(string filePath, XlFileFormat format)
         {
+
+            
             workbook.SaveAs(filePath, format);
+
+
             return "Saved Excel as " + filePath + " with format" + format + ".";
         }
 
         public string Save()
         {
-            workbook.Save();
-            return "Saved Excel file.";
+            var window = WinEvents.Search.GetWindow("*[contains(@Name,'" + workbook.Name + "')]");
+            var saveButton = WinEvents.Search.FindElement(window, "//*[@Name='Save']");
+            WinEvents.Action.Click(saveButton, true);
             
+            return "Saved Excel file.";
         }
     }
 
     public class DataTableEngine
     {
-        private Dictionary<object, object> Output { get; set; }
-        private Func<object, object>[] actions = Array.Empty<Func<object, object>>();
-        private Dictionary<string, Func<string>[]> TransitionConditions = new();
-        private Dictionary<string, bool> ContinueOnError = new();
-        private int index { get; set; }
-        private int oldIndex { get; set; }
-        private bool isRunning { get; set; }
-
-        private DataTable dataTable { get; set; }
+        private DataTable _dataTable { get; set; }
 
         public string Cells(int row, object column, string value)
         {
             if (column is int)
-                dataTable.Rows[row][(int)column] = value;
+                _dataTable.Rows[row][(int)column] = value;
             else
-                dataTable.Rows[row][column.ToString()] = value;
+                _dataTable.Rows[row][column.ToString()] = value;
             return "Edited cell on row " + row + " and column " + column + " to " + value + ".";
         }
     
         public string Cells(int row, object column)
         {
             if (column is int)
-                return dataTable.Rows[row][(int) column].ToString();
+                return _dataTable.Rows[row][(int) column].ToString();
             else
-                return dataTable.Rows[row][column.ToString()].ToString();
+                return _dataTable.Rows[row][column.ToString()].ToString();
         }
 
         public DataRow Row(int index)
         {
-            return dataTable.Rows[index];
+            return _dataTable.Rows[index];
         }
 
         public string UpdateRow(int index, DataRow row)
         {
-            dataTable.Rows[index].ItemArray = row.ItemArray;
+            _dataTable.Rows[index].ItemArray = row.ItemArray;
             return "Updated row at " + index + ".";
         }
     
         public string DeleteRow(int index)
         {
-            dataTable.Rows[index].Delete();
+            _dataTable.Rows[index].Delete();
             return "Deleted row at " + index + ".";
         }
         
-        public DataTableEngine(DataTable _dataTable)
+        public DataTableEngine(DataTable dataTable)
         {
-            dataTable = _dataTable;
+            _dataTable = dataTable;
+        }
+
+        public DataTableEngine Filter(Func<DataRow, bool> linQFunction)
+        {
+            var filteredDataTableRows = _dataTable.Rows.Cast<DataRow>()
+                .Where(linQFunction);
+
+            var newDataTable = new DataTable();
+            foreach (var c in _dataTable.Columns.Cast<DataColumn>())
+            {
+                newDataTable.Columns.Add(c.ColumnName);
+            }
+
+            foreach (var row in filteredDataTableRows)
+            {
+                var newRow = newDataTable.NewRow();
+                newRow.ItemArray = row.ItemArray;
+                newDataTable.Rows.Add(newRow);
+            }
+
+            _dataTable = null;
+            _dataTable = newDataTable;
+            return this;
+        }
+        
+        public DataTableEngine ForEach(Func<DataRow, DataRow> linQFunction)
+        {
+            var filteredDataTableRows = _dataTable.Rows.Cast<DataRow>()
+                .Select(linQFunction);
+
+            var newDataTable = new DataTable();
+            foreach (var c in _dataTable.Columns.Cast<DataColumn>())
+            {
+                newDataTable.Columns.Add(c.ColumnName);
+            }
+
+            foreach (var row in filteredDataTableRows)
+            {
+                var newRow = newDataTable.NewRow();
+                newRow.ItemArray = row.ItemArray;
+                newDataTable.Rows.Add(newRow);
+            }
+
+            _dataTable = null;
+            _dataTable = newDataTable;
+            return this;
+        }
+
+        public DataTable GetDataTable()
+        {
+            return _dataTable;
         }
     }
 }

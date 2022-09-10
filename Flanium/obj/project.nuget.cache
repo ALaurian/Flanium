@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "beDnJ6PpgzoRYnqo+ucq1kof6Gh2U9D+EZHRJcuW3nCSySiKXtZGrfxR4LSraSGzP5MmpHHEzytvE7bJilb8KA==",
+  "dgSpecHash": "pzGDT5NEcuGIL0t8kAzCwBph1BWaSgWlG27m8k4i+h4aeXr86cPAiyYRZz2q3y8+iQ7AJUKoSvrTp98NzaY1Dg==",
   "success": true,
   "projectFilePath": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
   "expectedPackageFiles": [
@@ -28,7 +28,7 @@
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\system.security.permissions\\4.7.0\\system.security.permissions.4.7.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\l.avrigeanu\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.17763.21\\microsoft.windows.sdk.net.ref.10.0.17763.21.nupkg.sha512"
+    "C:\\Users\\l.avrigeanu\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.17763.25\\microsoft.windows.sdk.net.ref.10.0.17763.25.nupkg.sha512"
   ],
   "logs": [
     {

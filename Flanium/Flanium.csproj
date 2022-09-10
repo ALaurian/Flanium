@@ -7,7 +7,7 @@
         <Authors>Laurian-Filip Avrigeanu</Authors>
         <Description>RPA Library for Windows.</Description>
         <OutputType>Library</OutputType>
-        <PackageVersion>2.0.3.0</PackageVersion>
+        <PackageVersion>2.1.0.6</PackageVersion>
         <Title>Flanium</Title>
         <PackageProjectUrl>https://github.com/ALaurian/Flanium</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/ALaurian/Flanium/blob/main/LICENSE</PackageLicenseUrl>
@@ -22,6 +22,7 @@
       <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
       <PackageReference Include="FlaUI.Core" Version="3.2.0" />
       <PackageReference Include="FlaUI.UIA3" Version="3.2.0" />
+      <PackageReference Include="Interop.UIAutomationClient" Version="10.18362.0" />
       <PackageReference Include="OpenPop.NET" Version="2.0.6.1120" />
       <PackageReference Include="Polly" Version="7.2.3" />
       <PackageReference Include="Selenium.Support" Version="4.4.0" />

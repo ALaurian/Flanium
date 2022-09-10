@@ -12,26 +12,27 @@
           "DotNetSeleniumExtras.WaitHelpers": "3.11.0",
           "FlaUI.Core": "3.2.0",
           "FlaUI.UIA3": "3.2.0",
+          "Interop.UIAutomationClient": "10.18362.0",
           "OpenPop.NET": "2.0.6.1120",
           "Polly": "7.2.3",
           "Selenium.Support": "4.4.0",
           "Selenium.WebDriver": "4.4.0",
           "Selenium.WebDriver.ChromeDriver": "104.0.5112.7900",
-          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.17763.21"
+          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.17763.25"
         },
         "runtime": {
           "Flanium.dll": {}
         }
       },
-      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.21": {
+      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.25": {
         "runtime": {
           "Microsoft.Windows.SDK.NET.dll": {
-            "assemblyVersion": "10.0.17763.21",
-            "fileVersion": "10.0.17763.21"
+            "assemblyVersion": "10.0.17763.24",
+            "fileVersion": "10.0.17763.25"
           },
           "WinRT.Runtime.dll": {
-            "assemblyVersion": "1.3.0.0",
-            "fileVersion": "1.3.5.36601"
+            "assemblyVersion": "1.6.0.0",
+            "fileVersion": "1.6.2.38681"
           }
         }
       },
@@ -220,7 +221,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.21": {
+    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.25": {
       "type": "runtimepack",
       "serviceable": false,
       "sha512": ""

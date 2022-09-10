@@ -67,7 +67,7 @@
           "lib/netcoreapp3.0/Interop.UIAutomationClient.dll": {}
         },
         "build": {
-          "build/_._": {}
+          "build/Interop.UIAutomationClient.targets": {}
         }
       },
       "Microsoft.NETCore.Platforms/3.1.0": {
@@ -1014,6 +1014,7 @@
       "DotNetSeleniumExtras.WaitHelpers >= 3.11.0",
       "FlaUI.Core >= 3.2.0",
       "FlaUI.UIA3 >= 3.2.0",
+      "Interop.UIAutomationClient >= 10.18362.0",
       "OpenPop.NET >= 2.0.6.1120",
       "Polly >= 7.2.3",
       "Selenium.Support >= 4.4.0",
@@ -1026,7 +1027,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "2.0.2.4",
+    "version": "2.1.0.5",
     "restore": {
       "projectUniqueName": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
       "projectName": "Flanium",
@@ -1049,7 +1050,6 @@
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Users\\l.avrigeanu\\AppData\\Local\\Programs\\UiPath\\Studio\\Packages": {},
         "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\bin\\Debug": {},
-        "\\\\106.113.59.20\\Captive\\IT\\IT Dev\\Flanium": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1083,6 +1083,10 @@
           "FlaUI.UIA3": {
             "target": "Package",
             "version": "[3.2.0, )"
+          },
+          "Interop.UIAutomationClient": {
+            "target": "Package",
+            "version": "[10.18362.0, )"
           },
           "OpenPop.NET": {
             "target": "Package",
@@ -1118,7 +1122,7 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.Windows.SDK.NET.Ref",
-            "version": "[10.0.17763.21, 10.0.17763.21]"
+            "version": "[10.0.17763.25, 10.0.17763.25]"
           }
         ],
         "frameworkReferences": {
@@ -1129,7 +1133,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   },

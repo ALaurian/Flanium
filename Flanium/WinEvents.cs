@@ -7,6 +7,7 @@ using FlaUI.Core.WindowsAPI;
 using FlaUI.UIA3;
 using OpenQA.Selenium.Chrome;
 using Polly;
+#pragma warning disable CS0168
 
 namespace Flanium;
 
@@ -340,7 +341,6 @@ public class WinEvents
             var keyCombination = FlaUI.Core.Input.Keyboard.Pressing(keyShorts);
             keyCombination.Dispose();
 
-            SendKeyCombination(new VirtualKeyShort[] {VirtualKeyShort.CONTROL, VirtualKeyShort.KEY_C});
         }
     }
 }

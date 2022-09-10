@@ -1,6 +1,5 @@
 C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows10.0.17763.0\Flanium.deps.json
 C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows10.0.17763.0\Flanium.dll
-C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows10.0.17763.0\ref\Flanium.dll
 C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows10.0.17763.0\Flanium.pdb
 C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows10.0.17763.0\Flanium.csproj.AssemblyReference.cache
 C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows10.0.17763.0\Flanium.GeneratedMSBuildEditorConfig.editorconfig
@@ -10,3 +9,4 @@ C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows10.0.
 C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows10.0.17763.0\Flanium.dll
 C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows10.0.17763.0\ref\Flanium.dll
 C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows10.0.17763.0\Flanium.pdb
+C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\obj\Debug\net6.0-windows10.0.17763.0\refint\Flanium.dll

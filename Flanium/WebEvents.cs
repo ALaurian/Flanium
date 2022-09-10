@@ -9,6 +9,7 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.Extensions;
 using Polly;
 using static Flanium.WebEvents.Search;
+#pragma warning disable CS0168
 
 namespace Flanium;
 

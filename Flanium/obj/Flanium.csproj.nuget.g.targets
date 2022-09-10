@@ -2,5 +2,6 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)selenium.webdriver.chromedriver\104.0.5112.7900\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('$(NuGetPackageRoot)selenium.webdriver.chromedriver\104.0.5112.7900\build\Selenium.WebDriver.ChromeDriver.targets')" />
+    <Import Project="$(NuGetPackageRoot)interop.uiautomationclient\10.18362.0\build\Interop.UIAutomationClient.targets" Condition="Exists('$(NuGetPackageRoot)interop.uiautomationclient\10.18362.0\build\Interop.UIAutomationClient.targets')" />
   </ImportGroup>
 </Project>
