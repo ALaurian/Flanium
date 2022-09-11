@@ -1,0 +1,32 @@
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.csproj.AssemblyReference.cache
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.AssemblyInfoInputs.cache
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.AssemblyInfo.cs
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.csproj.CoreCompileInputs.cache
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.exe
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.deps.json
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.runtimeconfig.json
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.pdb
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\SeleniumExtras.PageObjects.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\SeleniumExtras.WaitHelpers.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\FlaUI.Core.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\FlaUI.UIA3.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\Interop.UIAutomationClient.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\Newtonsoft.Json.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\OpenPop.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\Polly.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\WebDriver.Support.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\WebDriver.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\System.Management.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\runtimes\win\lib\netcoreapp2.0\System.Management.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\Microsoft.Windows.SDK.NET.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\WinRT.Runtime.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.csproj.CopyComplete
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\refint\RPA Challenge Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.pdb
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\RPA Challenge Flanium.genruntimeconfig.cache
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\obj\Debug\net6.0-windows10.0.17763\ref\RPA Challenge Flanium.dll
+C:\Users\l.avrigeanu\RiderProjects\RPA Challenge Flanium\RPA Challenge Flanium\bin\Debug\net6.0-windows10.0.17763\chromedriver.exe
