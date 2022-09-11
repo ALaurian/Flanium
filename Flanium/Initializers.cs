@@ -7,7 +7,7 @@ namespace Flanium;
 public class Initializers
 {
 
-    public static FirefoxDriver InitializeFirefox(PageLoadStrategy loadStrategy)
+    public static FirefoxDriver InitializeFirefox(PageLoadStrategy loadStrategy = PageLoadStrategy.Normal)
     {
         var options = new FirefoxOptions();
         var service = FirefoxDriverService.CreateDefaultService();
@@ -20,7 +20,7 @@ public class Initializers
 
         return new FirefoxDriver(service, options);
     }
-    public static ChromeDriver InitializeChrome(PageLoadStrategy loadStrategy)
+    public static ChromeDriver InitializeChrome(PageLoadStrategy loadStrategy = PageLoadStrategy.Normal)
     {
         var options = new ChromeOptions();
         
