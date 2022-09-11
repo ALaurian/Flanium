@@ -18,6 +18,7 @@
           "Selenium.Support": "4.4.0",
           "Selenium.WebDriver": "4.4.0",
           "Selenium.WebDriver.ChromeDriver": "104.0.5112.7900",
+          "Selenium.WebDriver.GeckoDriver.Win64": "0.31.0",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.17763.25"
         },
         "runtime": {
@@ -152,6 +153,7 @@
         }
       },
       "Selenium.WebDriver.ChromeDriver/104.0.5112.7900": {},
+      "Selenium.WebDriver.GeckoDriver.Win64/0.31.0": {},
       "System.CodeDom/4.7.0": {},
       "System.Configuration.ConfigurationManager/4.7.0": {
         "dependencies": {
@@ -323,6 +325,13 @@
       "sha512": "sha512-vDH+7FqF4APZtvqyqtJ8XYTTh523EsUV88CpqW4d2xjxKjUp6ifpeLi9rDhnSuruDIoQDLJvRBZPI7UlcMTXOw==",
       "path": "selenium.webdriver.chromedriver/104.0.5112.7900",
       "hashPath": "selenium.webdriver.chromedriver.104.0.5112.7900.nupkg.sha512"
+    },
+    "Selenium.WebDriver.GeckoDriver.Win64/0.31.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GwXBQSCJssxFLJVxlZHo7N7hevskvmPIdrRFYcnEufIaaYT0TgCVDYgZUSkUBlbV8Thq4Gdbcip2hMeQx4f3RQ==",
+      "path": "selenium.webdriver.geckodriver.win64/0.31.0",
+      "hashPath": "selenium.webdriver.geckodriver.win64.0.31.0.nupkg.sha512"
     },
     "System.CodeDom/4.7.0": {
       "type": "package",

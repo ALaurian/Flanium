@@ -17,7 +17,7 @@ public class WebEvents
 {
     public class ActionJs
     {
-        public static IWebElement Hover(ChromeDriver chromeDriver, string xPath, int retries = 15,
+        public static IWebElement Hover(WebDriver chromeDriver, string xPath, int retries = 15,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
@@ -41,7 +41,7 @@ public class WebEvents
             throw new Exception("\n Failed to hover over element with XPath: " + xPath + "\n");
         }
 
-        public static IWebElement WaitForeverElementVanish(ChromeDriver chromeDriver, string xPath,
+        public static IWebElement WaitForeverElementVanish(WebDriver chromeDriver, string xPath,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result != null)
@@ -64,7 +64,7 @@ public class WebEvents
             return null;
         }
 
-        public static IWebElement WaitElementVanish(ChromeDriver chromeDriver, string xPath, int retries = 60,
+        public static IWebElement WaitElementVanish(WebDriver chromeDriver, string xPath, int retries = 60,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result != null)
@@ -87,7 +87,7 @@ public class WebEvents
             return null;
         }
 
-        public static string GetText(ChromeDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1)
+        public static string GetText(WebDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
                 .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
@@ -129,7 +129,7 @@ public class WebEvents
             return "";
         }
 
-        public static IWebElement SetValue(ChromeDriver chromeDriver, string xPath, string text, int retries = 15,
+        public static IWebElement SetValue(WebDriver chromeDriver, string xPath, string text, int retries = 15,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
@@ -161,7 +161,7 @@ public class WebEvents
         }
 
 
-        public static IWebElement Click(ChromeDriver chromeDriver, string xPath, int retries = 15,
+        public static IWebElement Click(WebDriver chromeDriver, string xPath, int retries = 15,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
@@ -189,21 +189,21 @@ public class WebEvents
 
     public class SearchJs
     {
-        public static List<IWebElement> FindAllChildren(ChromeDriver chromeDriver, IWebElement element)
+        public static List<IWebElement> FindAllChildren(WebDriver chromeDriver, IWebElement element)
         {
             var children = chromeDriver.ExecuteJavaScript<List<IWebElement>>(
                 "return arguments[0].childNodes", element).ToList();
             return children;
         }
 
-        public static List<IWebElement> FindAllDescendants(ChromeDriver chromeDriver, IWebElement element)
+        public static List<IWebElement> FindAllDescendants(WebDriver chromeDriver, IWebElement element)
         {
             var descendants = chromeDriver.ExecuteJavaScript<List<IWebElement>>(
                 "return arguments[0].querySelectorAll('*')", element).ToList();
             return descendants;
         }
 
-        public static IWebElement FindWebElementByXPathWindowless(ChromeDriver chromeDriver, string XPath,
+        public static IWebElement FindWebElementByXPathWindowless(WebDriver chromeDriver, string XPath,
             string FrameType = "iframe")
         {
             IWebElement element = null;
@@ -282,7 +282,7 @@ public class WebEvents
             return element;
         }
 
-        public static IWebElement FindWebElementByXPath(ChromeDriver chromeDriver, string XPath,
+        public static IWebElement FindWebElementByXPath(WebDriver chromeDriver, string XPath,
             string FrameType = "iframe")
         {
             IWebElement element = null;
@@ -369,7 +369,7 @@ public class WebEvents
             return element;
         }
 
-        public static IWebElement WaitElementAppear(ChromeDriver chromeDriver, string xPath, int retries = 15,
+        public static IWebElement WaitElementAppear(WebDriver chromeDriver, string xPath, int retries = 15,
             int retryInterval = 1, string FrameType = "iframe")
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
@@ -405,7 +405,7 @@ public class WebEvents
             return element.FindElements(By.CssSelector("*")).ToList();
         }
 
-        public static IWebElement FindWebElementByXPath(ChromeDriver chromeDriver, string XPath,
+        public static IWebElement FindWebElementByXPath(WebDriver chromeDriver, string XPath,
             string FrameType = "iframe")
         {
             IWebElement element = null;
@@ -488,7 +488,7 @@ public class WebEvents
             return element;
         }
 
-        public static IWebElement FindWebElementByXPathWindowless(ChromeDriver chromeDriver, string XPath,
+        public static IWebElement FindWebElementByXPathWindowless(WebDriver chromeDriver, string XPath,
             string FrameType = "iframe")
         {
             IWebElement element = null;
@@ -564,7 +564,7 @@ public class WebEvents
         }
 
 
-        public static IWebElement WaitElementAppear(ChromeDriver chromeDriver, string xPath, int retries = 15,
+        public static IWebElement WaitElementAppear(WebDriver chromeDriver, string xPath, int retries = 15,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
@@ -635,7 +635,7 @@ public class WebEvents
             return dataTable;
         }
 
-        public static void CloseTab(ChromeDriver chromeDriver, string url, int retries = 15, int retryInterval = 1)
+        public static void CloseTab(WebDriver chromeDriver, string url, int retries = 15, int retryInterval = 1)
         {
             chromeDriver.SwitchTo().Window(chromeDriver.WindowHandles.First());
             var window = Policy.HandleResult<string>(result => result == null)
@@ -667,7 +667,7 @@ public class WebEvents
             chromeDriver.SwitchTo().Window(window).Close();
         }
 
-        public static void CloseTabAnchorable(ChromeDriver chromeDriver, string url, string elementXPath,
+        public static void CloseTabAnchorable(WebDriver chromeDriver, string url, string elementXPath,
             int retries = 15, int retryInterval = 1)
         {
             chromeDriver.SwitchTo().Window(chromeDriver.WindowHandles.First());
@@ -712,7 +712,7 @@ public class WebEvents
             chromeDriver.SwitchTo().Window(window).Close();
         }
 
-        public static IWebElement WaitElementVanish(ChromeDriver chromeDriver, string xPath, int retries = 60,
+        public static IWebElement WaitElementVanish(WebDriver chromeDriver, string xPath, int retries = 60,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result != null)
@@ -735,7 +735,7 @@ public class WebEvents
             return null;
         }
 
-        public static IWebElement WaitForeverElementVanish(ChromeDriver chromeDriver, string xPath,
+        public static IWebElement WaitForeverElementVanish(WebDriver chromeDriver, string xPath,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result != null)
@@ -758,7 +758,7 @@ public class WebEvents
             return null;
         }
 
-        public static string GetText(ChromeDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1)
+        public static string GetText(WebDriver chromeDriver, string xPath, int retries = 15, int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
                 .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
@@ -797,7 +797,7 @@ public class WebEvents
             return "";
         }
 
-        public static IWebElement Hover(ChromeDriver chromeDriver, string xPath, int retries = 15,
+        public static IWebElement Hover(WebDriver chromeDriver, string xPath, int retries = 15,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
@@ -822,7 +822,7 @@ public class WebEvents
         }
 
 
-        public static bool WaitForAlert(ChromeDriver chromeDriver, List<string> acceptedAlertText, int retries = 15,
+        public static bool WaitForAlert(WebDriver chromeDriver, List<string> acceptedAlertText, int retries = 15,
             int retryInterval = 1)
         {
             var alert = Policy.HandleResult<IAlert>(alert => alert == null)
@@ -857,7 +857,7 @@ public class WebEvents
         }
 
 
-        public static IWebElement Click(ChromeDriver chromeDriver, string xPath, int retries = 15,
+        public static IWebElement Click(WebDriver chromeDriver, string xPath, int retries = 15,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
@@ -889,7 +889,7 @@ public class WebEvents
             throw new Exception("\n Failed to click element with XPath: " + xPath + "\n");
         }
 
-        public static IWebElement SetValue(ChromeDriver chromeDriver, string xPath, string text, int retries = 15,
+        public static IWebElement SetValue(WebDriver chromeDriver, string xPath, string text, int retries = 15,
             int retryInterval = 1)
         {
             var element = Policy.HandleResult<IWebElement>(result => result == null)
@@ -925,7 +925,7 @@ public class WebEvents
             throw new Exception("\n Failed to set value of element with XPath: " + xPath + "\n");
         }
 
-        public static void Highlight(ChromeDriver driver, IWebElement element, int duration = 3000)
+        public static void Highlight(WebDriver driver, IWebElement element, int duration = 3000)
         {
             var origStyle = driver.ExecuteScript("arguments[0].style;", element);
             var script = @"arguments[0].style.cssText = ""border-width: 2px; border-style: solid; border-color: red"";";

@@ -177,6 +177,12 @@
           "build/Selenium.WebDriver.ChromeDriver.targets": {}
         }
       },
+      "Selenium.WebDriver.GeckoDriver.Win64/0.31.0": {
+        "type": "package",
+        "build": {
+          "build/Selenium.WebDriver.GeckoDriver.Win64.targets": {}
+        }
+      },
       "System.CodeDom/4.7.0": {
         "type": "package",
         "compile": {
@@ -666,6 +672,22 @@
         "selenium.webdriver.chromedriver.nuspec"
       ]
     },
+    "Selenium.WebDriver.GeckoDriver.Win64/0.31.0": {
+      "sha512": "GwXBQSCJssxFLJVxlZHo7N7hevskvmPIdrRFYcnEufIaaYT0TgCVDYgZUSkUBlbV8Thq4Gdbcip2hMeQx4f3RQ==",
+      "type": "package",
+      "path": "selenium.webdriver.geckodriver.win64/0.31.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "build/DefinePropertiesGeckoDriver.Win64.targets",
+        "build/Selenium.WebDriver.GeckoDriver.Win64.targets",
+        "driver/geckodriver.exe",
+        "nupkg-icon.png",
+        "selenium.webdriver.geckodriver.win64.0.31.0.nupkg.sha512",
+        "selenium.webdriver.geckodriver.win64.nuspec"
+      ]
+    },
     "System.CodeDom/4.7.0": {
       "sha512": "Hs9pw/kmvH3lXaZ1LFKj3pLQsiGfj2xo3sxSzwiLlRL6UcMZUTeCfoJ9Udalvn3yq5dLlPEZzYegrTQ1/LhPOQ==",
       "type": "package",
@@ -1019,7 +1041,8 @@
       "Polly >= 7.2.3",
       "Selenium.Support >= 4.4.0",
       "Selenium.WebDriver >= 4.4.0",
-      "Selenium.WebDriver.ChromeDriver >= 104.0.5112.7900"
+      "Selenium.WebDriver.ChromeDriver >= 104.0.5112.7900",
+      "Selenium.WebDriver.GeckoDriver.Win64 >= 0.31.0"
     ]
   },
   "packageFolders": {
@@ -1027,7 +1050,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "2.1.0.5",
+    "version": "2.1.4.1",
     "restore": {
       "projectUniqueName": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
       "projectName": "Flanium",
@@ -1107,6 +1130,10 @@
           "Selenium.WebDriver.ChromeDriver": {
             "target": "Package",
             "version": "[104.0.5112.7900, )"
+          },
+          "Selenium.WebDriver.GeckoDriver.Win64": {
+            "target": "Package",
+            "version": "[0.31.0, )"
           }
         },
         "imports": [

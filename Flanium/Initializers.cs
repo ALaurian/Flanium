@@ -1,25 +1,36 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 
 namespace Flanium;
 
 public class Initializers
 {
-    public static ChromeDriverService InitializeService()
+
+    public static FirefoxDriver InitializeFirefox(PageLoadStrategy loadStrategy)
     {
+        var options = new FirefoxOptions();
+        var service = FirefoxDriverService.CreateDefaultService();
+        
+        service.SuppressInitialDiagnosticInformation = true;
+        service.HideCommandPromptWindow = false;
+        options.PageLoadStrategy = loadStrategy;
+        options.AcceptInsecureCertificates = true;
+        
+
+        return new FirefoxDriver(service, options);
+    }
+    public static ChromeDriver InitializeChrome(PageLoadStrategy loadStrategy)
+    {
+        var options = new ChromeOptions();
+        
         var service = ChromeDriverService.CreateDefaultService();
         service.EnableVerboseLogging = false;
         service.SuppressInitialDiagnosticInformation = true;
         service.HideCommandPromptWindow = false;
-
-        return service;
-    }
-    public static ChromeDriver InitializeChrome(ChromeDriverService service)
-    {
-
-        var options = new ChromeOptions();
-        options.PageLoadStrategy = PageLoadStrategy.Normal;
-
+        
+        options.PageLoadStrategy = loadStrategy;
+        
         options.AddArgument("--no-sandbox");
         options.AddArgument("--disable-gpu");
         options.AddArgument("--disable-crash-reporter");
