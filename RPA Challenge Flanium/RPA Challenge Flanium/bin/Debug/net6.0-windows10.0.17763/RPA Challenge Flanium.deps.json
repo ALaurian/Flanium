@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "RPA Challenge Flanium/1.0.0": {
         "dependencies": {
-          "Flanium": "2.1.4.1",
+          "Flanium": "2.1.9.7",
           "Selenium.WebDriver.ChromeDriver": "104.0.5112.7900",
           "Selenium.WebDriver.GeckoDriver.Win64": "0.31.0",
           "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.17763.25"
@@ -51,7 +51,7 @@
           }
         }
       },
-      "Flanium/2.1.4.1": {
+      "Flanium/2.1.9.7": {
         "dependencies": {
           "DotNetSeleniumExtras.PageObjects": "3.11.0",
           "DotNetSeleniumExtras.WaitHelpers": "3.11.0",
@@ -255,12 +255,12 @@
       "path": "dotnetseleniumextras.waithelpers/3.11.0",
       "hashPath": "dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512"
     },
-    "Flanium/2.1.4.1": {
+    "Flanium/2.1.9.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-BgUiHWE48+z6UPRjuHQvCxgYc5xeOyu151Hpk10VgHNmncyoESAV1G3nd/lmSl3DhuUVPuYtvE8yvk/h0+nF2A==",
-      "path": "flanium/2.1.4.1",
-      "hashPath": "flanium.2.1.4.1.nupkg.sha512"
+      "sha512": "sha512-njxJyALpc3/Ybrfcu2Ww/Omvb1I9/yxHVBfw8mRfk6siFAUknSqghIYFb6g8K48kA3WfMTwkeLzpVytDcO+mqg==",
+      "path": "flanium/2.1.9.7",
+      "hashPath": "flanium.2.1.9.7.nupkg.sha512"
     },
     "FlaUI.Core/3.2.0": {
       "type": "package",

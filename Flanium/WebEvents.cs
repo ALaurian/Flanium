@@ -1,15 +1,9 @@
-﻿using System.ComponentModel.Design;
-using System.Data;
-using System.Windows.Forms;
-using FlaUI.Core;
+﻿using System.Data;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.DevTools.V102.Page;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.Extensions;
 using Polly;
 using static Flanium.WebEvents.Search;
-#pragma warning disable CS0168
 
 namespace Flanium;
 
@@ -286,7 +280,8 @@ public class WebEvents
             string FrameType = "iframe")
         {
             IWebElement element = null;
-            Console.WriteLine("         Searching for Element: " + XPath + "\n");
+            var timeStamp = "[" + DateTime.Now.Day + "." + DateTime.Now.Month.ToString("00") + "." + DateTime.Now.Year + " " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second + "]";
+            Console.WriteLine("         " + timeStamp + "Searching for Element: " + XPath + "\n");
 
             var wHandles = chromeDriver.WindowHandles.Reverse();
 
@@ -303,7 +298,8 @@ public class WebEvents
                         XPath);
                     if (element != null)
                     {
-                        Console.WriteLine("     Found Element: " + XPath + " (" + element.Text + ")\n");
+                        timeStamp = "[" + DateTime.Now.Day + "." + DateTime.Now.Month.ToString("00") + "." + DateTime.Now.Year + " " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second + "]";
+                        Console.WriteLine("     " + timeStamp + "Found Element: " + XPath + " (" + element.Text + ")\n");
                         return element;
                     }
                 }
@@ -333,7 +329,8 @@ public class WebEvents
                                     XPath);
                                 if (element != null)
                                 {
-                                    Console.WriteLine("     Found Element: " + XPath + " (" + element.Text + ")\n");
+                                    timeStamp = "[" + DateTime.Now.Day + "." + DateTime.Now.Month.ToString("00") + "." + DateTime.Now.Year + " " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ":" + DateTime.Now.Second + "]";
+                                    Console.WriteLine("     " + timeStamp +"Found Element: " + XPath + " (" + element.Text + ")\n");
                                     return element;
                                 }
                             }
@@ -722,6 +719,9 @@ public class WebEvents
                     var element = FindWebElementByXPath(chromeDriver, xPath);
                     if (element == null)
                     {
+                        //Get timestamp
+                        
+
                         Console.WriteLine("Element vanished: " + xPath + "\n");
                         return null;
                     }
@@ -872,11 +872,13 @@ public class WebEvents
                         {
                             element.Click();
                         }
-                        catch (ElementClickInterceptedException)
+                        catch (Exception e)
                         {
-                            return null;
+                            if(e is ElementClickInterceptedException or StaleElementReferenceException)
+                                return null;
+                            throw;
                         }
-
+                        
                         return element;
                     }
 

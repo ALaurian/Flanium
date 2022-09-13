@@ -48,7 +48,7 @@
           "dependencies": {
             "Flanium": {
               "target": "Package",
-              "version": "[2.1.4.1, )"
+              "version": "[2.2.0.7, )"
             },
             "Selenium.WebDriver.ChromeDriver": {
               "target": "Package",

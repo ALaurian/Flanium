@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Flanium" Version="2.1.4.1" />
+      <PackageReference Include="Flanium" Version="2.2.0.7" />
       <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="104.0.5112.7900" />
       <PackageReference Include="Selenium.WebDriver.GeckoDriver.Win64" Version="0.31.0" />
     </ItemGroup>

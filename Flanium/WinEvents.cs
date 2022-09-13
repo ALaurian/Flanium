@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Management;
-using Windows.System;
 using FlaUI.Core.AutomationElements;
-using FlaUI.Core.Capturing;
 using FlaUI.Core.WindowsAPI;
 using FlaUI.UIA3;
 using OpenQA.Selenium.Chrome;

@@ -26,7 +26,7 @@
           "lib/netstandard2.0/SeleniumExtras.WaitHelpers.dll": {}
         }
       },
-      "Flanium/2.1.4.1": {
+      "Flanium/2.2.0.7": {
         "type": "package",
         "dependencies": {
           "DotNetSeleniumExtras.PageObjects": "3.11.0",
@@ -408,13 +408,13 @@
         "lib/netstandard2.0/SeleniumExtras.WaitHelpers.dll"
       ]
     },
-    "Flanium/2.1.4.1": {
-      "sha512": "BgUiHWE48+z6UPRjuHQvCxgYc5xeOyu151Hpk10VgHNmncyoESAV1G3nd/lmSl3DhuUVPuYtvE8yvk/h0+nF2A==",
+    "Flanium/2.2.0.7": {
+      "sha512": "bp63mRMqjINWtqIyW4WkJ27eCGVlM4KKPaSvXvrJwiLfUg1dhYIg0tIGRqdRjDbQ8dVY2edpdTNo4FjZum/7bg==",
       "type": "package",
-      "path": "flanium/2.1.4.1",
+      "path": "flanium/2.2.0.7",
       "files": [
         ".nupkg.metadata",
-        "flanium.2.1.4.1.nupkg.sha512",
+        "flanium.2.2.0.7.nupkg.sha512",
         "flanium.nuspec",
         "lib/net6.0-windows10.0.17763/Flanium.dll"
       ]
@@ -1065,7 +1065,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0-windows10.0.17763": [
-      "Flanium >= 2.1.4.1",
+      "Flanium >= 2.2.0.7",
       "Selenium.WebDriver.ChromeDriver >= 104.0.5112.7900",
       "Selenium.WebDriver.GeckoDriver.Win64 >= 0.31.0"
     ]
@@ -1118,7 +1118,7 @@
         "dependencies": {
           "Flanium": {
             "target": "Package",
-            "version": "[2.1.4.1, )"
+            "version": "[2.2.0.7, )"
           },
           "Selenium.WebDriver.ChromeDriver": {
             "target": "Package",

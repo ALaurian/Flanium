@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "ZE4T/rgZFOoaQMAs7rfMHY+OU6PXUGCVDkpvjWI5xUZidkCIGs84AW2FW3gvXxBQFXb/rajXExt6a+dfpn4FXQ==",
+  "dgSpecHash": "zZtyWsvcpnQN25k2gKob0Y6AP9cksXkf9oIaW0LyGKmT0qinURqDHF93zSFNJX+7yQZeo9lCsft88N703lL1Ww==",
   "success": true,
   "projectFilePath": "C:\\Users\\l.avrigeanu\\RiderProjects\\RPA Challenge Flanium\\RPA Challenge Flanium\\RPA Challenge Flanium.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\dotnetseleniumextras.pageobjects\\3.11.0\\dotnetseleniumextras.pageobjects.3.11.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\dotnetseleniumextras.waithelpers\\3.11.0\\dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512",
-    "C:\\Users\\l.avrigeanu\\.nuget\\packages\\flanium\\2.1.4.1\\flanium.2.1.4.1.nupkg.sha512",
+    "C:\\Users\\l.avrigeanu\\.nuget\\packages\\flanium\\2.2.0.7\\flanium.2.2.0.7.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\flaui.core\\3.2.0\\flaui.core.3.2.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\flaui.uia3\\3.2.0\\flaui.uia3.3.2.0.nupkg.sha512",
     "C:\\Users\\l.avrigeanu\\.nuget\\packages\\interop.uiautomationclient\\10.18362.0\\interop.uiautomationclient.10.18362.0.nupkg.sha512",
