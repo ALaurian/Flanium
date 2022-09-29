@@ -1,4 +1,6 @@
-# Flanium
+![2255624 (1) (1)](https://user-images.githubusercontent.com/110975879/193143158-30d426a1-428c-4715-b505-f8fb48b13285.png)
+# Flanium 
+
 
 Flanium is an all-purpose RPA Library created for Windows.
 
@@ -7,6 +9,8 @@ Flanium is made by joining two frameworks:
  2. **FlaUi** - FlaUI is a .NET library which helps with automated UI testing of Windows applications (Win32, WinForms, WPF, Store Apps, ...).
  
  Flanium only supports Windows and Chrome browser **for now**. [12/08/2022]
+ 
+ Flanium now supports Windows, Chrome and Firefox **partially**. [30/09/2022]
  
 # [Documentation can be found here.](https://github.com/ALaurian/Flanium/wiki)
  
