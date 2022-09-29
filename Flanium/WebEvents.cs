@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.Extensions;
 using Polly;
+using WinRT;
 using static Flanium.WebEvents.Search;
 
 namespace Flanium;
@@ -192,8 +193,8 @@ public class WebEvents
 
         public static List<IWebElement> FindAllDescendants(WebDriver chromeDriver, IWebElement element)
         {
-            var descendants = chromeDriver.ExecuteJavaScript<List<IWebElement>>(
-                "return arguments[0].querySelectorAll('*')", element).ToList();
+            var descendants = chromeDriver.ExecuteJavaScript<object>("return arguments[0].querySelectorAll('*');", element)
+                .As<IEnumerable<IWebElement>>().ToList();
             return descendants;
         }
 
@@ -394,7 +395,7 @@ public class WebEvents
     {
         public static List<IWebElement> FindAllChildren(IWebElement element)
         {
-            return element.FindElements(By.XPath(".//*")).ToList();
+            return element.FindElements(By.XPath("*")).ToList();
         }
 
         public static List<IWebElement> FindAllDescendants(IWebElement element)
@@ -593,21 +594,8 @@ public class WebEvents
                 .Single(e => e.TagName == "table");
 
             var headers = table.FindElements(By.TagName("thead"));
-            WebElement header = null;
-            foreach (var h in headers)
-            {
-                if(h.GetAttribute("innerHtml") == null)
-                {
-                    continue;
-                }
+            WebElement header = (from h in headers where h.GetAttribute("innerHtml") != null where h.GetAttribute("innerHtml") != null select h as WebElement).FirstOrDefault();
 
-                if (h.GetAttribute("innerHtml") != null)
-                {
-                    header = h as WebElement;
-                    break;
-                }
-            }
-        
             var headerColumns = WebEvents.Search.FindAllDescendants(header).Where(e => e.TagName == "th");
             var headerColumnNames = headerColumns.Select(e => e.Text).ToList();
         
@@ -821,8 +809,70 @@ public class WebEvents
             throw new Exception("\n Failed to hover over element with XPath: " + xPath + "\n");
         }
 
+        public static bool DismissAlert(WebDriver chromeDriver, List<string> acceptedAlertText, int retries = 15, int retryInterval = 1)
+        {
+            var alert = Policy.HandleResult<IAlert>(alert => alert == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval)).Execute(() =>
+                {
+                    IAlert alert = null;
+                    try
+                    {
+                        alert = chromeDriver.SwitchTo().Alert();
+                    }
+                    catch (Exception e)
+                    {
+                    }
 
-        public static bool WaitForAlert(WebDriver chromeDriver, List<string> acceptedAlertText, int retries = 15,
+                    return alert;
+                });
+
+            if (alert == null)
+            {
+                return false;
+            }
+
+            var alertText = alert.Text.Trim();
+            if (acceptedAlertText.Any(x => alertText.Contains(x)))
+            {
+                alert.Dismiss();
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool AcceptAlert(WebDriver chromeDriver, List<string> acceptedAlertText, int retries = 15, int retryInterval = 1)
+        {
+            var alert = Policy.HandleResult<IAlert>(alert => alert == null)
+                .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval)).Execute(() =>
+                {
+                    IAlert alert = null;
+                    try
+                    {
+                        alert = chromeDriver.SwitchTo().Alert();
+                    }
+                    catch (Exception e)
+                    {
+                    }
+
+                    return alert;
+                });
+
+            if (alert == null)
+            {
+                return false;
+            }
+
+            var alertText = alert.Text.Trim();
+            if (acceptedAlertText.Any(x => alertText.Contains(x)))
+            {
+                alert.Accept();
+                return true;
+            }
+            
+            return false;
+        }
+         public static bool WaitForAlert(WebDriver chromeDriver, List<string> acceptedAlertText, int retries = 15,
             int retryInterval = 1)
         {
             var alert = Policy.HandleResult<IAlert>(alert => alert == null)

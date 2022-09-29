@@ -26,6 +26,35 @@ public class Helpers
     {
         public class Files
         {
+            public static void CopyFile(string source, string destination)
+            {
+                File.Copy(source, destination,true);
+            }
+            
+            public static void CopyFiles(string source, string destination, List<string> files, bool overwrite)
+            {
+                if (Directory.Exists(destination))
+                {
+                    foreach (var file in files)
+                    {
+                        if (File.Exists(destination + "\\" + Path.GetFileName(file)))
+                            File.Delete(destination + "\\" + Path.GetFileName(file));
+
+                        CopyFile(source + "\\" + file, destination + "\\" + file);
+                        Console.WriteLine(GetTimeStamp() + "Moved file: " + file + " to: " + destination + "\n");
+                    }
+                }
+                else
+                {
+                    Directory.CreateDirectory(destination);
+                    foreach (var file in files)
+                    {
+                        MoveFile(source + "\\" + file, destination + "\\" + file);
+                        Console.WriteLine(GetTimeStamp() + "Moved file: " + file + " to: " + destination + "\n");
+                    }
+                }
+            }
+            
             public static void DeleteDuplicateFiles(string folderPath, string duplicateIdentifier = "(")
             {
                 var files = Directory.GetFiles(folderPath);
@@ -87,7 +116,7 @@ public class Helpers
                         if (File.Exists(directoryPath + "\\" + Path.GetFileName(file)))
                             File.Delete(directoryPath + "\\" + Path.GetFileName(file));
 
-                        MoveFile(folderPath + "\\" + file, directoryPath);
+                        MoveFile(folderPath + "\\" + file, directoryPath + "\\" + file);
                         Console.WriteLine(GetTimeStamp() + "Moved file: " + file + " to: " + directoryPath + "\n");
                     }
                 }
@@ -96,7 +125,7 @@ public class Helpers
                     Directory.CreateDirectory(directoryPath);
                     foreach (var file in files)
                     {
-                        MoveFile(folderPath + "\\" + file, directoryPath);
+                        MoveFile(folderPath + "\\" + file, directoryPath + "\\" + file);
                         Console.WriteLine(GetTimeStamp() + "Moved file: " + file + " to: " + directoryPath + "\n");
                     }
                 }

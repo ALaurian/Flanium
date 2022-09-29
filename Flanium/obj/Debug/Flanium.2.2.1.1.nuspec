@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Flanium</id>
+    <version>2.2.1.1</version>
+    <title>Flanium</title>
+    <authors>Laurian-Filip Avrigeanu</authors>
+    <licenseUrl>https://github.com/ALaurian/Flanium/blob/main/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ALaurian/Flanium</projectUrl>
+    <description>RPA Library for Windows.</description>
+    <tags>Selenium FlaUI</tags>
+    <repository type="GitHub" url="https://github.com/ALaurian/Flanium" />
+    <dependencies>
+      <group targetFramework="net6.0-windows10.0.17763">
+        <dependency id="DotNetSeleniumExtras.PageObjects" version="3.11.0" exclude="Build,Analyzers" />
+        <dependency id="DotNetSeleniumExtras.WaitHelpers" version="3.11.0" exclude="Build,Analyzers" />
+        <dependency id="FlaUI.Core" version="3.2.0" exclude="Build,Analyzers" />
+        <dependency id="FlaUI.UIA3" version="3.2.0" exclude="Build,Analyzers" />
+        <dependency id="Interop.UIAutomationClient" version="10.18362.0" exclude="Build,Analyzers" />
+        <dependency id="OpenPop.NET" version="2.0.6.1120" exclude="Build,Analyzers" />
+        <dependency id="Polly" version="7.2.3" exclude="Build,Analyzers" />
+        <dependency id="Selenium.Support" version="4.4.0" exclude="Build,Analyzers" />
+        <dependency id="Selenium.WebDriver" version="4.4.0" exclude="Build,Analyzers" />
+        <dependency id="Selenium.WebDriver.ChromeDriver" version="104.0.5112.7900" exclude="Build,Analyzers" />
+        <dependency id="Selenium.WebDriver.GeckoDriver.Win64" version="0.31.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\l.avrigeanu\RiderProjects\Flanium\Flanium\bin\Debug\net6.0-windows10.0.17763.0\Flanium.dll" target="lib\net6.0-windows10.0.17763\Flanium.dll" />
+  </files>
+</package>

@@ -4,10 +4,12 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.VisualBasic;
+using OpenQA.Selenium.DevTools.V85.Debugger;
 using Application = Microsoft.Office.Interop.Excel.Application;
 using Clipboard = System.Windows.Forms.Clipboard;
 using DataColumn = System.Data.DataColumn;
 using DataTable = System.Data.DataTable;
+using Range = System.Range;
 
 #pragma warning disable CS0168
 
@@ -28,8 +30,19 @@ public class Blocks
         private int DispatcherIndex { get; set; }
         private object[] _dispatcher { get; set; }
         private bool IsRunning { get; set; }
-        
         private bool Jumping { get; set; }
+        
+        public void SetDispatcherRange(int startIndex, int endIndex)
+        {
+            if (_dispatcher is not null)
+            {
+                Range range = new(startIndex, endIndex);
+                //use Range to cut the dispatcher
+                _dispatcher = _dispatcher[range];  
+            }
+            if(_dispatcher is null)
+                throw new Exception("Dispatcher is null. Please set the dispatcher first.");
+        }
 
 
         public Engine SetDispatcher(object[] oneDimensionalArray)
@@ -374,13 +387,13 @@ public class Blocks
             return (workbook.Worksheets[sheet].Columns[index].Value2 as object[,]).Cast<object>().ToList();
         }
 
-        public string EditCell(object sheet, int row, int column, string value)
+        public string SetCellValue(object sheet, int row, int column, string value)
         {
             workbook.Worksheets[sheet].Cells[row, column].Value2 = value;
             return "Edited cell on row " + row + " and column " + column + " to " + value + ".";
         }
 
-        public string EditRange(object sheet, string range, string value)
+        public string SetRangeValue(object sheet, string range, string value)
         {
             workbook.Worksheets[sheet].Range[range].Value2 = value;
             return "Edited range " + range + " to " + value + ".";
@@ -480,7 +493,11 @@ public class Blocks
         {
             workbook.Worksheets[sheet].Cells[row, column].Select();
             excelApp.Selection.End(XlDirection.xlDown).Select();
-            return excelApp.Selection.Row;
+            
+            if (excelApp.Selection.Value2 is not null)
+                return excelApp.Selection.Row;
+            
+            return row;
         }
 
         public bool CopyPaste(object sheet, string range, string destinationRange, XlPasteType pasteType)
@@ -528,11 +545,22 @@ public class Blocks
             {
                 excelApp.Selection.End(XlDirection.xlToRight).Select();
             }
-
             excelApp.Selection.End(XlDirection.xlToLeft).Select();
-
             var lastColumnWithValue = excelApp.Selection.Column;
 
+            var lastRowWithValue = 0;
+            var x = 1;
+            while (x <= lastColumnWithValue)
+            {
+
+                if (lastRowWithValue < GetLastRow(sheet, headerAt, x))
+                    lastRowWithValue = GetLastRow(sheet, headerAt, x);               
+                
+                x++;
+            }
+            
+            
+            
             var newDataTable = new DataTable();
 
             switch (headerless)
@@ -582,7 +610,9 @@ public class Blocks
 
             workbook.Worksheets[sheet].Range[workbook.Worksheets[sheet].Cells[headerAt, 1],
                 workbook.Worksheets[sheet].Cells[headerAt, lastColumnWithValue]].Select();
-            workbook.Worksheets[sheet].Range[excelApp.Selection, excelApp.Selection.End(XlDirection.xlDown)].Select();
+            excelApp.Selection.Resize[lastRowWithValue, excelApp.Selection.Columns.Count].Select();
+            
+            //workbook.Worksheets[sheet].Range[excelApp.Selection, lastRowWithValue].Select();
             excelApp.Selection.Offset(1, 0).Select();
             excelApp.Selection.Resize[excelApp.Selection.Rows.Count - 1, excelApp.Selection.Columns.Count].Select();
             var selectionValue = ((object[,]) excelApp.Selection.Value2).GetEnumerator();
@@ -590,13 +620,19 @@ public class Blocks
             selectionValue.MoveNext();
             try
             {
-                while (selectionValue.Current != null)
+                var rowNo = headerless ? 1 : 2;
+                
+                while (rowNo <= lastRowWithValue)
                 {
                     var newRow = newDataTable.NewRow();
                     for (var i = 0; i < lastColumnWithValue; i++)
                     {
                         if (selectionValue.Current != null)
                             newRow[i] = selectionValue.Current.ToString();
+                        else
+                        {
+                            newRow[i] = "";
+                        }
 
                         selectionValue.MoveNext();
                     }
@@ -612,7 +648,8 @@ public class Blocks
                     }).ToArray();
 
                     newDataTable.Rows.Add(newRow);
-                }
+                    rowNo++;
+                }   
             }
             catch
             {

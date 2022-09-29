@@ -1,10 +1,15 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Management;
+using System.Text.RegularExpressions;
 using FlaUI.Core.AutomationElements;
+using FlaUI.Core.Capturing;
 using FlaUI.Core.WindowsAPI;
 using FlaUI.UIA3;
 using OpenQA.Selenium.Chrome;
 using Polly;
+
 #pragma warning disable CS0168
 
 namespace Flanium;
@@ -49,10 +54,9 @@ public class WinEvents
             var window = Polly.Policy.HandleResult<Window>(result => result == null)
                 .WaitAndRetry(retries, retryAttempt => TimeSpan.FromSeconds(retryInterval))
                 .Execute(() => desktop.FindFirstByXPath(xPath).AsWindow());
-            
             return window;
         }
-
+        
         public static List<Window> GetWindows(string xPath, int retries = 15, double retryInterval = 1)
         {
             var automation = new UIA3Automation();
@@ -105,13 +109,24 @@ public class WinEvents
 
     public class Action
     {
-
+        
         public static string DesktopScreenshot(string saveToPath)
         {
             var automation = new UIA3Automation();
             var desktop = automation.GetDesktop();
-            desktop.CaptureToFile(saveToPath);
+            //var myCapture = Capture.Rectangle(desktop.BoundingRectangle);
+            var myCapture = ScreenshotRAW(desktop.BoundingRectangle);
+            myCapture.Save(saveToPath, ImageFormat.Jpeg);
+            //myCapture.ToFile(saveToPath);
             return saveToPath;
+        }
+
+        private static Bitmap ScreenshotRAW(Rectangle region)
+        {
+            var screenshotInternal = new Bitmap(region.Width, region.Height, PixelFormat.Format32bppArgb);
+            using var graphics = Graphics.FromImage((Image) screenshotInternal);
+            graphics.CopyFromScreen(region.Location, new Point(0, 0), screenshotInternal.Size, CopyPixelOperation.SourceCopy);
+            return screenshotInternal;
         }
 
         public static string ElementScreenshot(AutomationElement element,string saveToPath)

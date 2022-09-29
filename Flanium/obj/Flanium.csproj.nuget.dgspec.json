@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj": {
-      "version": "2.2.0.7",
+      "version": "2.2.7.2",
       "restore": {
         "projectUniqueName": "C:\\Users\\l.avrigeanu\\RiderProjects\\Flanium\\Flanium\\Flanium.csproj",
         "projectName": "Flanium",
@@ -56,15 +56,19 @@
             },
             "FlaUI.Core": {
               "target": "Package",
-              "version": "[3.2.0, )"
+              "version": "[4.0.0, )"
             },
             "FlaUI.UIA3": {
               "target": "Package",
-              "version": "[3.2.0, )"
+              "version": "[4.0.0, )"
             },
             "Interop.UIAutomationClient": {
               "target": "Package",
-              "version": "[10.18362.0, )"
+              "version": "[10.19041.0, )"
+            },
+            "Microsoft.Extensions.Logging.Debug": {
+              "target": "Package",
+              "version": "[7.0.0-rc.1.22426.10, )"
             },
             "OpenPop.NET": {
               "target": "Package",
@@ -84,11 +88,19 @@
             },
             "Selenium.WebDriver.ChromeDriver": {
               "target": "Package",
-              "version": "[104.0.5112.7900, )"
+              "version": "[105.0.5195.5200, )"
             },
             "Selenium.WebDriver.GeckoDriver.Win64": {
               "target": "Package",
               "version": "[0.31.0, )"
+            },
+            "log4net": {
+              "target": "Package",
+              "version": "[2.0.15, )"
+            },
+            "morelinq": {
+              "target": "Package",
+              "version": "[3.3.2, )"
             }
           },
           "imports": [
@@ -97,14 +109,15 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
           "downloadDependencies": [
             {
               "name": "Microsoft.Windows.SDK.NET.Ref",
-              "version": "[10.0.17763.25, 10.0.17763.25]"
+              "version": "[10.0.17763.26, 10.0.17763.26]"
             }
           ],
           "frameworkReferences": {
@@ -115,7 +128,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -7,7 +7,7 @@
         <Authors>Laurian-Filip Avrigeanu</Authors>
         <Description>RPA Library for Windows.</Description>
         <OutputType>Library</OutputType>
-        <PackageVersion>2.2.0.7</PackageVersion>
+        <PackageVersion>2.2.7.6</PackageVersion>
         <Title>Flanium</Title>
         <PackageProjectUrl>https://github.com/ALaurian/Flanium</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/ALaurian/Flanium/blob/main/LICENSE</PackageLicenseUrl>
@@ -15,19 +15,23 @@
         <RepositoryType>GitHub</RepositoryType>
         <PackageTags>Selenium; FlaUI</PackageTags>
         <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
+        <NeutralLanguage>en-US</NeutralLanguage>
     </PropertyGroup>
     
     <ItemGroup>
       <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.0" />
       <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
-      <PackageReference Include="FlaUI.Core" Version="3.2.0" />
-      <PackageReference Include="FlaUI.UIA3" Version="3.2.0" />
-      <PackageReference Include="Interop.UIAutomationClient" Version="10.18362.0" />
+      <PackageReference Include="FlaUI.Core" Version="4.0.0" />
+      <PackageReference Include="FlaUI.UIA3" Version="4.0.0" />
+      <PackageReference Include="Interop.UIAutomationClient" Version="10.19041.0" />
+      <PackageReference Include="log4net" Version="2.0.15" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0-rc.1.22426.10" />
+      <PackageReference Include="morelinq" Version="3.3.2" />
       <PackageReference Include="OpenPop.NET" Version="2.0.6.1120" />
       <PackageReference Include="Polly" Version="7.2.3" />
       <PackageReference Include="Selenium.Support" Version="4.4.0" />
       <PackageReference Include="Selenium.WebDriver" Version="4.4.0" />
-      <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="104.0.5112.7900" />
+      <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="105.0.5195.5200" />
       <PackageReference Include="Selenium.WebDriver.GeckoDriver.Win64" Version="0.31.0" />
     </ItemGroup>
 
@@ -47,6 +51,10 @@
         <EmbedInteropTypes>True</EmbedInteropTypes>
         <Private>False</Private>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="log4net.config" />
     </ItemGroup>
     
 
