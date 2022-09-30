@@ -57,7 +57,7 @@ public class Initializers
         service.EnableVerboseLogging = false;
         service.SuppressInitialDiagnosticInformation = true;
         service.HideCommandPromptWindow = false;
-
+        
         options.PageLoadStrategy = loadStrategy;
         
         var Driver = new ChromeDriver(service, options);
