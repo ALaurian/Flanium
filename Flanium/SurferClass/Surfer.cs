@@ -22,6 +22,13 @@ public class Surfer
     private WinBrowser _winBrowser;
     private static log4net.ILog _logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+
+    /// <summary>
+    /// Surfer constructor.
+    /// </summary>
+    /// <param name="browserType">Sets the browser type, if None then the Browser will be disabled.</param>
+    /// <param name="pageLoadStrategy">Sets the strategy, Selenium documentation covers PageLoadStrategy behavior.</param>
+    /// <param name="debugMode">Enables or disables debugging in the console.</param>
     public Surfer(BrowserType browserType = BrowserType.None, PageLoadStrategy pageLoadStrategy = PageLoadStrategy.Default, bool debugMode = false)
     {
         if (debugMode == true)
@@ -31,21 +38,33 @@ public class Surfer
         else
         {
             _logger.Info("Debug mode is off.");
-            var root = ((log4net.Repository.Hierarchy.Hierarchy)LogManager.GetRepository()).Root;
+            var root = ((log4net.Repository.Hierarchy.Hierarchy) LogManager.GetRepository()).Root;
             root.RemoveAppender("Console");
         }
 
         if (browserType != BrowserType.None)
             _browser = new WebBrowser(browserType, pageLoadStrategy);
+
         _winBrowser = new WinBrowser();
     }
 
-    public WebBrowser Browser => _browser;
-    public WinBrowser winBrowser => _winBrowser;
+    /// <summary>
+    /// Gets the Browser object of the Surfer class.
+    /// </summary>
+    public WebBrowser WebSurfer => _browser;
 
+    /// <summary>
+    /// Gets the Windows Browser object of the Surfer class.
+    /// </summary>
+    public WinBrowser WinSurfer => _winBrowser;
+
+    /// <summary>
+    /// Disposes the Surfer class.
+    /// </summary>
     public void Dispose()
     {
         _browser.GetDriver().Dispose();
+        _browser.GetProcess().CloseMainWindow();
     }
 
     public enum BrowserType
@@ -55,26 +74,45 @@ public class Surfer
         Firefox
     }
 
+    /// <summary>
+    /// Web Controller class.
+    /// </summary>
     public class WebBrowser
     {
         private static WebDriver _driver { get; set; }
+        private static Process _browserProcess { get; set; }
 
+        private SelectionStrategy _selectionStrategy = SelectionStrategy.Selenium;
+
+        /// <summary>
+        /// Gets the Selenium WebDriver object.
+        /// </summary>
+        /// <returns>WebDriver</returns>
         public WebDriver GetDriver()
         {
             return _driver;
         }
 
+        public Process GetProcess()
+        {
+            return _browserProcess;
+        }
+
         private BrowserType _selectedBrowserType { get; }
 
-        public JS JavaScript = new();
-        public FS FlaniumScript = new();
-
-        public WebBrowser(BrowserType browserType, PageLoadStrategy pageLoadStrategy = PageLoadStrategy.Normal)
+        /// <summary>
+        /// WebBrowser constructor.
+        /// </summary>
+        /// <param name="browserType">Can be None, Chrome or Firefox.</param>
+        /// <param name="pageLoadStrategy">See Selenium docs for PageLoadStrategy behavior.</param>
+        public WebBrowser(BrowserType browserType, PageLoadStrategy pageLoadStrategy = PageLoadStrategy.Default)
         {
             switch (browserType)
             {
                 case BrowserType.Chrome:
-                    _driver = Initializers.InitializeChrome(loadStrategy: pageLoadStrategy);
+                    var objectList = Initializers.InitializeChrome(loadStrategy: pageLoadStrategy);
+                    _driver = objectList[1] as WebDriver;
+                    _browserProcess = objectList[0] as Process;
                     _selectedBrowserType = browserType;
                     break;
                 case BrowserType.Firefox:
@@ -82,25 +120,44 @@ public class Surfer
                     _selectedBrowserType = browserType;
                     break;
             }
+
             _logger.Info("WebSurfer has started succesfully.");
         }
 
-        public void Delay(int seconds)
+        /// <summary>
+        /// Waits for 1 second, can be configured.
+        /// </summary>
+        /// <param name="seconds"></param>
+        public void Delay(int seconds = 1)
         {
             Thread.Sleep(TimeSpan.FromSeconds(seconds));
         }
 
+        /// <summary>
+        /// Navigates to a URL.
+        /// </summary>
+        /// <param name="url">URL of the website, valid URLs contain 'https://'</param>
         public void NavigateTo(string url)
         {
             _driver.Navigate().GoToUrl(url);
         }
 
+        /// <summary>
+        /// Opens a new Window or Tab, depending on the WindowType parameter, then switches to it.
+        /// </summary>
+        /// <param name="windowType"></param>
         public void Open(WindowType windowType)
         {
             _driver.SwitchTo().NewWindow(windowType);
             _driver.SwitchTo().Window(_driver.WindowHandles.Last());
         }
 
+        /// <summary>
+        /// Closes the Window or Tab with the given URL.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="retries"></param>
+        /// <param name="retryInterval"></param>
         public void Close(string url, int retries = 15, int retryInterval = 1)
         {
             _driver.SwitchTo().Window(_driver.WindowHandles.First());
@@ -138,10 +195,15 @@ public class Surfer
                 _logger.Info("Closing tab with URL: " + url + "");
                 _driver.SwitchTo().Window(window).Close();
             }
-            
-
         }
 
+        /// <summary>
+        /// Closes the Window or Tab with the given URL and where the element is present.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="element"></param>
+        /// <param name="retries"></param>
+        /// <param name="retryInterval"></param>
         public void Close(string url, IWebElement element,
             int retries = 15, int retryInterval = 1)
         {
@@ -181,9 +243,9 @@ public class Surfer
                     return null;
                 });
 
-            if(window is null)
+            if (window is null)
             {
-                _logger.Info("Could not find tab with URL: " + url  + "");
+                _logger.Info("Could not find tab with URL: " + url + "");
             }
             else
             {
@@ -192,6 +254,11 @@ public class Surfer
             }
         }
 
+        /// <summary>
+        /// Highlights an element for 3 seconds, configurable.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="duration"></param>
         public void Highlight(IWebElement element, int duration = 3000)
         {
             var origStyle = _driver.ExecuteScript("arguments[0].style;", element);
@@ -202,6 +269,11 @@ public class Surfer
             _driver.ExecuteScript("arguments[0].style=arguments[1]", new[] {element, origStyle});
         }
 
+        /// <summary>
+        /// Waits, manages dangerous files and removes files from the download history while also returning the file path.
+        /// </summary>
+        /// <param name="refreshRateInSeconds"></param>
+        /// <returns>A list of files that were downloaded.</returns>
         public List<string> GetDownloadedFiles(double refreshRateInSeconds = 0.250)
         {
             var downloads = new List<string>();
@@ -293,23 +365,234 @@ public class Surfer
             return downloads;
         }
 
-        public class JS
+        public enum SelectionStrategy
         {
-            public Actions Action = new();
-            public Searchers Searcher = new();
+            None,
+            Javascript,
+            Selenium
+        }
 
-            public class Actions
+        public void SetSelectionStrategy(SelectionStrategy selectionStrategy)
+        {
+            _selectionStrategy = selectionStrategy;
+        }
+
+        public IWebElement Click(string XPath, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
             {
-                private Searchers Searcher = new();
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Actions.Click(XPath),
+                    SelectionStrategy.Selenium => FS.Actions.Click(XPath),
+                    _ => null
+                };
+            }
 
-                public IWebElement Hover(string xPath, int retries = 15,
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Actions.Click(XPath),
+                SelectionStrategy.Selenium => FS.Actions.Click(XPath),
+                _ => null
+            };
+        }
+
+        public IWebElement SetValue(string XPath, string value, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Actions.SetValue(XPath, value),
+                    SelectionStrategy.Selenium => FS.Actions.SetValue(XPath, value),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Actions.SetValue(XPath, value),
+                SelectionStrategy.Selenium => FS.Actions.SetValue(XPath, value),
+                _ => null
+            };
+        }
+
+        public string GetText(string XPath, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Actions.GetText(XPath),
+                    SelectionStrategy.Selenium => FS.Actions.GetText(XPath),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Actions.GetText(XPath),
+                SelectionStrategy.Selenium => FS.Actions.GetText(XPath),
+                _ => null
+            };
+        }
+
+        public IWebElement WaitElementVanish(string XPath, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Actions.WaitElementVanish(XPath),
+                    SelectionStrategy.Selenium => FS.Actions.WaitElementVanish(XPath),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Actions.WaitElementVanish(XPath),
+                SelectionStrategy.Selenium => FS.Actions.WaitElementVanish(XPath),
+                _ => null
+            };
+        }
+
+        public IWebElement WaitForeverElementVanish(string XPath, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Actions.WaitForeverElementVanish(XPath),
+                    SelectionStrategy.Selenium => FS.Actions.WaitForeverElementVanish(XPath),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Actions.WaitForeverElementVanish(XPath),
+                SelectionStrategy.Selenium => FS.Actions.WaitForeverElementVanish(XPath),
+                _ => null
+            };
+        }
+
+        public IWebElement Hover(string XPath, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Actions.Hover(XPath),
+                    SelectionStrategy.Selenium => FS.Actions.Hover(XPath),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Actions.Hover(XPath),
+                SelectionStrategy.Selenium => FS.Actions.Hover(XPath),
+                _ => null
+            };
+        }
+
+        public List<IWebElement> FindAllChildren(IWebElement element, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Searchers.FindAllChildren(element),
+                    SelectionStrategy.Selenium => FS.Searchers.FindAllChildren(element),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Searchers.FindAllChildren(element),
+                SelectionStrategy.Selenium => FS.Searchers.FindAllChildren(element),
+                _ => null
+            };
+        }
+
+        public List<IWebElement> FindAllDescendants(IWebElement element, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Searchers.FindAllDescendants(element),
+                    SelectionStrategy.Selenium => FS.Searchers.FindAllDescendants(element),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Searchers.FindAllDescendants(element),
+                SelectionStrategy.Selenium => FS.Searchers.FindAllDescendants(element),
+                _ => null
+            };
+        }
+
+        public IWebElement FindWebElementByXPath(string XPath, SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None,
+            string FrameType = "iframe")
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Searchers.FindWebElementByXPath(XPath, FrameType),
+                    SelectionStrategy.Selenium => FS.Searchers.FindWebElementByXPath(XPath, FrameType),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Searchers.FindWebElementByXPath(XPath, FrameType),
+                SelectionStrategy.Selenium => FS.Searchers.FindWebElementByXPath(XPath, FrameType),
+                _ => null
+            };
+        }
+
+        public IWebElement WaitElementAppear(string XPath, string FrameType = "iframe", SelectionStrategy overwriteSelectionStrategy = SelectionStrategy.None)
+        {
+            if (overwriteSelectionStrategy != SelectionStrategy.None)
+            {
+                return overwriteSelectionStrategy switch
+                {
+                    SelectionStrategy.Javascript => JS.Searchers.WaitElementAppear(XPath, FrameType: FrameType),
+                    SelectionStrategy.Selenium => FS.Searchers.WaitElementAppear(XPath, FrameType: FrameType),
+                    _ => null
+                };
+            }
+
+            return _selectionStrategy switch
+            {
+                SelectionStrategy.Javascript => JS.Searchers.WaitElementAppear(XPath, FrameType: FrameType),
+                SelectionStrategy.Selenium => FS.Searchers.WaitElementAppear(XPath, FrameType: FrameType),
+                _ => null
+            };
+        }
+
+        /// <summary>
+        /// The Javascript class library.
+        /// </summary>
+        public static class JS
+        {
+            public static class Actions
+            {
+                public static IWebElement Hover(string xPath, int retries = 15,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element != null)
                             {
                                 _logger.Info("Hovered over Element: " + xPath + " (" + element.Text + ")");
@@ -328,14 +611,14 @@ public class Surfer
                     throw new Exception(" Failed to hover over element with XPath: " + xPath + "");
                 }
 
-                public IWebElement WaitForeverElementVanish(string xPath,
+                public static IWebElement WaitForeverElementVanish(string xPath,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result != null)
                         .WaitAndRetryForever(interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element == null)
                             {
                                 _logger.Info("Element vanished: " + xPath + "");
@@ -352,14 +635,14 @@ public class Surfer
                     return null;
                 }
 
-                public IWebElement WaitElementVanish(string xPath, int retries = 60,
+                public static IWebElement WaitElementVanish(string xPath, int retries = 60,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result != null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element == null)
                             {
                                 _logger.Info("Element vanished: " + xPath + "");
@@ -376,13 +659,13 @@ public class Surfer
                     return null;
                 }
 
-                public string GetText(string xPath, int retries = 15, int retryInterval = 1)
+                public static string GetText(string xPath, int retries = 15, int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element != null)
                             {
                                 if (_driver.ExecuteJavaScript<string>("return arguments[0].innerText", element) ==
@@ -401,7 +684,7 @@ public class Surfer
                         if (_driver.ExecuteJavaScript<string>("return arguments[0].value", element) != null)
                         {
                             _logger.Info("Got value from Element: " + xPath + " (" +
-                                          _driver.ExecuteJavaScript<string>("return arguments[0].value", element) + ")");
+                                         _driver.ExecuteJavaScript<string>("return arguments[0].value", element) + ")");
 
                             return _driver.ExecuteJavaScript<string>("return arguments[0].value", element);
                         }
@@ -409,8 +692,8 @@ public class Surfer
                         if (_driver.ExecuteJavaScript<string>("return arguments[0].innerText", element) != null)
                         {
                             _logger.Info("Got text from Element: " + xPath + " (" +
-                                          _driver.ExecuteJavaScript<string>("return arguments[0].innerText", element) +
-                                          ")");
+                                         _driver.ExecuteJavaScript<string>("return arguments[0].innerText", element) +
+                                         ")");
 
                             return _driver.ExecuteJavaScript<string>("return arguments[0].innerText", element);
                         }
@@ -421,14 +704,14 @@ public class Surfer
                     return "";
                 }
 
-                public IWebElement SetValue(string xPath, string text, int retries = 15,
+                public static IWebElement SetValue(string xPath, string text, int retries = 15,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element != null)
                             {
                                 _logger.Info("Set value of Element: " + xPath + " (" + element.Text + ")");
@@ -454,14 +737,14 @@ public class Surfer
                     throw new Exception(" Failed to set value of element with XPath: " + xPath + "");
                 }
 
-                public IWebElement Click(string xPath, int retries = 15,
+                public static IWebElement Click(string xPath, int retries = 15,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element != null)
                             {
                                 _logger.Info("Clicked Element: " + xPath + " (" + element.Text + ")");
@@ -490,102 +773,23 @@ public class Surfer
                 }
             }
 
-            public class Searchers
+            public static class Searchers
             {
-                public List<IWebElement> FindAllChildren(IWebElement element)
+                public static List<IWebElement> FindAllChildren(IWebElement element)
                 {
                     var children = _driver.ExecuteJavaScript<List<IWebElement>>(
                         "return arguments[0].childNodes", element).ToList();
                     return children;
                 }
 
-                public List<IWebElement> FindAllDescendants(IWebElement element)
+                public static List<IWebElement> FindAllDescendants(IWebElement element)
                 {
                     var descendants = _driver.ExecuteJavaScript<object>("return arguments[0].querySelectorAll('*');", element)
                         .As<IEnumerable<IWebElement>>().ToList();
                     return descendants;
                 }
 
-                public IWebElement FindWebElementByXPathWindowless(string XPath,
-                    string FrameType = "iframe")
-                {
-                    IWebElement element = null;
-
-                    _logger.Info("         Searching for Element: " + XPath + "");
-
-                    _driver.SwitchTo().DefaultContent();
-
-                    try
-                    {
-                        element = _driver.ExecuteJavaScript<IWebElement>(
-                            "return document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;",
-                            XPath);
-                        if (element != null)
-                        {
-                            _logger.Info("     Found Element: " + XPath + " (" + element.Text + ")");
-                            return element;
-                        }
-                    }
-                    catch
-                    {
-                    }
-
-                    //============================================================
-                    var iframes = _driver.FindElements(By.TagName(FrameType)).ToList();
-                    var index = 0;
-
-                    Reset:
-                    for (; index < iframes.Count; index++)
-                    {
-                        retry:
-                        try
-                        {
-                            var item = iframes[index];
-
-                            try
-                            {
-                                _driver.SwitchTo().Frame(item);
-                                try
-                                {
-                                    element = _driver.ExecuteJavaScript<IWebElement>(
-                                        "return document.evaluate(arguments[0], document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;",
-                                        XPath);
-                                    if (element != null)
-                                    {
-                                        _logger.Info("     Found Element: " + XPath + " (" + element.Text + ")");
-
-                                        return element;
-                                    }
-                                }
-                                catch
-                                {
-                                }
-                            }
-                            catch
-                            {
-                                _driver.SwitchTo().ParentFrame();
-                                goto retry;
-                            }
-
-
-                            var children = _driver.FindElements(By.TagName(FrameType)).ToList();
-
-                            if (children.Count > 0)
-                                if (iframes.Any(x => children.Any(y => y.Equals(x))) == false)
-                                {
-                                    iframes.InsertRange(index + 1, children);
-                                    goto Reset;
-                                }
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                    return element;
-                }
-
-                public IWebElement FindWebElementByXPath(string XPath,
+                public static IWebElement FindWebElementByXPath(string XPath,
                     string FrameType = "iframe")
                 {
                     IWebElement element;
@@ -671,14 +875,14 @@ public class Surfer
                     return null;
                 }
 
-                public IWebElement WaitElementAppear(string xPath, int retries = 15,
+                public static IWebElement WaitElementAppear(string xPath, int retries = 15,
                     int retryInterval = 1, string FrameType = "iframe")
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = new Searchers().FindWebElementByXPath(xPath, FrameType);
+                            var element = FindWebElementByXPath(xPath, FrameType);
                             if (element != null)
                             {
                                 _logger.Info("Element Element: " + xPath + "");
@@ -698,16 +902,14 @@ public class Surfer
             }
         }
 
-        public class FS
+        /// <summary>
+        /// The Selenium class library.
+        /// </summary>
+        public static class FS
         {
-            public Searchers Searcher = new();
-            public Actions Action = new();
-
-            public class Actions
+            public static class Actions
             {
-                private Searchers Searcher = new();
-
-                public DataTable DataScraping(IWebElement tableElement)
+                public static DataTable DataScraping(IWebElement tableElement)
                 {
                     var table = WebEvents.Search.FindAllDescendants(tableElement as WebElement)
                         .Single(e => e.TagName == "table");
@@ -754,14 +956,14 @@ public class Surfer
                 }
 
 
-                public IWebElement WaitElementVanish(string xPath, int retries = 60,
+                public static IWebElement WaitElementVanish(string xPath, int retries = 60,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result != null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element == null)
                             {
                                 _logger.Info("Element vanished: " + xPath + "");
@@ -778,14 +980,14 @@ public class Surfer
                     return null;
                 }
 
-                public IWebElement WaitForeverElementVanish(string xPath,
+                public static IWebElement WaitForeverElementVanish(string xPath,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result != null)
                         .WaitAndRetryForever(interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element == null)
                             {
                                 _logger.Info("Element vanished: " + xPath + "");
@@ -802,13 +1004,13 @@ public class Surfer
                     return null;
                 }
 
-                public string GetText(string xPath, int retries = 15, int retryInterval = 1)
+                public static string GetText(string xPath, int retries = 15, int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element != null)
                             {
                                 if (element.Text == "")
@@ -842,14 +1044,14 @@ public class Surfer
                     return "";
                 }
 
-                public IWebElement Hover(string xPath, int retries = 15,
+                public static IWebElement Hover(string xPath, int retries = 15,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element != null)
                             {
                                 _logger.Info("Hovered over Element: " + xPath + " (" + element.Text + ")");
@@ -867,7 +1069,7 @@ public class Surfer
                     throw new Exception(" Failed to hover over element with XPath: " + xPath + "");
                 }
 
-                public bool WaitForAlert(List<string> acceptedAlertText, int retries = 15,
+                public static bool WaitForAlert(List<string> acceptedAlertText, int retries = 15,
                     int retryInterval = 1)
                 {
                     var alert = Policy.HandleResult<IAlert>(alert => alert == null)
@@ -901,14 +1103,14 @@ public class Surfer
                     return false;
                 }
 
-                public IWebElement Click(string xPath, int retries = 15,
+                public static IWebElement Click(string xPath, int retries = 15,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element != null)
                             {
                                 _logger.Info("Clicked Element: " + xPath + " (" + element.Text + ")");
@@ -934,14 +1136,14 @@ public class Surfer
                     throw new Exception(" Failed to click element with XPath: " + xPath + "");
                 }
 
-                public IWebElement SetValue(string xPath, string text, int retries = 15,
+                public static IWebElement SetValue(string xPath, string text, int retries = 15,
                     int retryInterval = 1)
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            var element = Searcher.FindWebElementByXPath(xPath);
+                            var element = Searchers.FindWebElementByXPath(xPath);
                             if (element != null)
                             {
                                 _logger.Info("Set Value of Element: " + xPath + " (" + text + ")");
@@ -972,19 +1174,19 @@ public class Surfer
                 }
             }
 
-            public class Searchers
+            public static class Searchers
             {
-                public List<IWebElement> FindAllChildren(IWebElement element)
+                public static List<IWebElement> FindAllChildren(IWebElement element)
                 {
-                    return element.FindElements(By.XPath("*")).ToList();
+                    return element.FindElements(By.XPath(".//*")).ToList();
                 }
 
-                public List<IWebElement> FindAllDescendants(IWebElement element)
+                public static List<IWebElement> FindAllDescendants(IWebElement element)
                 {
                     return element.FindElements(By.CssSelector("*")).ToList();
                 }
 
-                public IWebElement FindWebElementByXPath(string XPath,
+                public static IWebElement FindWebElementByXPath(string XPath,
                     string FrameType = "iframe")
                 {
                     IWebElement element = null;
@@ -1067,7 +1269,7 @@ public class Surfer
                     return element;
                 }
 
-                public IWebElement FindWebElementByXPathWindowless(string XPath,
+                public static IWebElement FindWebElementByXPathWindowless(string XPath,
                     string FrameType = "iframe")
                 {
                     IWebElement element = null;
@@ -1143,14 +1345,14 @@ public class Surfer
                     return element;
                 }
 
-                public IWebElement WaitElementAppear(string xPath, int retries = 15,
-                    int retryInterval = 1)
+                public static IWebElement WaitElementAppear(string xPath, int retries = 15,
+                    int retryInterval = 1, string FrameType = "iframe")
                 {
                     var element = Policy.HandleResult<IWebElement>(result => result == null)
                         .WaitAndRetry(retries, interval => TimeSpan.FromSeconds(retryInterval))
                         .Execute(() =>
                         {
-                            IWebElement element = new Searchers().FindWebElementByXPath(xPath);
+                            IWebElement element = FindWebElementByXPath(xPath, FrameType);
                             if (element != null)
                             {
                                 _logger.Info("Element appeared: " + xPath + "");
@@ -1169,6 +1371,9 @@ public class Surfer
         }
     }
 
+    /// <summary>
+    /// Windows Automation platform.
+    /// </summary>
     public class WinBrowser
     {
         public Searchers Search = new();

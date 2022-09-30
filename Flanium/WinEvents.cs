@@ -9,6 +9,7 @@ using FlaUI.Core.WindowsAPI;
 using FlaUI.UIA3;
 using OpenQA.Selenium.Chrome;
 using Polly;
+using Capture = FlaUI.Core.Capturing.Capture;
 
 #pragma warning disable CS0168
 
@@ -112,21 +113,9 @@ public class WinEvents
         
         public static string DesktopScreenshot(string saveToPath)
         {
-            var automation = new UIA3Automation();
-            var desktop = automation.GetDesktop();
-            //var myCapture = Capture.Rectangle(desktop.BoundingRectangle);
-            var myCapture = ScreenshotRAW(desktop.BoundingRectangle);
-            myCapture.Save(saveToPath, ImageFormat.Jpeg);
-            //myCapture.ToFile(saveToPath);
+            var ss = FlaUI.Core.Capturing.Capture.Rectangle(new Rectangle( 0, 0, 1920, 1080));
+            ss.ToFile(saveToPath);
             return saveToPath;
-        }
-
-        private static Bitmap ScreenshotRAW(Rectangle region)
-        {
-            var screenshotInternal = new Bitmap(region.Width, region.Height, PixelFormat.Format32bppArgb);
-            using var graphics = Graphics.FromImage((Image) screenshotInternal);
-            graphics.CopyFromScreen(region.Location, new Point(0, 0), screenshotInternal.Size, CopyPixelOperation.SourceCopy);
-            return screenshotInternal;
         }
 
         public static string ElementScreenshot(AutomationElement element,string saveToPath)

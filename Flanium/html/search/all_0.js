@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['_2enetcoreapp_2cversion_3dv5_2e0_2eassemblyattributes_2ecs_0',['.NETCoreApp,Version=v5.0.AssemblyAttributes.cs',['../net5_80-windows_2_8_n_e_t_core_app_00_version_0av5_80_8_assembly_attributes_8cs.html',1,'(Global Namespace)'],['../net5_80_2_8_n_e_t_core_app_00_version_0av5_80_8_assembly_attributes_8cs.html',1,'(Global Namespace)']]],
+  ['_2enetcoreapp_2cversion_3dv6_2e0_2eassemblyattributes_2ecs_1',['.NETCoreApp,Version=v6.0.AssemblyAttributes.cs',['../_debug_2net6_80-windows_2_8_n_e_t_core_app_00_version_0av6_80_8_assembly_attributes_8cs.html',1,'(Global Namespace)'],['../_debug_2net6_80-windows10_80_817763_80_2_8_n_e_t_core_app_00_version_0av6_80_8_assembly_attributes_8cs.html',1,'(Global Namespace)'],['../_debug_2net6_80_2_8_n_e_t_core_app_00_version_0av6_80_8_assembly_attributes_8cs.html',1,'(Global Namespace)'],['../_release_2net6_80-windows10_80_817763_80_2win-x86_2_8_n_e_t_core_app_00_version_0av6_80_8_assembly_attributes_8cs.html',1,'(Global Namespace)']]],
+  ['_2enetframework_2cversion_3dv4_2e8_2eassemblyattributes_2ecs_2',['.NETFramework,Version=v4.8.AssemblyAttributes.cs',['../_8_n_e_t_framework_00_version_0av4_88_8_assembly_attributes_8cs.html',1,'']]]
+];

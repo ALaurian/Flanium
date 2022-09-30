@@ -20,11 +20,9 @@ public class Blocks
 {
     public class Engine : Dictionary<string,object>
     {
-        // private Dictionary<object, object> Output = new();
         private Func<object, object>[] _actions = Array.Empty<Func<object, object>>();
-        // private Dictionary<string, Func<string>[]> _transitionConditions = new();
         private Dictionary<string, bool> _continueOnError = new();
-        // private Dictionary<string, object> _parameters = new();
+
         private int Index = 0;
         private int OldIndex = 0;
         private int DispatcherIndex { get; set; }
@@ -43,8 +41,7 @@ public class Blocks
             if(_dispatcher is null)
                 throw new Exception("Dispatcher is null. Please set the dispatcher first.");
         }
-
-
+        
         public Engine SetDispatcher(object[] oneDimensionalArray)
         {
             _dispatcher = oneDimensionalArray;
@@ -83,22 +80,12 @@ public class Blocks
         {
             _dispatcher = oneDimensionalArray as object[];
         }
-
-        // public Dictionary<object, object> GetDictionary()
-        // {
-        //     return Output;
-        // }
-
+        
         public bool SetOutput(string actionName, object value)
         {
             this[actionName] = value;
             return true;
         }
-
-        // public object GetOutput(string actionName)
-        // {
-        //     return Output[actionName];
-        // }
 
         public Engine ClearAll()
         {
@@ -127,8 +114,7 @@ public class Blocks
             {
                 throw new Exception("Cannot add actions while state machine is running.");
             }
-
-
+            
             var actionsList = _actions.ToList();
             actionsList.AddRange(actions);
             _actions = actionsList.ToArray();
@@ -165,7 +151,7 @@ public class Blocks
         }
         
 
-        public Engine AddContinueOnError(string actionName, bool continueOnError)
+        public Engine AddSkipError(string actionName, bool continueOnError)
         {
             if (IsRunning)
             {
@@ -183,7 +169,7 @@ public class Blocks
             return this;
         }
 
-        public Engine AddContinueOnErrors(string[] actionNames, bool[] continueOnErrors)
+        public Engine AddSkipErrors(string[] actionNames, bool[] continueOnErrors)
         {
             if (IsRunning)
             {
@@ -204,7 +190,7 @@ public class Blocks
             return this;
         }
 
-        public Engine RemoveContinueOnError(string actionName)
+        public Engine RemoveSkipError(string actionName)
         {
             if (IsRunning)
             {
@@ -215,7 +201,7 @@ public class Blocks
             return this;
         }
 
-        public Engine RemoveContinueOnErrors(string[] actionNames)
+        public Engine RemoveSkipErrors(string[] actionNames)
         {
             if (IsRunning)
             {
@@ -229,23 +215,6 @@ public class Blocks
 
             return this;
         }
-
-        // public object GetArgument(string keyName)
-        // {
-        //     return _parameters[keyName];
-        // }
-
-        // public Engine SetArguments(Dictionary<string, object> arguments)
-        // {
-        //     _parameters = arguments;
-        //     return this;
-        // }
-
-        // public Engine ResetArguments()
-        // {
-        //     _parameters = new Dictionary<string, object>();
-        //     return this;
-        // }
 
         public Engine Stop()
         {

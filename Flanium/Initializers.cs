@@ -21,8 +21,9 @@ public class Initializers
         return new FirefoxDriver(service, options);
     }
 
-    public static ChromeDriver InitializeChrome(string appPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", string port = "8080", PageLoadStrategy loadStrategy = PageLoadStrategy.Normal)
+    public static List<object> InitializeChrome(string appPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", string port = "8080", PageLoadStrategy loadStrategy = PageLoadStrategy.Normal)
     {
+        var objectList = new List<object>();
         var process = new Process();
         var processStartInfo = new ProcessStartInfo
         {
@@ -31,7 +32,8 @@ public class Initializers
             UseShellExecute = false,
         };
         process.StartInfo = processStartInfo;
-            
+        process.Start();
+        
         var options = new ChromeOptions
         {
             DebuggerAddress = "localhost:8080"
@@ -57,9 +59,11 @@ public class Initializers
         service.HideCommandPromptWindow = false;
 
         options.PageLoadStrategy = loadStrategy;
-        process.Start();
+        
         var Driver = new ChromeDriver(service, options);
+
+        objectList.AddRange(new object[] {process, Driver});
             
-        return Driver;
+        return objectList;
     }
 }

@@ -1,0 +1,25 @@
+var class_flanium_1_1_surfer_1_1_web_browser =
+[
+    [ "SelectionStrategy", "class_flanium_1_1_surfer_1_1_web_browser.html#ae74c757617f8f3b1fd140c9c724e2e5b", null ],
+    [ "WebBrowser", "class_flanium_1_1_surfer_1_1_web_browser.html#af7c7a30e57d7c680290ff449e025982f", null ],
+    [ "Click", "class_flanium_1_1_surfer_1_1_web_browser.html#a93b96d10af01ff550ab438b4dd9227c0", null ],
+    [ "Close", "class_flanium_1_1_surfer_1_1_web_browser.html#aad60258e208877577f8fc6cb75b0db24", null ],
+    [ "Close", "class_flanium_1_1_surfer_1_1_web_browser.html#a9b80f97abfe211e4ca51ad777f57c432", null ],
+    [ "Delay", "class_flanium_1_1_surfer_1_1_web_browser.html#a5ca9517d624aa1722f5078428d7bc5f0", null ],
+    [ "FindAllChildren", "class_flanium_1_1_surfer_1_1_web_browser.html#aec9e73b5ff5eca9d8b0c8b77c44e32c2", null ],
+    [ "FindAllDescendants", "class_flanium_1_1_surfer_1_1_web_browser.html#a16360abc2e6291f509838ec7fe193b8f", null ],
+    [ "FindWebElementByXPath", "class_flanium_1_1_surfer_1_1_web_browser.html#ad57680281212d55d068b5c09c5008dc1", null ],
+    [ "GetDownloadedFiles", "class_flanium_1_1_surfer_1_1_web_browser.html#a859c618f4f4f6f4383aac28509e5cc7f", null ],
+    [ "GetDriver", "class_flanium_1_1_surfer_1_1_web_browser.html#aed022fb96ea55d709e3954a5b03d7525", null ],
+    [ "GetProcess", "class_flanium_1_1_surfer_1_1_web_browser.html#ad701b64983ad7e5d1b1d3ff4ed5ce76d", null ],
+    [ "GetText", "class_flanium_1_1_surfer_1_1_web_browser.html#ace596b61abd9bd81c5d4ec7ce915fa0b", null ],
+    [ "Highlight", "class_flanium_1_1_surfer_1_1_web_browser.html#ac062a8bafea33f088d2583e541cf3d79", null ],
+    [ "Hover", "class_flanium_1_1_surfer_1_1_web_browser.html#a96df1cfa9f34de4079b3bbc5b60a9172", null ],
+    [ "NavigateTo", "class_flanium_1_1_surfer_1_1_web_browser.html#a2a3237f8c55c5e161c0939111228b65c", null ],
+    [ "Open", "class_flanium_1_1_surfer_1_1_web_browser.html#ad239f447d71c0c084c135522534807ec", null ],
+    [ "SetSelectionStrategy", "class_flanium_1_1_surfer_1_1_web_browser.html#a3156819948e11dbbae7ab56e92eb8d37", null ],
+    [ "SetValue", "class_flanium_1_1_surfer_1_1_web_browser.html#a13f52561c08fc4b67af7f8e2f5832a64", null ],
+    [ "WaitElementAppear", "class_flanium_1_1_surfer_1_1_web_browser.html#a664faeb0aad4e1bd6654879fd552d746", null ],
+    [ "WaitElementVanish", "class_flanium_1_1_surfer_1_1_web_browser.html#a75d50c0a8d8c1bdaa2d4ed8331e75df5", null ],
+    [ "WaitForeverElementVanish", "class_flanium_1_1_surfer_1_1_web_browser.html#ac6e655b09e69dee990dfd6268aa4be6b", null ]
+];
